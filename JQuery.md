@@ -1850,8 +1850,6 @@ function ing() {
 
 
 
-
-
 ## ajax
 
 ~~~html
@@ -1864,7 +1862,7 @@ function ing() {
             success: function (data) {
                 console.log(data);
             },
-            error: function (err) {
+            error: function (err) {  // 返回的是response对象
                 console.log(err);
             },
             
@@ -1894,15 +1892,16 @@ function ing() {
 
 参数
 
-•crossDomain 同域请求为false， 跨域请求为true
+~~~html
+crossDomain 同域请求为false， 跨域请求为true
 
-•dataType 预期服务器返回的数据类型
+dataType 预期服务器返回的数据类型
+"xml"、"html"、"script"、"json"、"jsonp"、"text"
 
-​		"xml"、"html"、"script"、"json"、"jsonp"、"text"
+jsonp   回调函数名称需要填写的地方，如百度搜索接口的'cb'
 
-•jsonp   回调函数名称需要填写的地方，如百度搜索接口的'cb'
-
-•jsonpCallback 回调函数名称，如百度搜索接口的‘asdf'
+jsonpCallback 回调函数名称，如百度搜索接口的‘asdf'
+~~~
 
 
 
@@ -1919,11 +1918,11 @@ $("input").on("input", function () {
         //     console.log(data);
         // },
         // error: function (err) {
-        //     console.log(err);
+        //     console.log(err); 
         // },
         data: 'wd=' + $("input").val(),
         crossDomain: true,
-        dataType: "jsonp",
+        dataType: "jsonp", // 预期服务器返回的数据类型
         jsonp: "cb",
         jsonpCallback: "asdf"
     })

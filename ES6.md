@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 ## 介绍
 
 ECMAScript和JavaScript
@@ -390,5 +394,565 @@ JSON.parse() // 解序列化 转成json 注意要是标准写法 双引号
 
 key和value必须要有双引号，不过js中可以简写
 双引号在有的语言中表示字符
+~~~
+
+
+
+## Babel.js编译
+
+语法检查、可单独可组合（webpack）
+
+官网https://babeljs.io/
+
+方法一：引入JS文件（不推荐）
+
+~~~html
+1.引入brower
+2.<script type="text/babel"></script>
+
+<!-- Load Babel -->
+<!-- v6 <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Your custom script here -->
+<script type="text/babel">
+let a = 2;
+let b = 3;
+alert(a+b);
+</script>
+~~~
+
+方法二： 编译js文件
+
+~~~javascript
+1.安装node.js,初始化项目 package.json
+npm init -y
+官网下载nodejs安装的时候选择了add path 安装在了D盘
+
+2.安装babel-cli
+npm i @babel/core @babel/cli @babel/preset-env -D //分别安装核心库、命令行使用、环境预设
+npm i @babel/polyfill -S  // 兼容特别底版本的浏览器会用到
+这里很慢的话用cpnm
+先安装下npm install cnpm -g --registry=https://registry.npm.taobao.org
+然后用cnpm命令
+
+安装完成后，会生成node_modules文件夹
+
+3.添加执行脚本 package.json 放在node_modules同级的目录下
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dest"  // 编译后的文件放在生成的dest文件夹下 编译前的js文件放在src文件夹下
+  },
+
+4.创建.babelrc配置文件，放在package.json同级的目录下
+{
+    "presets": ["@babel/preset-env"] // 表示按照环境预设的要求编译
+}
+windows创建以‘.’开头的文件提示必须键入名称
+方法一: 
+新建txt文件，修改文件名称的过程中’.name.’ 
+窍门就是在最后面在加一个’.’
+
+方法二： 
+或者通过命令行，记得切换到该目录下 
+echo 123 >.name
+这个方式也会生成.name文件同时写入了’123’
+
+5.执行编译
+npm run build
+
+// 注意目录位置 src待编译的js,dest生成编译好的js, package.json、.babelrc、node_modules与src、dest同级
+~~~
+
+
+
+## 异步操作
+
+常见于ajax
+
+异步操作：同时进行多个操作，用户体验好，但是代码混乱，回调回调回调
+
+同步操作：一次只能进行一个操作，用户体验不好
+
+~~~javascript
+举例:
+异步--麻烦
+ajax(url, function (data) {
+    ajax(url, function () {
+        ...
+    },function () {
+        error
+    })
+}, function() {
+        error
+})
+同步--简单
+let data1 = ajax(url);
+let data2 = ajax(url);
+~~~
+
+
+
+融合异步同步？ Promise 	async/await(异步操作同步化)
+
+### Promise.then
+
+~~~javascript
+Promise  封装异步操作
+let p = new Promise(function (resolve, reject) {
+    // resolve 解决
+    // reject 拒绝
+
+    $.ajax({
+        url: "./1.txt",
+        datatype: "json", // 请求的数据是数组,预期服务器返回的数据类型
+        success(arr) {
+            resolve(arr);
+        },
+        error(res) {
+            reject(res);
+        }
+    });
+});
+
+p.then(function (arr) {
+    alert("成功")
+    console.log(arr);
+}, function(res) {
+    alert("失败"); // ajax需要服务器环境
+    console.log(res);
+});
+
+
+Promise.all([
+    p1, // 放promise对象
+    p2
+])
+~~~
+
+
+
+### $.ajax()的秘密
+
+~~~javascript
+$.ajax()本身就是promise,所以可以直接用then();
+
+$.ajax({
+    url: "./1.txt",
+    datatype: "json", // 预期服务器返回的数据类型是json
+}).then(arr => {
+    console.log(arr);
+}, res => {
+    console.log(res);
+});
+~~~
+
+
+
+### Promise.all
+
+promise自身就是一个封装，可以对各种异步操作作统一处理  需要都成功才成功
+
+~~~javascript
+// 同时请求三个接口
+Promise.all([
+    $.ajax({url: "./1.txt", dataType: "json"}),
+    $.ajax({url: "./2.txt", dataType: "json"}),
+    $.ajax({url: "./3.txt", dataType: "json"}),
+]).then(arr=>{ // 成功返回的是数组
+    console.log(arr);
+    let [data1, data2, data3] = arr; // 利用解构赋值快速获取要返回的结果
+    console.log(data2);
+},res=>{ // 只要请求的有一个失败就全部失败
+    alert("失败")
+});
+
+
+// 或者直接下面这样写
+Promise.all([
+    $.ajax({url: "./1.txt", dataType: "json"}),
+    $.ajax({url: "./2.txt", dataType: "json"}),
+    $.ajax({url: "./3.txt", dataType: "json"}),
+]).then(([data1, data2, data3])=>{ // 成功返回的是数组
+    console.log(data2);
+},res=>{ // 只要请求的有一个失败就全部失败
+    alert("失败")
+});
+
+~~~
+
+
+
+### Promise.race
+
+竞速
+
+可能用法： cdn读取，哪个快用哪个 
+
+都失败才走失败的回调，只要有一个成功就用哪个
+
+
+
+~~~javascript
+举例
+// 比如不同用户请求不同的广告接口
+if (user_data.vip) { // vip用户，vip广告
+    let user_data = $.ajax({ url: "./1.txt", dataType: "json" });
+    let user_data2 = $.ajax({ url: "./2.txt", dataType: "json" });
+}else { // 普通用户，普通广告
+    let user_data3 = $.ajax({ url: "./3.txt", dataType: "json" });
+}
+
+
+// 请求如下
+ajax("httpxxxx/api/user").then(user_data=>{
+    if(user_data.vip){
+        ajax("httpxxx/api/vip_item").then(...);
+    }
+}, res=>{
+    alert("xxx");
+})
+~~~
+
+
+
+### async/await
+
+generator/yield 已经被废弃 生成器和暂停
+
+async/await 函数的特殊形式
+
+~~~javascript
+async function show() { // 声明函数中包含异步操作
+    xxx;
+    xxx;
+    let data = await $.ajax(); // 声明该操作要等待 并收集数据
+}
+
+普通函数	一直执行到结束 碰到return
+async函数		能够暂停
+~~~
+
+
+
+~~~javascript
+async function show() {
+    let a = 12;
+    let b = 5;
+
+    let data = await $.ajax({
+        url: './1.txt',
+        dataType: 'json'
+    });
+    alert(a + b + data[0]);
+}
+
+show(); // 弹出18
+
+1.txt的内容 [1,2,3]
+~~~
+
+
+
+上面的原理可以看成：
+
+~~~javascript
+async function show() {
+    let a = 12;
+    let b = 5;
+
+    let data = await $.ajax({
+        url: './1.txt',
+        dataType: 'json'
+    }).then(function() {
+        show2();
+    })
+    function show2() {
+        alert(a + b + data[0]);
+    }
+}
+~~~
+
+
+
+因为本身没有错误处理，利用try  catch 处理错误
+
+~~~javascript
+async function show() {
+    let a = 12;
+    let b = 5;
+
+    try {
+        let data = await $.ajax({
+            url: './1.txt',
+            dataType: 'json'
+        });
+        alert(a + b + data[0]);
+    } catch (e) {
+        alert("失败");
+    }
+}
+show();
+~~~
+
+
+
+## ES6面向对象
+
+机器语言 >> 汇编语言 >> 低级语言（面向函数，面向过程）>> 高级语言（面向对象) >> 模块系统 >> 框架 >> 系统接口（API）
+
+### ES5
+
+~~~javascript
+// 以函数的形式写对象
+function Person(name, age) { // 既是类又是构造函数
+    // 添加属性
+    this.name = name;
+    this.age = age;
+
+    // 也可以这样添加方法
+    // this.showName = function() {
+    //     alert(this.name);
+    // };
+    // this.showAge = function() {
+    //     alert(this.age);
+	// }
+}
+// 添加方法
+Person.prototype.showName = function() {
+    alert(this.name);
+}
+Person.prototype.showAge = function() {
+    alert(this.age);
+}
+let p = new Person("blue", 18);
+p.showName();
+p.showAge();
+~~~
+
+
+
+继承
+
+~~~javascript
+function Person(name, age) { // 既是类又是构造函数
+    // 添加属性
+    this.name = name;
+    this.age = age;
+}
+// 添加方法
+Person.prototype.showName = function() {
+    alert(this.name);
+}
+Person.prototype.showAge = function() {
+    alert(this.age);
+}
+
+function Worker(name, age, job) {
+    Person.call(this, name, age); // 完成父类属性的继承
+    this.job = job;
+}
+Worker.prototype = new Person();
+Worker.prototype.constructor = Worker;
+Worker.prototype.showJob = function () {
+    alert(this.job);
+};
+
+let w = new Worker("blue", 18 , "suibian");
+w.showName();
+w.showAge();
+w.showJob();
+~~~
+
+
+
+
+
+### ES6
+
+~~~javascript
+class Person{ // 这是类
+    constructor(name,age) { // 这是构造函数
+        this.name = name;
+        this.age = age;
+    }
+    // 添加方法
+    showName () {
+        alert(this.name);
+    }
+    showAge () {
+        alert(this.age);
+    }
+}
+let p = new Person("blue", 18);
+p.showName();
+p.showAge();
+~~~
+
+统一了写法
+
+继承（面向对象精髓）
+
+~~~javascript
+class Person{ // 这是类
+    constructor(name,age) { // 这是构造函数
+        this.name = name;
+        this.age = age;
+    }
+    // 添加方法
+    showName () {
+        alert(this.name);
+    }
+    showAge () {
+        alert(this.age);
+    }
+}
+
+class Worker extends Person {
+    constructor (name, age, job) { // 自己的属性
+        super(name, age); // 继承父类
+
+        this.job = job; // 定义自己的属性
+    }
+    // 自动继承方法
+    showJob () {
+        alert(this.job);
+    }
+}
+
+let w = new Worker("blue", 18 , "suibian")
+w.showName();
+w.showAge();
+w.showJob();
+
+~~~
+
+
+
+## 模块化
+
+所有的高级语言离不开模块	Java中是包	python中是模块
+
+需要模块化，才能支撑大型项目开发
+
+没有模块>> CMD（同步的，node中使用） >> AMD（异步加载，按需） >> 语言提供模块支持
+
+### ES6模块
+
+模块使用就两件事
+
+1.定义：声明模块
+
+2.使用：使用模块
+
+ES6的模块系统浏览器不支持，所以需要编译，常用webpack(webpack是nodejs写，要遵循路径完整)
+
+视频39:00
+
+- 模块mod1.js文件需要导出（export）
+
+- 普通index.js文件需要引入（import）
+
+  ~~~javascript
+  这些js放在js文件夹下
+  ~~~
+
+- 需要webpack.config.js设置导出
+
+  ~~~javascript
+  const path = require('path');
+  
+  module.exports = {
+      mode: 'development', // 编译模式,生产模式production
+      entry: './js/index.js', // 要编译的文件
+      output: {  // 编译出口
+          path: path.resolve(__dirname, "build"), // 会解析成绝对路径
+          filename: 'bundle.js' // 输出的文件名，一般把打包之后的文件叫bundle(一捆)
+      }
+  }
+  ~~~
+
+  
+
+- 需要webpack编译，然后引入编译后的文件使用
+
+  ~~~javascript
+  编译后的文件放在build中
+  ~~~
+
+
+
+### 导出
+
+~~~javascript
+// 导出变量
+export let a = 12;
+export const a =12;
+
+// 导出一堆变量
+let a,b,c = ...;
+export {a, b, c, ...};
+
+// 导出函数
+export function show() {
+    ...
+}
+
+// 导出class
+export class Person {
+    
+}
+
+// 导出默认成员
+export default 99;  // import不加*就默认导出这个
+~~~
+
+### 引入
+
+~~~javascript
+// 引入所有成员
+import * as mod1 from 'xxx'
+
+// 引入默认成员
+import mod1 from 'xxx'
+
+// 引入部分成员
+import (a, b as name) from 'xxx'  // b名称变成name
+
+// 只引入 可引入css文件
+import 'xxx'
+
+// 异步引入, 当函数用
+let p = await import('./mod1');  // 如果引过来是个promise,需要await
+~~~
+
+
+
+## ES7\8\9
+
+~~~javascript
+ES7
+1.幂操作
+Math.pow(3,5)  // 3的5次方
+3**5; 	// ES7
+
+2.判断数组是否存在某个值
+let arr = [12,8,9,26]
+consoloe.log(8 in arr); // 打印false 因为in 只能检测key，数组的key是下标 该数组没有下标8
+console.log(arr.indexOf(8) != -1); // 返回true,表示arr存在8, 这是获取indexOf获取下标
+console.log(arr.includes(8)) // ES7 直接返回true,判断是否存在
+~~~
+
+~~~javascript
+ES8
+promise是ES5.5的
+async/await是ES8的
+~~~
+
+~~~javascript
+ES9
+rest/spread类似async/await
+异步迭代 
+Promise.fianlly
+正则表达式增强
 ~~~
 
