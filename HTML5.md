@@ -1800,3 +1800,99 @@ flex
 flex
 右侧给flex-grow:1(拉伸)
 
+
+
+
+
+## 重排重绘
+
+重排：当DOM元素影响了元素的几何属性（例如宽和高），浏览器需要重新计算元素的几何属性，同样其它元素的几何属性也会和位置也会因此受到影响。浏览器会使渲染树中受到影响的部分失效，并重新构造渲染树。这个过程称为“重排”。“回流”
+
+重绘：完成重排后，浏览器会重新绘制受影响的部分到屏幕上中，该过程称为“重绘”。
+
+
+
+重排发生的情况：
+
+添加或删除可见的DOM元素。
+
+元素位置改变。
+
+元素的尺寸改变（width/height padding border margin）。
+
+内容改变。
+
+页面渲染器初始化。
+
+浏览器窗口尺寸改变。
+
+
+
+重绘发生的情况：
+
+重绘发生在元素的可见的外观被改变，但并没有影响到布局的时候。
+
+比如，仅修改DOM元素的字体颜色（只有Repaint，因为不需要调整布局）
+
+
+
+## 浏览器的优化：渲染队列
+
+以下属性或方法会刷新渲染队列
+
+可以把这些值先赋给一个值，一起执行  注意读写操作分开
+
+~~~css
+offsetTop、offsetLeft、offsetWidth、offsetHeight
+
+clientTop、clientLeft、clientWidth、clientHeight
+
+scrollTop、scrollLeft、scrollWidth、scrollHeight
+
+getComputedStyle()（IE中currentStyle）
+~~~
+
+
+
+## 重绘与重排的性能优化列
+
+~~~html
+1、分离读写操作
+2、样式集中改变
+document.getElementById("d1").style.cssText = "color:red; font-size:13px;";
+
+3、缓存布局信息
+div.style.left = div.offsetLeft + 1 + 'px';
+div.style.top = div.offsetTop + 1 + 'px';
+
+这种读操作完就执行写操作造成了2次重排
+缓存可以进行优化
+var curLeft = div.offsetLeft;
+var curTop = div.offsetTop;
+div.style.left = curLeft + 1 + 'px';
+div.style.top = curTop + 1 + 'px';
+
+
+4、元素批量修改
+         先把li插入到ul中，再把ul插入到dom不好，利用文档碎片中documentFragment
+<script>
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < 10; i++) {
+        var li = document.createElement("li");
+        li.innerHTML = i;
+        fragment.appendChild(li);
+    }
+    ul.appendChild(fragment);
+</script>
+
+
+或者拼接字符串
+var str = "";
+for (var i = 0; i < 10; i++) {
+    str += "<li>" + i + "</li>";
+}
+ul.innerHTML = str;
+
+
+《高性能javascript》
+~~~

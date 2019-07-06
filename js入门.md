@@ -1004,7 +1004,7 @@ var ps = div1.getElementsByClassNme("txt1");
 
 ~~~javascript
 //创建标签节点
-var p = document.creatElement("p");
+var p = document.createElement("p");
 //创建文本节点
 var p1txt = document.createTextNode("p1");
 p.appendChild(p1txt);
