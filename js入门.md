@@ -1203,13 +1203,9 @@ event.returnvalue = false;
 ```javascript
 event.target
 //只在一个父级元素绑定事件，就可以控制子元素的事件，性能优化
+
+点击li时，会冒泡到ul,触发ul的绑定的点击事件
 ```
-
-
-
-
-
----
 
 
 
