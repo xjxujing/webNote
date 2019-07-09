@@ -1029,7 +1029,7 @@ $("li").click(function () {
 	console.log( $(this).text() );
 })
 
-$(document).dbclick(function () { //双击
+$(document).dblclick(function () { //双击
     // this是原生dom
 	console.log( $(this).text() );
 })

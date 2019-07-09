@@ -1396,7 +1396,7 @@ a1[0][1]
 ~~~javascript
 // 模拟堆栈
 push()	//从尾部添加元素 原数组被修改
-pop()	//从尾部删除元素 原数组被修改
+pop()	//从尾部删除元素 原数组被修改 出栈
 
 shift()	   // 从头部删除元素  返回删除的元素  原数组被修改  
 unshift()  // 在头部插入元素  返回新数组长度 原数组被修改
@@ -1449,9 +1449,11 @@ var b = a.slice(2);  // 一直到结束
 //b: [2, 3, 4, 5]
 ~~~
 
+
+
 ~~~javascript
 改变数组顺序
-a.reverce() // 颠倒数组顺序  原数组被修改
+a.reverse() // 颠倒数组顺序  原数组被修改
 a.sort() // // 数组顺序  原数组被修改
 数字从小到大，字母从a-z
 
@@ -1484,6 +1486,8 @@ a.indexOf("a"，2) // 返回3 查找第二个a
 
 lastIndexOf()
 ~~~
+
+
 
 ~~~javascript
 forEarch 每个元素定义回调
@@ -1987,6 +1991,8 @@ background-position
 
 背景简写：
 background: transparent url(image.jpg) repeat-y  scroll 50% 0 
+background: #00FF00 url(bgimage.gif) no-repeat fixed top;
+			color   image			repeat	attachment	position
 ~~~
 
 

@@ -836,6 +836,8 @@ w.showJob();
 
 没有模块>> CMD（同步的，node中使用） >> AMD（异步加载，按需） >> 语言提供模块支持
 
+
+
 ### ES6模块
 
 模块使用就两件事
@@ -844,7 +846,7 @@ w.showJob();
 
 2.使用：使用模块
 
-ES6的模块系统浏览器不支持，所以需要编译，常用webpack(webpack是nodejs写，要遵循路径完整)
+ES6的模块系统浏览器不支持，所以需要编译，**常用webpack**(webpack是nodejs写，要遵循路径完整)
 
 视频39:00
 
@@ -861,7 +863,7 @@ ES6的模块系统浏览器不支持，所以需要编译，常用webpack(webpac
   ~~~javascript
   const path = require('path');
   
-  module.exports = {
+  module.exports = {  // 这是CMD的写法
       mode: 'development', // 编译模式,生产模式production
       entry: './js/index.js', // 要编译的文件
       output: {  // 编译出口

@@ -267,7 +267,7 @@ new Vue({
 
 
 
-## v-if
+## v-if 和v-show
 
 ~~~html
 <div class="app">
@@ -352,5 +352,509 @@ new Vue({
     }
 });
 </script>
+~~~
+
+
+
+## 初始化多个vue对象
+
+~~~html
+<div class="app1">
+    <h1>{{ title }}</h1>
+    <button @click="changeTitle">改app2的标题</button>
+</div>
+
+<div class="app2">
+    <h1>{{ title }}</h1>
+    <button @click="changeTitle">改app1标题</button>
+</div>
+
+
+<script>
+var one = new Vue({
+    el: ".app1",
+    data: {
+        title: "app1的标题",
+    },
+    methods: {
+        changeTitle: function () {
+            two.title = "app2的标题改了"
+        }
+    }
+});
+// two.title = "111";
+var two = new Vue({
+    el: ".app2",
+    data: {
+        title: "app2的标题",
+    },
+    methods: {
+        changeTitle: function () {
+            one.title = "改变app1的标题"
+        }
+    }
+});
+</script>
+~~~
+
+
+
+## 初识组件
+
+~~~html
+<div class="app1">
+    <greeting></greeting>
+</div>
+<div class="app2">
+    <greeting></greeting>
+</div>
+
+<script>
+Vue.component("greeting", {
+    // 这里是模板
+    template: `
+    <p>
+        {{name}}: 大家好，这是我女朋友@关晓彤
+        <button v-on:click="changeName">改名字</button>
+    </p>
+    `,
+    data: function () {
+        return {
+            name: "鹿晗"
+        }
+    },
+    methods: {
+        changeName: function() {
+            this.name = "Herry"
+        }
+    }
+});
+
+new Vue({
+    el: ".app1"
+});
+new Vue({
+    el: ".app2"
+});
+</script>
+~~~
+
+
+
+## Vue Cli脚手架
+
+~~~html
+脚手架是通过webpack搭建的开发环境
+使用ES6语法
+打包和压缩JS为一个文件
+项目文件在环境中编译，而不是浏览器
+实现自动刷新页面
+~~~
+
+
+
+~~~css
+mac
+安装全局命令用sudo
+sudo npm install --global vue-cli
+用cnpm更快
+
+装好后查看当前版本
+vue --version
+
+创建到要创建的目录下执行:
+vue init webpack vue-playlist
+vue init webpack-simple pizza-app 更加简洁
+
+Project name 项目名称不要有大写: vue-playlist
+Project description	项目描述: vue基础知识
+Author 作者
+Runtime + Compiler 选择这个
+Install vue-router 先不装后面再装 n
+Use ESinit to lint your code  代码要非常严谨 n
+Setup unit tests with Karma + Mocha 	测试的 n
+Setup e2e tests with Nightwatch		n
+
+cd 到项目文件夹下
+npm install 安装项目所需要的模块
+~~~
+
+
+
+~~~css
+项目文件内容
+build 构建客户端和服务端 可以改变端口号
+config 配置文件夹
+src	后续工作内容的目录
+static 静态文件
+
+index.html 入口文件
+package.json  依赖的东西
+README.md 对应的指令
+~~~
+
+
+
+~~~css
+npm run dev	开启8081(或者其他编号)的端口 展示当前项目的页面内容
+~~~
+
+
+
+### src目录
+
+~~~javascript
+执行index.html(入口文件)  ->  执行main.js实例化vue对象 执行App.vue   ->  App.vue
+
+main.js
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import App from './App'
+
+Vue.config.productionTip = false
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+
+  // 模板调用组件前需要在这里注册组件'./App'
+  components: { App },
+
+  // 模板：组件调用标签 也可以是普通标签
+  template: '<App/>' 
+})
+
+~~~
+
+
+
+~~~html
+App.vue	根组件  每个组件都会有模板、行为、样式
+<!-- 1.模板: html结构 -->
+<template>
+  <!-- 这里有且只能有一个根标签 -->
+  <div id="app">
+    <h1>{{title}}</h1>
+  </div>
+</template>
+
+<!-- 2.行为: 处理逻辑 -->
+<script>
+// import HelloWorld from './components/HelloWorld'
+export default {
+  name: 'App',
+  data() {
+    return {
+      title: "这是我的第一个vue组件项目"
+    }
+  }
+}
+</script>
+
+<!-- 3.行为: 解决样式 -->
+<style>
+    
+</style>
+
+~~~
+
+
+
+## vue组件嵌套
+
+~~~html
+在 components 文件夹下写一个组件 Users.vue
+<template>
+  <div class="users">
+    <ul>
+      <li v-for="(user,index) in users" :key="index">{{ user }}</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "users",
+  data() {
+    return {
+      users: ["Herry", "Bucky", "Amy"]
+    };
+  }
+};
+</script>
+
+<style>
+    
+</style>
+~~~
+
+
+
+全局注册组件 在main.js中添加
+
+~~~javascript
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import App from './App'
+import Users from './components/Users' // 这里导入
+
+Vue.config.productionTip = false
+
+// 全局注册在组件: 第一参数是起的名字当做调用标签，第二个参数是对应的组件
+Vue.component("users", Users);  // 这里添加
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+
+  // 模板调用组件前需要在这里注册组件'./App'
+  components: { App },
+  // 模板：组件调用标签 也可以是普通标签
+  template: '<App/>' 
+})
+
+~~~
+
+
+
+局部注册组件 在App.vue中添加
+
+~~~html
+<!-- 1.模板: html结构 -->
+<template>
+  <div id="app">
+    <h1>{{title}}</h1>
+    <users></users>  不管全局注册组件还是局部注册组件 都要在这里使用
+  </div>
+</template>
+
+<!-- 2.行为: 处理逻辑 -->
+<script>
+import Users from './components/Users' // 这里导入组件
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      title: "这是我的第一个vue脚手架项目"
+    }
+  },
+  components: {
+    "users": Users  // 这里注册组件  注意组件调用标签不可以和html原生标签冲突
+  }
+}
+</script>
+
+<!-- 3.行为: 解决样式 -->
+<style>
+/* #app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+} */
+</style>
+
+~~~
+
+## 组件CSS作用域
+
+scoped可以限制各自作用域
+
+
+
+## 属性传值
+
+父组件向子组件传值
+
+父组件放好数据，然后父组件中的**子组件标签**绑定v-bind，在子组件中拿数据props
+
+~~~javascript
+数据放在父组件
+data() {
+	return {
+        zzz: xxx
+    }
+}
+
+并绑定
+<子组件标签 v-bind:aaa="zzz"></组件标签>
+
+
+子组件
+props: {
+    aaa: {
+        type: 
+        required: true
+    } 
+}
+~~~
+
+
+
+子组件向父组件传值（通过事件传值）
+
+触发子组件的方法时，会影响父组件的内容
+
+子组件在方法中自定义事件,并绑定事件响应方法  父组件标签中**子组件标签**绑定该事件v-on,并给响应该事件的方法，父组件中实现对应方法,
+
+~~~javascript
+子组件
+<v-on:click="changeTitle"></>
+methods: {
+    changeTitle: function () {
+        // 注册事件，第一个参数自定义的事件名称，第二参数是传的内容
+        this.$emit("titleChanged","向父组件传值");
+    }
+}
+
+
+父组件中
+<子组件标签 v-on:titleChanged="updateTilte($event)"></组件标签>
+
+父组件中
+methods: {
+    updateTilte: function (title) {
+        。。。。
+	}
+}
+<子组件标签 v-bind:>
+~~~
+
+
+
+
+
+传值：基本类型
+
+传引用（数组和对象）传的是地址
+
+## 生命周期
+
+组件实例化创建到结束
+
+1.寻找问题
+
+2.解决需求
+
+~~~javascript
+子组件中   钩子函数
+ // lifecycle hooks
+    beforeCreate(){
+        alert('组件实例化之前执行的函数');
+    },
+    created(){
+        alert('组件实例化完毕,但页面还未显示');
+    },
+    beforeMount(){
+        alert('组件挂载前,页面仍未显示,但虚拟dom已配置');
+    },
+    mounted(){
+        alert('组件挂在后,此方法执行,页面显示');
+    },
+        
+    beforeUpdate(){
+        alert('组件更新前,页面仍未更新，但虚拟dom已配置');
+    },
+    updated(){
+        alert('组件更新,方法执行后页面显示');
+    }
+
+
+beforeDestory(){
+        alert('组件销毁前');
+    }
+Destoryed(){
+        alert('组件销毁前');
+    }
+~~~
+
+
+
+官网图解
+
+- 标红部分是生命周期的构造函数
+
+
+
+## 路由
+
+页面用a标签，每次点击都会发送请求
+
+路由也是实现页面跳转，但是性能会更好
+
+~~~css
+安装
+npm install vue-router --save-dev   安装路由模块 并保存 可以用cnpm
+
+npm run dev 重启项目
+~~~
+
+~~~javascript
+回到main.js
+// 导入路由模块:
+inport VueRouter from 'vue-router'
+// 使用路由
+Vue.use(VueRouter)
+
+// 配置路由
+const router = new VueRouter({
+    routes: [
+        {path: '/',componet: Home},
+        {path: '/Helloworld',componet: HelloWorld},
+    ],
+    mode: 'history'  // 删掉网址中的#
+})
+// 实例化中使用
+new Vue({
+    router,
+})
+~~~
+
+
+
+~~~html
+// 根组件中模板加上
+<ul>
+    <li>
+        <router-link to="/">Home</router-link>
+        <router-link to="/Helloworld">Helloworld</router-link>
+    </li>
+</ul>
+<router-view></router-view>
+~~~
+
+
+
+vue-resource的使用
+
+~~~css
+npm vue-resource --save-dev  安装模块
+
+安装好后重启
+~~~
+
+~~~js
+回到main.js
+inport VueResource from 'vue-resource'
+
+Vue.use(VueResource)
+
+jsonplaceholder.typicode.com   提供fake online api
+http://jsonplaceholder.typicode.com/users
+
+
+到Home.vue中
+组件实例化完毕,但页面还未显示的时候拿到数据  钩子函数
+created(){
+    this.$http.get('http://jsonplaceholder.typicode.com/users')
+    .then((data)=>{
+        console.log(data);
+    })
+},
 ~~~
 
