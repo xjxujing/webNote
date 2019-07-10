@@ -453,30 +453,30 @@ new Vue({
 
 
 
-~~~css
-mac
-安装全局命令用sudo
-sudo npm install --global vue-cli
-用cnpm更快
+~~~sh
 
-装好后查看当前版本
+# mac安装全局命令用sudo
+sudo npm install --global vue-cli
+# 用cnpm更快
+
+# 装好后查看当前版本
 vue --version
 
-创建到要创建的目录下执行:
-vue init webpack vue-playlist
-vue init webpack-simple pizza-app 更加简洁
+# 创建到要创建的目录下执行:
+vue init webpack vue-playlist # 创建基于webpack模板的新项目
+vue init webpack-simple pizza-app # 更加简洁
 
-Project name 项目名称不要有大写: vue-playlist
-Project description	项目描述: vue基础知识
-Author 作者
-Runtime + Compiler 选择这个
-Install vue-router 先不装后面再装 n
-Use ESinit to lint your code  代码要非常严谨 n
-Setup unit tests with Karma + Mocha 	测试的 n
-Setup e2e tests with Nightwatch		n
+Project name  # 项目名称不要有大写: vue-playlist
+Project description	# 项目描述: vue基础知识
+Author # 作者
+Runtime + Compiler # 选择这个
+Install vue-router # 先不装后面再装 n
+Use ESinit to lint your code  # 代码要非常严谨 n
+Setup unit tests with Karma + Mocha 	# 测试的 n
+Setup e2e tests with Nightwatch		# n
 
-cd 到项目文件夹下
-npm install 安装项目所需要的模块
+# cd 到项目文件夹下
+cnpm install # 安装项目所需要的模块
 ~~~
 
 
@@ -495,8 +495,8 @@ README.md 对应的指令
 
 
 
-~~~css
-npm run dev	开启8081(或者其他编号)的端口 展示当前项目的页面内容
+~~~shell
+npm run dev	# 开启8081(或者其他编号)的端口 展示当前项目的页面内容
 ~~~
 
 
@@ -783,9 +783,13 @@ Destoryed(){
 
 ## 路由
 
-页面用a标签，每次点击都会发送请求
+router是指根据URL分配到对应的处理程序（前端可以理解是网页代码）
+
+页面用a标签，每次点击都会发送请求，但实际很多单页面只需要修改下页面逻辑就可以达到目的
 
 路由也是实现页面跳转，但是性能会更好
+
+对于前端，浏览器配合超链接实现路由功能，但是对于单页面已经不适用
 
 ~~~css
 安装
@@ -794,6 +798,8 @@ npm install vue-router --save-dev   安装路由模块 并保存 可以用cnpm
 npm run dev 重启项目
 ~~~
 
+### Vue-Router使用
+
 ~~~javascript
 回到main.js
 // 导入路由模块:
@@ -801,10 +807,10 @@ inport VueRouter from 'vue-router'
 // 使用路由
 Vue.use(VueRouter)
 
-// 配置路由
+// 配置路由 是个数组
 const router = new VueRouter({
     routes: [
-        {path: '/',componet: Home},
+        {path: '/',componet: Home}, // 没有s
         {path: '/Helloworld',componet: HelloWorld},
     ],
     mode: 'history'  // 删掉网址中的#
@@ -830,7 +836,7 @@ new Vue({
 
 
 
-vue-resource的使用
+### vue-resource的使用
 
 ~~~css
 npm vue-resource --save-dev  安装模块
@@ -844,6 +850,7 @@ inport VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 
+使用以下接口:
 jsonplaceholder.typicode.com   提供fake online api
 http://jsonplaceholder.typicode.com/users
 
