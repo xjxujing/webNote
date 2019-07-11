@@ -214,7 +214,8 @@ data() {
         blogs:[]
     }
 }
-created() {
+
+created() {  // 组件实例化完毕,但页面还未显示 这时候可以请求数据
 this.$http.get()  // 到placeholderjson中获取gets
 .then((data)=>{
     console.log(data); //看看是否能获取数据
@@ -231,7 +232,7 @@ margin 0 auto
 .single-blog:
 paddding 20px
 margin 20px 0
-box-sizing border-box
+box-sizing border-box  到底要不要带这个呢
 background #ccc
 ~~~
 
@@ -263,8 +264,10 @@ Vue.directive("rainbow",{
 
 
 实现内容展示不同的宽度
-div v-theme="'width'"  这里的width参数会传给main.js 注意这里传的参数是字符串 可以传对象 数组
+div v-theme:column="'narrow'"  这里的width参数会传给main.js 注意这里传的参数是字符串 可以传对象 数组
 
+动态指令参数
+v-theme:column="'narrow'"
 Vue.directive('theme', {
     bind(el,bingding,vnode) {
         if(binding.value === "width") {
@@ -279,8 +282,6 @@ Vue.directive('theme', {
     }
 })
 ~~~
-
-
 
 
 
