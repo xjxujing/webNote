@@ -453,6 +453,13 @@ new Vue({
 
 
 
+~~~shell
+--save  和 --save-dev
+一个放在package.json 的dependencies , 一个放在devDependencies里面
+~~~
+
+
+
 ~~~sh
 
 # mac安装全局命令用sudo
@@ -857,11 +864,116 @@ http://jsonplaceholder.typicode.com/users
 
 到Home.vue中
 组件实例化完毕,但页面还未显示的时候拿到数据  钩子函数
-created(){
+created(){  // 组件实例化完毕,但页面还未显示
     this.$http.get('http://jsonplaceholder.typicode.com/users')
     .then((data)=>{
         console.log(data);
     })
 },
+~~~
+
+
+
+## 实现跨域请求
+
+### fetch
+
+~~~javascript
+在App.vue中
+添加钩子函数
+created(){   // 组件实例化完毕,但页面还未显示
+    // fetch
+    // fetch("/apis/test/testToken.php",{
+    //   method:"post",
+    //   headers:{
+    //     "Content-type":"application/json",  // 可以加也可以不加
+    //     token:"f4c902c9ae5a2a9d8f84868ad064e706" // 该接口需要有token
+    //   },
+    //   body:JSON.stringify({username:"henry",password:"321321"})  // 必须要传的json数据 要转成字符串
+    // })
+    // .then(result => {
+    //   // console.log(result)
+    //   return result.json()   // 解读readableStream要进行json解析
+    // })   // 解析完后还要then
+    // .then(data => {
+    //   console.log(data)
+    // })
+
+    
+    // axios
+    this.$axios.post("/apis/test/testToken.php",{username:"hello",password:"123456"})
+        .then(data => {
+          console.log(data)
+        })
+  }
+
+
+搜索vue proxytable
+
+到config->index.js    搜索proxyTable
+
+proxyTable: {
+      '/apis': {
+        // 测试环境
+        target: 'http://www.thenewstep.cn/',  // 接口域名
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+            '^/apis': ''   //需要rewrite重写的,
+        }              
+      }
+    }, 
+        
+重新配置后一定要重启 npm run dev
+~~~
+
+### axios
+
+~~~javascript
+cnpm install axios
+
+main.js中
+import axios from 'axios' 引入模块
+
+Vue.prototype.$axios = axios 全局使用
+
+
+App.vue中配置
+created(){   // 组件实例化完毕,但页面还未显示
+    // axios
+    this.$axios.post("/apis/test/testToken.php",{username:"hello",password:"123456"})
+        .then(data => {
+          console.log(data)
+        })
+  }
+也要在index.js中解决跨域问题
+
+设置token
+main.js中
+axios.defaults.headers.common['token'] = "f4c902c9ae5a2a9d8f84868ad064e706"
+axios.defaults.headers.post["Content-type"] = "application/json"  可以加可以不加
+~~~
+
+
+
+## Vue-Cli3.0
+
+在这里看文档
+
+https://github.com/vuejs/vue-cli
+
+~~~shell
+升级vue-cli  mac加sudo
+npm install -g @vue/cli
+
+vue --help
+
+create 创建新项目
+add 添加插件
+invoke 从已经创建好的项目调用插件
+inspect 检查webpack配置
+serve 开发环境
+build 生产环境  打包上线的时候用
+ui UI界面
+init 生成一个项目
 ~~~
 
