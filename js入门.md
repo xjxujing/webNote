@@ -860,6 +860,11 @@ prompt("输入啥啥啥"， "默认值啥啥啥")  什么都不输入返回null
 ```javascript
 location.herf 完整的网址
 location.toString()
+
+Location.search
+ 包含URL参数的一个DOMString，开头有一个“?”。
+Location.hash
+包含块标识符的DOMString，开头有一个“#”
 ```
 
 - 刷新页面

@@ -2538,6 +2538,8 @@ only screen and ( min-resolution: 2dppx){
 
 根据设置稿（如宽度750px的设计稿），以px为单位写大小，转换成vw。解决等比缩放问题。  使用插件px2vw   cssrem
 
+px to rem移动端？？ 自动浏览器css样式前缀Autoprefixer
+
 至于小于等于1px的线，以px为单位不专成vw。 postcss-write-svg插件主要用来处理移动端1px的解决方案。该插件主要使用的是border-image和background来做1px的相关处理，编译出来是border-image或者background
 
 

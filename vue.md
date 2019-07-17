@@ -748,6 +748,10 @@ methods: {
 
 2.解决需求
 
+### 钩子函数
+
+钩子函数在捕获消息的第一时间执行
+
 ~~~javascript
 子组件中   钩子函数
  // lifecycle hooks
@@ -761,7 +765,7 @@ methods: {
         alert('组件挂载前,页面仍未显示,但虚拟dom已配置');
     },
     mounted(){
-        alert('组件挂在后,此方法执行,页面显示');
+        alert('组件挂载后,此方法执行,页面显示');
     },
         
     beforeUpdate(){
@@ -928,13 +932,31 @@ proxyTable: {
 
 ### axios
 
+axios是目前主流的http请求库，基于Promise实现异步
+
 ~~~javascript
-cnpm install axios
+cnpm install --save axios
 
 main.js中
 import axios from 'axios' 引入模块
 
+// 全局配置
 Vue.prototype.$axios = axios 全局使用
+axios.defaults.baseURL = "" 通用的接口
+设置请求头
+axios.defaults.headers.common['Authorization'] = "Token"  拿到令牌
+axios.defaults.headers.post["Content-type"] =  "application/urlencode"
+axios.defaults.headers.get["Accepts"] =  "application/json"
+
+
+如果全局配置很多内容 可以在src下 新建axios-auth.js
+import后
+const instance=axios.create({
+    baseURL:""
+})
+instance.defaults.headers.common["sth"] = "sth"
+
+export default instance
 
 
 App.vue中配置
@@ -955,6 +977,35 @@ axios.defaults.headers.post["Content-type"] = "application/json"  可以加可�
 
 
 
+~~~javascript
+局部引用axios
+
+组件内 
+import axios from 'axios'
+
+methods: {
+    post: function () {
+        var _this=this;
+        axios.post("",this.blog).then(function(data) {
+            console.log(data)
+            _this.submmited =true // 个人博客的代码中这句话this的指向
+        })
+        
+        axios.post("",this.blog).then((data) =>{
+            this.submmited =true // 这里的this指向还是之前的
+        })
+    }
+}
+~~~
+
+
+
+
+
+
+
+
+
 ## Vue-Cli3.0
 
 在这里看文档
@@ -965,7 +1016,7 @@ https://github.com/vuejs/vue-cli
 升级vue-cli  mac加sudo
 npm install -g @vue/cli
 
-vue --help
+vue --help  k
 
 create 创建新项目
 add 添加插件
@@ -977,3 +1028,10 @@ ui UI界面
 init 生成一个项目
 ~~~
 
+vuex
+
+主要应用于Vue.js中管理数据状态的一个库
+
+创建一个集中的数据存储，供程序中所有组件访问
+
+store可以理解为单一数据源 ：	C1  C2  C3  C4

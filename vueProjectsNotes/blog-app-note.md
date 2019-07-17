@@ -285,17 +285,261 @@ Vue.directive('theme', {
 
 
 
+~~~javascript
+以上是全局自定义
+定义组件指令
+
+逻辑中直接加
+directives: {
+	"rainbow": { // 这里放的是对象
+        bind(el,binding,vnode) {
+		el.style.coor = ...
+        }
+    }
+}
+~~~
+
+
+
+
+
+
+
 ## 4.博客页面搜索功能
 
+### 自定义过滤器
 
+~~~javascript
+把标题全部改成大写  通过vue.filter实现
+h2 v-rainbow {{blog.title  |  to-uppercase }}  管道标识
+
+// 自定义过滤器
+Vue.filter("to-uppercase",function(value) { // value是管道左边的值 也就是blog.title
+    return value.toUpperCase();
+})
+~~~
+
+~~~javascript
+把body不要全部显示
+article {{blog.body | snippet}}
+
+main.js
+Vue.filter("",function(value) {
+    return value.slice(0,100) + '...'  // 字符串也有slice方法
+})
+~~~
+
+~~~javascript
+以上是定义全局过滤器
+
+定义组件过滤器
+直接逻辑中加
+filters: {
+"to-uppercase": function (value) {
+    return value.toUpperCase();
+	},
+  toUppercase(value) { //这种形式也可以  多个过滤器直接后面添加
+	....
+  }
+}
+~~~
+
+
+
+~~~javascript
+实现搜索
+加上搜索框
+input v-model="search"
+
+data中定义 
+{
+    blogs: [],
+    search:""
+}
+computed:{
+filterBlogs: function() {
+    return this.blogs.filter(blog=>{  // 注意返回符合条件的内容
+        return blog.title.match(this.search)  // 输入的内容与title匹配
+    })
+}
+}
+~~~
 
 
 
 ## 5.实现路由及路由参数
 
+~~~javascript
+安装路由模块
+引入路由模块
+使用路由模块
+配置路由
+
+main.js中
+// 创建路由
+const router = new VueRouter({
+	routes: Routes,
+	mode:"history"  // 记得去掉#
+})
+new Vue({
+  el: '#app',
+  template: '<App/>',
+  components: { App },
+  router:router  //实例中要写下 表示在这个最大容器里使用它
+})
+
+
+单独src下新建route.js(配置路由)
+export default [
+ {path: / , componet: ShowBlogs},
+ {path: /addblog, componet: addblog}
+]
+
+配置好后
+main.js中要
+import 
+
+
+路由出口是
+<router-view>
+~~~
+
+
+
+~~~html
+路由的链接是头部实现的
+可以写个组件来实现路由跳转
+
+BlogHeader.vue
+
+nav 
+ul
+li
+<router-link to"/">博客</router-link>
+<router-link to"/add">写博客</router-link>
+
+export default 
+
+App中引入注册并使用<blog-header></blog-header>
+测试下功能是否正常
+~~~
+
+
+
+~~~css
+写样式
+ul 
+listy none
+text center
+matgin 0
+
+li 
+disp inlin-blo
+matgin 0 10px
+
+a 
+coclo #ff
+text-deco none
+padding 12px
+border-ra 5px
+
+nav 
+background crimson
+padding 30px 0
+margin-bottom 40px
+
+默认的class
+.router-link-active {
+	background rgba(255 255 255 0.8)
+    color #444
+}
+
+router-link中给关键字 exact
+~~~
+
+
+
+### 实现点击标题跳转至单个博客
+
+~~~html
+实现点击标题跳转至单个博客
+在博客总览里点击标题 会获取到id 把这个id传到路径中的参数中 然后再传给路由参数
+
+SingleBlog.vue
+
+div#single-blog
+
+通过路由参数
+配置路由的时候给路由参数 /blog/:id
+this.$route.params.id   拿到路由参数 获取路由参数
+
+
+
+给样式
+single-blog
+max-width 960px
+margin 0 auto
+padding 20px
+background #eee
+border 1px dotted  #aaa
+
+ShowBlogs组件中
+标题加上<router-link v-bind:to="'/blog/' + blog.id"></router-link>  这里的id是通过绑定拿到的
+
+~~~
+
+
+
 ## 6.链接数据库firebase(POST)
 
+firebase谷歌旗下产品
+
+使用firebase的database把博客数据post到这里 注意路径加上posts.json
+
+在ShowBlogs中get之前的接口
+
+请求成功后会返回数据，格式如下
+
+~~~javascript
+Response {url: "https://test-67e9c.firebaseio.com/posts.json", ok: true, status: 200, statusText: "OK", headers: Headers, …}
+body: {-Ljd2Ktk6-ewrz64pmn2: {…}, -Ljd3VK0qWBJ4ilrwCZe: {…}, -Ljd5KZFo_8nByPKEYV0: {…}} // 这里是对象
+bodyText:
+下面返回的是首部信息
+headers: Headers {map: {…}}
+ok: true
+status: 200
+statusText: "OK"
+url: "https://test-67e9c.firebaseio.com/posts.json"
+data: (...)
+__proto__: Object
+~~~
+
+data.json()：它返回一个 promise ，解析结果是将文本体解析为 [`JSON`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)
+
+~~~javascript
+PromiseObj {promise: Promise, context: undefined}
+context: undefined
+promise: Promise {<resolved>: {…}}
+__proto__: Object
+~~~
+
+
+
+
+
+
+
 ## 7.链接数据库firebase(GET)
+
+
+
+~~~html
+打包 npm run build
+生成dist文件夹
+打开index.html 把/static 前面的/ 删掉
+~~~
+
+
 
 
 

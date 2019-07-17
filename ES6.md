@@ -125,9 +125,13 @@ console.log(a,b);  // 打印12 5,注意c会报错undefined
 
 
 
-### 函数
+### 箭头函数
 
 箭头函数和this、参数扩展、数组展开（vue属性映射）
+
+箭头函数
+
+不能使用arguments、不能当做构造函数（不能new）、借助父亲的this
 
 ~~~javascript
 箭头函数
@@ -246,6 +250,29 @@ oDate.fn = json.fn;
 
 oDate.fn(); // 弹出12
 ~~~
+
+
+
+### 关于this chanke
+
+~~~javascript
+关于this chanke
+var id = 1;
+var obj = {id: 2}
+function fn() {
+    setTimeout(function() {
+        console.log(this.id);
+    }, 100);
+    setTimeout(()=> {
+        console.log(this.id);
+    }, 100)
+    
+}
+fn.call(obj);  // 打印1 因为setTimeout定时器 100ms后执行fn,这时候运行环境是window
+// 用箭头函数 打印的是2 因为fn执行的时候就把this指向固定在obj  一般异步的操作会使用箭头函数
+~~~
+
+
 
 
 
@@ -770,12 +797,12 @@ w.showJob();
 ### ES6
 
 ~~~javascript
-class Person{ // 这是类
+class Person{ // 这是类  语法糖: 通过原本的一些语法包装一下换种方便的写法
     constructor(name,age) { // 这是构造函数
         this.name = name;
         this.age = age;
-    }
-    // 添加方法
+    } // 注意没有逗号
+    // 添加方法,减少属性的复用,这里方法自动定义在原型上
     showName () {
         alert(this.name);
     }

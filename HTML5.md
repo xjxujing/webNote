@@ -263,7 +263,7 @@ pattern 验证input类型输入框中内容是否与正则匹配
 
 <script>
 var reg = /^\d{6}$/g;
-test.onblur = function () {
+test.onblur = function () { // 失去焦点
     if(reg.test(this.value)) {
         this.style.borderColor = "green";
     }else {
