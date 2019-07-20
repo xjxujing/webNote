@@ -234,6 +234,35 @@ new Vue({
 
 
 
+~~~javascript
+computed: {
+    output: function() {
+        return this.count > 5 ? "大于五" : "小于五";    //computed会判断count是否发生变化 一般有返回值 这个设置给output  都是同步代码
+    }
+}
+watch: {
+    count: function(val) { // 当count数据发生变化的时候 执行该函数 并把最新的传给第一个参数val
+        console.log(val); // 不用有返回值，直接逻辑操作
+        this.ouutput2 = this.count > 5 ? "大于五" : "小于五";
+        var vm = this;
+        window.setTimeout(function(){ // 可以写异步操作
+            vm.count = 0; // 2s之后count归零
+        }, 2000);
+    }
+}
+methods: {
+    result: function() {  // 执行这个函数
+        
+    }
+}
+~~~
+
+
+
+
+
+
+
 ## 动态绑定CSS样式
 
 ~~~html
@@ -476,7 +505,7 @@ vue init webpack-simple pizza-app # 更加简洁
 Project name  # 项目名称不要有大写: vue-playlist
 Project description	# 项目描述: vue基础知识
 Author # 作者
-Runtime + Compiler # 选择这个
+Runtime + Compiler # 选择这个  独立运行和构建
 Install vue-router # 先不装后面再装 n
 Use ESinit to lint your code  # 代码要非常严谨 n
 Setup unit tests with Karma + Mocha 	# 测试的 n
@@ -695,7 +724,7 @@ data() {
 子组件
 props: {
     aaa: {
-        type: 
+        type: Boolean,
         required: true
     } 
 }
@@ -789,6 +818,68 @@ Destoryed(){
 官网图解
 
 - 标红部分是生命周期的构造函数
+
+### 生命周期详解
+
+~~~css
+创建vue实例 new Vue()
+
+1.beforeCreate() 
+[组件实例化之前执行的函数]
+a.数据的检测 监听配置 Obsever Data
+b.初始化事件html中绑定是事件监听methods init Events
+
+
+2.created() 
+[组件实例化完毕,但页面还未显示]
+a.是否元素挂载点 Has "el" option ?  如果没有vm.$mount(el) is called  这样触发
+b.是否有template Has "template" option
+应用: 封装的事件可以在这里拿到 数据和方法都可拿到和执行
+可以异步处理数据、初始化
+this.$nextTick(()=>{}) nextTick更新数据后立刻处理数据
+
+
+如果有template   通过render函数编译
+如果没有template  html作为模板
+
+
+3.beforeMount()  
+[组件挂载前,页面仍未显示,但虚拟dom已配置]
+判断el对应的dom元素是否已经加载进文档流
+
+
+4.mounted()  
+[组件挂载后,此方法执行,页面显示]
+a.mounted 可以对数据监测 如果数据更新 可以正常读取dom数据 
+有初始数据的dom渲染 这里有事件队列的概念 可以获取dom
+	aa.更新前beforeUpdated()  
+	[组件更新前,页面仍未更新，但虚拟dom已配置]
+		
+	ab.更新后updated()  
+	[组件更新,方法执行后页面显示] 
+
+应用: updated()中,数据更新的统一处理可以在这里进行 如果分别处理用$nextTick
+watch: {}对具体某个数变化做统一处理
+注意: 如果没有el 这样触发new Vue().$mount("#app")
+
+
+5.实例销毁
+销毁前beforeDestory() 解除所有事件绑定 数据监听 销毁组件
+销毁后destoryed
+vm.$destory()
+~~~
+
+ 
+
+~~~html
+node_model 下
+vue文件夹 src是源码 core
+dist是打包后
+~~~
+
+
+
+
 
 
 
@@ -1028,10 +1119,20 @@ ui UI界面
 init 生成一个项目
 ~~~
 
-vuex
+## vuex
 
 主要应用于Vue.js中管理数据状态的一个库
 
 创建一个集中的数据存储，供程序中所有组件访问
 
 store可以理解为单一数据源 ：	C1  C2  C3  C4
+
+
+
+## 项目打包
+
+~~~html
+打包 npm run build
+生成dist文件夹
+打开index.html 把/static 前面的/ 删掉
+~~~
