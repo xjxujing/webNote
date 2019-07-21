@@ -1119,6 +1119,42 @@ ui UI界面
 init 生成一个项目
 ~~~
 
+
+
+### 安装插件
+
+~~~shell
+vue add vuetify  安装ui
+
+如果安装的模块对界面影响不大
+npm install
+~~~
+
+### 环境变量
+
+
+
+### 独立运行.vue文件
+
+~~~shell
+# 终端中
+vue serve Hello.vue
+
+npm install	 -g的提示安装
+~~~
+
+
+
+### 图形页面构建项目
+
+
+
+### vue.config.js
+
+
+
+
+
 ## vuex
 
 主要应用于Vue.js中管理数据状态的一个库
