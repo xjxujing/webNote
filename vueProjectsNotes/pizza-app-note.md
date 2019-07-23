@@ -287,7 +287,6 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   alert('after each');
 })
-
 ~~~
 
 

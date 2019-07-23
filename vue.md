@@ -755,7 +755,7 @@ methods: {
 父组件中
 methods: {
     updateTilte: function (title) {
-        。。。。
+        this.title = title;
 	}
 }
 <子组件标签 v-bind:>
@@ -970,6 +970,8 @@ created(){  // 组件实例化完毕,但页面还未显示
 
 
 ## 实现跨域请求
+
+本地请求：保存post.json到static 不能随便放 
 
 ### fetch
 
