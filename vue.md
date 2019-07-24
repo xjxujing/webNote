@@ -234,6 +234,8 @@ new Vue({
 
 
 
+chanke
+
 ~~~javascript
 computed: {
     output: function() {
@@ -863,6 +865,7 @@ watch: {}对具体某个数变化做统一处理
 注意: 如果没有el 这样触发new Vue().$mount("#app")
 
 
+
 5.实例销毁
 销毁前beforeDestory() 解除所有事件绑定 数据监听 销毁组件
 销毁后destoryed
@@ -870,6 +873,37 @@ vm.$destory()
 ~~~
 
  
+
+
+
+### render函数
+
+~~~javascript
+// 模板 -> 编译 -> ast数结构 -> render函数 -> 虚拟dom -> 真实html 
+
+new Vue({
+    el: "#app",
+    render: function(createElement) { // createElement是个函数
+        // 1 字符串dom节点
+        // 2 对象 div的class或者id 也可以没有
+        // 3 数组 文本节点
+        return createElement("div", ["hi", createElement("p",["liuluwei"])])
+    }
+})
+createElement() // 也可以直接放组件
+// <div>
+//	hi
+//	<p>liuluwei</p>
+// </div>
+~~~
+
+
+
+
+
+
+
+
 
 ~~~html
 node_model 下
@@ -1164,6 +1198,15 @@ npm install	 -g的提示安装
 创建一个集中的数据存储，供程序中所有组件访问
 
 store可以理解为单一数据源 ：	C1  C2  C3  C4
+
+~~~shell
+# 安装vuex
+npm install vuex --save
+~~~
+
+
+
+
 
 
 
