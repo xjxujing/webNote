@@ -707,7 +707,7 @@ scoped可以限制各自作用域
 
 ## 属性传值
 
-父组件向子组件传值
+### 父组件向子组件传值
 
 父组件放好数据，然后父组件中的**子组件标签**绑定v-bind，在子组件中拿数据props
 
@@ -727,14 +727,17 @@ data() {
 props: {
     aaa: {
         type: Boolean,
-        required: true
+        required: true,
+            default:
     } 
 }
 ~~~
 
 
 
-子组件向父组件传值（通过事件传值）
+### 子组件向父组件传值
+
+（通过事件传值）
 
 触发子组件的方法时，会影响父组件的内容
 
@@ -760,7 +763,7 @@ methods: {
         this.title = title;
 	}
 }
-<子组件标签 v-bind:>
+<子组件标签 v-bind:title>
 ~~~
 
 
@@ -1135,6 +1138,14 @@ methods: {
 
 ## Vue-Cli3.0
 
+
+
+~~~shell
+
+~~~
+
+
+
 在这里看文档
 
 https://github.com/vuejs/vue-cli
@@ -1154,6 +1165,13 @@ build 生产环境  打包上线的时候用
 ui UI界面
 init 生成一个项目
 ~~~
+
+~~~shell
+安装vue cli3后还是可以使用 vue2.0的 vue init webpack 项目名称
+npm install -g @vue/cli-init
+~~~
+
+
 
 
 
