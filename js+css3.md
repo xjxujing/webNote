@@ -1989,10 +1989,13 @@ background-position
 	精灵图
 	/* 浏览器同时请求资源的个数有限，为了减少图片资源的加载 */
 
-背景简写：
+
 background: transparent url(image.jpg) repeat-y  scroll 50% 0 
 background: #00FF00 url(bgimage.gif) no-repeat fixed top;
-			color   image			repeat	attachment	position
+			color   image			repeat	attachment(滚动相关)	position
+
+综合写法
+background: [background-color] [background-image] [background-repeat] [background-attachment] [background-position] / [ background-size] [background-origin] [background-clip];
 ~~~
 
 
