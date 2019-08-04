@@ -653,6 +653,7 @@ async function show() { // 声明函数中包含异步操作
 
 普通函数	一直执行到结束 碰到return
 async函数		能够暂停
+await 后面是一个Promise对象或者任何要等待的值
 ~~~
 
 

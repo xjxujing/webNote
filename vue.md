@@ -6,6 +6,10 @@ UI和数据不同步
 
 
 
+vue的原则 数据双向绑定 不操作dom
+
+
+
 ## 实例化vue对象
 
 ## 数据和方法
@@ -183,6 +187,8 @@ new Vue({
 
 
 ## 计算属性
+
+需要经过计算才能获得数据，建议放在computed（）中
 
 ~~~html
 <div class="app">
@@ -835,7 +841,7 @@ a.数据的检测 监听配置 Obsever Data
 b.初始化事件html中绑定是事件监听methods init Events
 
 
-2.created() 
+2.created() 页面一旦出现就做的事
 [组件实例化完毕,但页面还未显示]
 a.是否元素挂载点 Has "el" option ?  如果没有vm.$mount(el) is called  这样触发
 b.是否有template Has "template" option

@@ -2699,13 +2699,13 @@ Z轴方向：length
 
 
 
+left会重新layout 或者重新repay    translateX不会引起重新的layout(性能更好)
+
 
 
 
 
 ## transition过渡动画
-
-
 
 ~~~css
 transition: property duration timing-function delay;
