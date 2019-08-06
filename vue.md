@@ -1241,3 +1241,15 @@ npm install vuex --save
 生成dist文件夹
 打开index.html 把/static 前面的/ 删掉
 ~~~
+
+
+
+Vue响应式核心原理
+
+~~~javascript
+深度遍历了data属性的Object.defineProperty() 实现数据劫持？
+Oberserve观察者
+
+
+~~~
+

@@ -543,7 +543,7 @@ for(var i = 0; i< 100; i++) {
 
 ## 函数的call、apply
 
-定义：把函数临时赋值到对象上面并执行
+定义：把函数临时赋值到对象上面**并执行**
 
 两者区别：传递参数的形式不一样
 
@@ -1110,9 +1110,9 @@ var obj = { x: 1, y: 2 };
 // 新加一个z属性，z属性不可修改
 Object.defineProperty(obj,"z",{
     value: 3,
-    writable: false, // 不可写
-    enumerable: true, // 可枚举
-    configurable: true // 可配置
+    writable: false, // 不可写		是否可以设置该属性值
+    enumerable: true, // 可枚举	for 是否可以获得该值
+    configurable: true // 可配置	是否可以删除或修改该属性特性
 })
 
 // 新加一个z属性，z属性不可枚举
@@ -1182,6 +1182,7 @@ var class1 = {
     // num: 0
 }
 Object.defineProperty(class1,"onemoney",{
+    // 注意set和get中都不允许出现onemoney,也就是当前设置的属性,会报错
     set: function (money) {
         // this.onemoney = 10 // 这样会死循环		  
         // console.log("set num: " + this.num++);
@@ -1418,7 +1419,7 @@ a.concat( [3,3],[3,4], 3, 4, 5 )
 ~~~
 
 ~~~javascript
-// 删除元素的同时添加元素  原数组被修改
+// 删除元素的同时添加元素  原数组被修改 最后一个参数可以省略
 splice(要删除元素的开始下标，要删除的个数，要插入的元素)
 
 var a = [0,1,2,3,4,5];

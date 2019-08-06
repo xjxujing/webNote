@@ -129,8 +129,6 @@ console.log(a,b);  // 打印12 5,注意c会报错undefined
 
 箭头函数和this、参数扩展、数组展开（vue属性映射）
 
-箭头函数
-
 不能使用arguments、不能当做构造函数（不能new）、借助父亲的this
 
 ~~~javascript
@@ -513,18 +511,21 @@ let data1 = ajax(url);
 let data2 = ajax(url);
 ~~~
 
+融合异步同步？
 
 
-融合异步同步？ Promise 	async/await(异步操作同步化)
 
-### Promise.then
+### Promise 
+
+**Promise** 对象用于表示一个异步操作的最终状态（完成或失败），以及该异步操作的结果值。
+
+#### Promise.then
 
 ~~~javascript
 Promise  封装异步操作
 let p = new Promise(function (resolve, reject) {
     // resolve 解决
     // reject 拒绝
-
     $.ajax({
         url: "./1.txt",
         datatype: "json", // 请求的数据是数组,预期服务器返回的数据类型
@@ -554,7 +555,7 @@ Promise.all([
 
 
 
-### $.ajax()的秘密
+#### $.ajax()的秘密
 
 ~~~javascript
 $.ajax()本身就是promise,所以可以直接用then();
@@ -571,7 +572,7 @@ $.ajax({
 
 
 
-### Promise.all
+#### Promise.all
 
 promise自身就是一个封装，可以对各种异步操作作统一处理  需要都成功才成功
 
@@ -605,15 +606,13 @@ Promise.all([
 
 
 
-### Promise.race
+#### Promise.race
 
 竞速
 
 可能用法： cdn读取，哪个快用哪个 
 
 都失败才走失败的回调，只要有一个成功就用哪个
-
-
 
 ~~~javascript
 举例
@@ -624,7 +623,6 @@ if (user_data.vip) { // vip用户，vip广告
 }else { // 普通用户，普通广告
     let user_data3 = $.ajax({ url: "./3.txt", dataType: "json" });
 }
-
 
 // 请求如下
 ajax("httpxxxx/api/user").then(user_data=>{
@@ -696,8 +694,6 @@ async function show() {
 }
 ~~~
 
-
-
 因为本身没有错误处理，利用try  catch 处理错误
 
 ~~~javascript
@@ -717,6 +713,40 @@ async function show() {
 }
 show();
 ~~~
+
+
+
+### 总结
+
+~~~javascript
+function doCall() {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            if (Math.random() > 0.5) {
+                resolve("child");
+            } else {
+                reject();
+            }
+        }, 3000);
+    });
+};
+let result = doCall();
+// 通过回调知道成功还是失败
+result.then(function () {
+    console.log(":)");
+}, function (err) {
+    console.log(":(");
+});
+
+// async function waitResult() {
+//     // await后面是一个Promise对象或者任何要等待的值
+//     let result = await doCall();
+//     console.log(result);
+// };
+// waitResult();
+~~~
+
+
 
 
 
