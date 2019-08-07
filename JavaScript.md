@@ -1683,9 +1683,23 @@ encodeURIComponent(url) //把前面的http://都转成url编码
 
 ##  正则表达式
 
+
+
 1.意义
 
+~~~html
 描述字符模式的对象，字符组成的特殊格式的字符串
+
+普通字符串"a1"	正则`/a[0-9]/`
+
+标志字符：g:全匹配	i:不分大小	m:多行匹配
+
+字符模式组成：`A~Z a~z 0~9 + - * / () {}  ? = ^`等等  元字符
+
+d 数字 w字母 s空白字符串
+~~~
+
+
 
 2.定义
 
@@ -1694,1172 +1708,105 @@ encodeURIComponent(url) //把前面的http://都转成url编码
 /字符模式/标志字符
 
 2.RegExp类
-组合字符串或者接受>
+组合字符串或者接受
+new RegExp("字符模式","标志字符")
 ~~~
+
+
+
+3.字符模式
+
+~~~javascript
+1.字符范围
+[abc][0-9][^abc] 比配的一个字符
+
+var s = "asdf sfda gaer sga"
+s.match("asd") // 会返回一个数组
+s.match(/asd/) // 和上面效果一样
+s.match(/[asd]/) // 匹配到a、s、d中任意一个就返回
+s.match(/[^asd]/) // 没有匹配到a、s、d中任意一个就返回
+s.match(/[0-9 a-z]/) // 中间的空格也是被匹配的
+~~~
+
+
+
+~~~javascript
+2.逻辑或 |
+/ (abc) | (123) /
+
+var s = "asdf sfda gaer sga"
+s.match(/asd|sfd/) // 匹配到asd就返回
+s.match(/(asd)|(sfd)/) // asd sfd都匹配试试
+~~~
+
+
+
+~~~javascript
+3.重复
++: 至少一个 1+
+*: 零个或多个 0+
+?: 零个或一个 0/1
+{x}: x个
+{x,y}: x到y个
+{x,}: 至少x个
+默认贪婪模式 加上?变成懒惰模式
+ 
+ var s = "tt tct tcct tccct tcccct tcccct"
+ s.match(/tc+t/)  // 匹配到就返回
+ s.match(/tc+t/g)  // 全部匹配完
+ s.match(/tc{2,4}t/g) 
+ 
+ . 代表任意单字符
+ s.match(/t.+t/g) // ["tt tct tcct tccct tcccct tcccct"]
+ s.match(/t.+?t/g)  //  ["tt t", "t t", "t t", "t t", "t t"]
+ s.match(/t.*?t/g)  // ["tt", "tct", "tcct", "tccct", "tcccct", "tcccct"]
+~~~
+
+
+
+~~~javascript
+ 4.限定词
+第一个单词^  注意是单词
+最后一个单词$
+
+ var s = "tt tct tcct tccct tcccct tcccct"
+s.match(/tc*t/g) // ["tt", "tct", "tcct", "tccct", "tcccct", "tcccct"]
+s.match(/^tc*t/g) // ["tt"]
+s.match(/tc*t$/g) // ["tcccct"]
+~~~
+
+
+
+~~~javascript
+5.声明量词 （条件判断）
+(?=as) 目标是取?的内容
+(?!as)
+
+var s = "tt:cc qq=cc" // 想取到tt
+s.match(/\w+(?=:)/) // ["tt", index: 0, input: "tt:cc qq=cc", groups: undefined]0: "tt"groups: undefinedindex: 0input: "tt:cc qq=cc"length: 1__proto__: Array(0)
+~~~
+
+
+
+~~~javascript
+ 6.表达式分组及引用
+ s="a=1,b=2,c=d"
+s.match(/\w+=\d+/) // ["a=1", index: 0, input: "a=1,b=2,c=d", groups: undefined]
+s.match(/(\w+)=(\d+)/) // ["a=1", "a", "1", index: 0, input: "a=1,b=2,c=d", groups: undefined]
+s.match(/(?:\w+)=(\d+)/) // ["a=1", "1", index: 0, input: "a=1,b=2,c=d", groups: undefined] 
+
+?: 就不会被存到数组
+
+引用
+var s = "aa:bb bb:ss cc:tt tt:cc"
+s.match(/(\w+):(\w+) \1\2/) // 按左括号的顺序 
+// ["cc:tt tt:cc", "cc", "tt", index: 12, input: "aa:bb bb:ss cc:tt tt:cc", groups: undefined]
+~~~
+
+
 
 [MDN正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
 
 
 
-
-
----
-
-
-
-# CSS
-
-## 引入方式
-
-- 内部样式表style 看加载顺序
-
-- 外部样式表link
-
-  ~~~html
-  <link rel="stylesheet" href="style.css">
-  ~~~
-
-  引入CSS是异步加载
-
-  解析CSS是阻塞的
-
-  注意：同时用内部样式和外部样式的时候，权重相同时，后加载的样式覆盖先加载的样式
-
-- 行内样式，权重最高
-
-  ~~~html
-  <div id="warapper" class="wrapper" style="width: 100px"></div>
-  
-  <!-- 通过js引入的样式，会直接加在行内样式中 -->
-  <script>
-   	wrapper.style.width = "100px";
-  </script>	
-  ~~~
-
-  
-
-## 选择器权重  
-
-| 权重 | 选择器                                  |
-| ---- | --------------------------------------- |
-| 1000 | 行间样式                                |
-| 100  | id选择器                                |
-| 10   | class选择器\|\|属性选择器\|\|伪类选择器 |
-| 1    | 标签选择器                              |
-| 0    | 通配符选择器                            |
-
-256进制：256个标签的权重才能等于1个class的权重
-
-!import	优先级最高
-
-
-
-## 文档流
-
-从上往下、一行一行、从左到右	这样的排列方式称为文档流
-
-position: absolute / fixed  和  float   这三个脱离会文档流
-
-
-
-## CSS属性前缀
-
-来历：W3C小组	
-
-1. 提出工作草案
-2. 最终工作草案（差不多成形，浏览器会提前选择一些属性）
-3. 候选推荐标准
-4. 建议推荐标准
-5. 形成推荐标准
-
-~~~css
-因为周期长，正式标准成立前，被选择的属性写成：(加上了内核)
--webkiy-border: 1px solid #000;
-
--moz 火狐使用Mozilla浏览器引擎的浏览器
--webkit-   Safari、谷歌浏览器等使用Webkit引擎的浏览器
--o-
--ms-   IE
-
-~~~
-
-CSS前缀属性，可以在 can i use中查    [Can I use 一款前端兼容性自查工具](<https://blog.51cto.com/8312284/2083367>)
-
-
-
-## CSS3常用选择器
-
-
-
-~~~javascript
-获取元素的所有属性
-window.getComputedStyle(img).trnsition
-~~~
-
-
-
-**属性选择器**
-
-~~~html
-E[att]属性
-E[att='val'] 属性att的值为"val"的元素
-E[att~='val'] 属性att有多个值，val为其中一个
-E[att^='val'] 属性att的值以"val"开头的元素
-E[att$='val'] 属性att的值以"val"结尾的元素
-E[att*='val'] 属性att的值包含"val"的元素
-~~~
-
-用的比较少。。。
-
-
-
-**同级选择器**
-
-~~~html
-E + F 毗邻元素选择器，匹配所有紧随E元素之后的同级元素F
-E ~ F 匹配任何在E元素之后的同级F元素,兄弟选择器
-~~~
-
-做选项卡中用过 E~F
-
-
-
-**伪类选择器**
-
-~~~css
-:not(s)不含有s选择符的元素E 
-
-:first-child匹配父元素的第一个子元素
-:last-child
-:nth-child(n) 
-:nth-last-child(n)
-
-:first-of-type
-:last-of-type
-:nth-of-type(odd) 奇数行
-:nth-last-of-type
-
-:empty (dom树无内容)
-
-:enable 匹配表单中激活的元素
-:disabled 匹配表单中禁用的元素
-:checked 匹配表单中被选中的radio(单选按钮)或checkbox(复选框)元素
-
-:target
-:root 根元素
-~~~
-
-基于整个标签
-
-
-
-**伪元素选择器**
-
-~~~css
-::first-letter 设置对象内的第一个字符的样式
-::first-line 设置对象内的第一行的样式
-::before 
-::after{content: ''}
-::selection 设置对象被选择时的元素的样式
-~~~
-
-~~~css
-body {
-    /* 设置不能选择内容 */
-    user-select: none;  
-}
-~~~
-
-~~~css
-每个html元素前后都有下面两个伪元素
-before
-after
-清除浮动的原理
-.clearfix::after {
-    /* 给伪元素加上内容，就能看的见 */
-    content: "";
-    /* 伪元素是行内元素，只有块元素才需要清除浮动，所以要转成块元素 */
-    display: block;
-    /* 清除浮动 */
-    clear: both;
-}
-/* div会有margin重叠，通过伪元素解决margin*/
-.clearfix::before {
-    content: "";
-    /* 有table后，会给盒子上面加内容 */
-    display: table;
-}
-/* 再清除浮动 */
-.clearfix::after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-合并后的写法
-.clearfix::before, .clearfix::after {
-    content: "";
-	display: table;
-}
-.clearfix::after {
-    clear: both;
-}
-详解清除浮动：
-https://blog.csdn.net/FE_dev/article/details/68954481
-~~~
-
-
-
-## CSS3常用属性
-
-~~~css
-border-radius 圆角
-一个值/四个值/每个值拆分成两个方向值
-
-box-shadow 盒子阴影/（性能杀手）
-box-shadow: x y [模糊半径] [阴影拓展半径] [阴影颜色] [投影方式]
-
-text-shadow 文字阴影 /（性能杀手）
-           text-shadow: x y [模糊半径] [阴影颜色]
-
-/* 盒子阴影和文字阴影要少用 一个网页十个以内
-阴影是浏览器性能杀手 */
-
-rgba(r, g, b, a)
-/* 注意与opacity的区别
-rgba子元素不继承，opacity子元素继承透明度 */
-
-~~~
-
-
-
-~~~css
-/* 线性渐变 */ 
-background:linear-gradient(direction, color [percent], color [percent]);
-属性值参数详解如下：
-direction //渐变方向
-        写方向：to bottom/to bottom right……
-        写角度：0deg/45deg
-color //渐变颜色
-percent // 百分比
-
-/* 径向渐变 */
-background:radial-gradient(shape r/(a,b) at position, color [percent], color [percent]);
-属性值参数详解如下：
-shape //形状
-        circle/ellipse
-r/(a,b) // 半径/(长短轴)
-position //中心点位置
-        像素值/百分比/方向(top left)/也可以是一个值，第二个值默认center
-
-*transparent透明
-~~~
-
-
-
-~~~html
-实现背景颜色过度举例：
-<style>
-    .wrapper {
-        width: 300px;
-        heigth: 100px;
-        /* 从100px的红色到200px的绿色 */
-        background: linear-gradient(to right, red 100px, green 200px);
-    }
-</style>
-<div class="wrapper"></div>
-~~~
-
-
-
-~~~css
-CSS3 新增 background值：
-
-指定绘制背景图像时的起点
-background-origin:border-box | padding-box | content-box
-
-指定背景的显示范围
-background-clip: border-box | padding-box | content-box
-
-指定背景中图像的尺寸
-background-size:auto|length|percentage|cover|contain 属性值详解如下：
-      cover// 背景图片充满盒子
-      contain //让盒子保留一张完整背景图片
-
-background-position
-	精灵图
-	/* 浏览器同时请求资源的个数有限，为了减少图片资源的加载 */
-
-
-background: transparent url(image.jpg) repeat-y  scroll 50% 0 
-background: #00FF00 url(bgimage.gif) no-repeat fixed top;
-			color   image			repeat	attachment(滚动相关)	position
-
-综合写法
-background: [background-color] [background-image] [background-repeat] [background-attachment] [background-position] / [ background-size] [background-origin] [background-clip];
-~~~
-
-
-
-~~~css
-CSS3 新增 border值：
-
-可单独设置每边的border
-border: border-width  border-style b order-color;
-
-给border添加背景图片
-border-image：url number style;属性值详解如下：
-    url //图片地址
-    number // 图片裁剪的值
-    style // 图片添加的方式
-例如：花边效果
-
-~~~
-
-
-
-~~~css
-文字属性：文本溢出
-text-overflow: clip|ellipsis|ellipsis-word 属性值详解如下：
-    clip //不显示省略标记(…),而是简单裁切
-    ellipsis //当对象文本一出时显示省略标记(…)，省略标记插入的位置是最后一个字符
-
-white-space:nowrap 文本不会换行，直到遇到 <br> 标签为止。(css2.1)
-
-单行打点：
-text-overflow: ellipsis; // 设置溢出文本为“...”
-white-space:nowrap;  //强制文本在一行内显示
-overflow:hidden;  //溢出内容为隐藏
-
-多行打点：
--webkit-line-clamp: 2;
-text-overflow: ellipsis;
-display: -webkit-box;
--webkit-box-orient: vertical;//子元素被垂直排列
-overflow:hidden;
-多行打点兼容性不好，可用js操作（拼接，可以看下视频）
-
-~~~
-
-
-
-~~~css
-文字属性：文本换行
-word-wrap: normal|break-word; 属性值详解如下：
-    normal //连续文本换行
-    break-word //内容将在边界内换行（强制换行）
-
-文字属性：文字字体
-@font-face{
-    font-family: 'ShadowsIntoLight’;
-    src: url('./ShadowsIntoLight.ttf');/*兼容IE*/
-    src: 
-        url('./ShadowsIntoLight.eot?#iefix') format('embedded-opentype’),
-        url('./ShadowsIntoLight.woff') format('woff’),
-        url('./ShadowsIntoLight.ttf') format('truetype’),
-        url('./ShadowsIntoLight.svg') format('svg');
-}
-地址：http://www.zhaozi.cn/s/all/ttf/index_2.php（这里的字体库更好看）
-~~~
-
-
-
-## 盒模型
-
-~~~css
-定义显示方式
-定义显示方式 box-sizing: content-box(标准盒模型) | border-box(怪异盒模型)
-
-可控大小
-resize: nont | horizontal | vertical | both; 
-结合属性overflow: auto; 
-
-定义轮廓
- outline: outline-width outline-style outline-color;
-
-~~~
-
-
-
-## columns多列布局
-
-~~~css
-columns: column-width | column-count;。//每列的宽度  或  显示的列数
-
-column-width //每列的宽度
-
-column-conunt //显示的列数
-
-column-gap // 列宽，默认由font-size决定
-
-column-rule: column-rule-width column-rule-style column-style-colro //列边框样式
-
-column-span: none(无) | all(横跨所有列)
-
-~~~
-
-用的不多
-
-
-
-## flexbox弹性盒子
-
-一种一维的布局模型，给flexbox的**直接子元素**之间提供了强大的空间分布和对齐的能力
-
-注意：columns属性在伸缩容器上没效果，同时 float, clear和 vertical-align 属性在伸缩项目上页没有效果。
-
-~~~html
-所有CSS属性都会有一个初始值，所以 flex 容器中的所有 flex 元素都会初始默认效果：
-
-主轴水平从左向右。元素排列为一行 (flex-direction 属性的初始值是 row)。
-
-元素从左边起始线开始(justify-content:flex-start)。元素从主轴的起始线开始。
-
-默认不拉伸(flex-grow:0)，但是会压缩(flex-shrink:1)不换行(flew-wrap:nowrap)。元素不会在主维度方向拉伸，但是可以缩小。
-
-不设置高度时flex元素充满flex容器(align-items:stretch)。元素被拉伸来填充交叉轴大小。
-~~~
-
-**flex容器属性**
-
-~~~h
-1、flex-direction设置flex容器主轴的方向，属性值详解如下：
-row // (默认)默认方向
-row-reverse //默认方向 首尾互换
-column  //垂直，从上到下
-column-reverse //垂直 从下到上
-
-2、flex-wrap 控制flex容器是单线还是多线，以及新线的堆叠方向，属性值详解如下：
-nowrap //单行
-wrap //多行
-wrap-reverse // 新线上前排列
-
-3、flex-flow: flex-direction flex-wrap;
-
-4、justify-content 项目在主轴上的对齐方式，属性值详解如下：
-flex-start //(默认) 主轴起始端(main-start)齐平
-flex-end // 主轴末端(main-end)齐平
-center //居中
-space-between // 两端对齐，每两个flex元素之间的空隙相等
-space-around // 每个项目两侧的距离相等
-
-5、align-items 项目在交叉轴上的对齐方式，属性值详解如下：
-flex-start // 交叉轴起始段(cross-start)齐平
-flex-end // 交叉轴末端(cross-end)齐平
-center // 居中对齐
-baseline //flex元素的第一行文字为基准对齐
-stretch //flex元素未设置高度时，高度充满flex容器高度 
-
-6、align-content 多线的对齐方式，单线不起作用。属性值详解如下：
-flex-start  //所有flex子元素交叉轴起始段(cross-start)齐平
-flex-end //所有flex子元素交叉轴末端(cross-end)齐平
-center //所有flex子元素居中对齐
-stretch //未设置高度时占满整个交叉轴。默认值
-space-between //交叉轴(cross)两端对齐
-space-around //每跟轴两侧空隙相等
-
-可以设置多个主轴，但只有一个交叉轴
-
-~~~
-
-**flex元素属性**
-
-~~~css
-1、flex-basis: length; //定义该元素的main-size。
-
-2、flex-grow: number; //对剩余的空间设置拉伸比例，默认值为0(不拉伸)
-
-3、flex-shrink: number; //压缩比例，默认值为1
-
-4、flex: flex-grow flex-shrink flex-basis //默认值 0 1 auto
-
-5、align-self单个项目在cross轴上的对齐方式，属性值详解如下：
-flex-start  //cross-start齐平
-flex-end //cross-end齐平
-center //居中
-baseline //第一行文字
-stretch //为设置高度时 该元素高度为flex容器高度 
-
-6、order：number; //该项目排列的位置 值从小到大排列
-~~~
-
-
-
-盒子居中的三种方式
-
-- 定位absolute,	top,le ft各50%，再走margin-left，margin-top自己宽高的一半,可以用下面的方式（相对于自身宽高的一半）
-
-  transform：translate(-50%, -50%)；
-
-- 定位position,     top，left，bottom，right都是0，然后设置margin为auto
-
-  这种方法只能设定已知宽、高的元素
-
-- flexbox布局
-
-[盒子居中的方式](https://blog.csdn.net/qq_30101879/article/details/78306979)
-
-
-
-## HTML规范
-
-1.引号
-
-​    属性的定义，统一使用双引号。
-
-2.嵌套 
-
-​    1)块级元素与块级元素平级、内联元素与内联元素平级；
-
-​    2)块级元素可以包含内联元素或某些块级元素，但内联元素不能包含块级元素，它只能包含其他的内联元素；
-
-​    3)有几个特殊的块级元素只能包含内联元素，不能再包含块级元素   
-
-​    注：a标签不能嵌套a标签（链接嵌套）、p标签不能嵌套块级标签（div）
-
-3.语义化
-
-​    1)通常情况下，每个标签都是有语义的，便于程序员理解。维护
-
-​    2)外语义化的 HTML 结构，有助于机器（搜索引擎）理解。裸奔
-
-
-
-## CSS规范
-
-1.CSS 命名规则
-
-​    1)样式类名全部用小写,首字符必须是字母,禁止数字或其他特殊字符。
-
-​    2)可以是单个单词,也可以是组合单词,要求能够描述清楚模块和元素的含义,使其具有语义化。
-
-​    3)尽量用单个单词简单描述class名称。
-
-​    4)双单词或多单词组合方式，推荐用中划线-
-
-2.Class 和 ID
-
-​    1)使用语义化、通用的命名方式；
-
-​    2)使用连字符 - 作为 ID、Class 名称界定符，不要驼峰命名法和下划线；
-
-​    3)避免选择器嵌套层级过多，尽量少于 3 级；.wrapper .box .list .item .demo
-
-​    4)避免选择器和 Class、ID 叠加使用；
-
-3.CSS属性书写顺序
-
-​    1)布局方式、位置，相关属性包括：position, top, z-index, display, float等
-
-​    2)盒模型，相关属性包括：width, height, padding, margin，border,overflow
-
-​    3) 文本排版，相关属性包括：font, line-height, text-align
-
-​    4)视觉外观，相关属性包括：color, background, list-style, transform, animation
-
-​    5)其他
-
-前端开发规范：https://www.w3cschool.cn/webdevelopment/q3k8wozt.html
-
-
-
-## Media媒体查询
-
-常见页面布局
-
-1. 静态布局
-   58、政府官网
-
-2. 流式布局
-   百分比
-
-3. 自适应布局：媒体查询
-   
-4. 响应式布局
-
-   综合前面布局 包括flexbox
-
-   
-
-   下面主要介绍媒体查询
-
-   媒体查询
-
-   - 媒体类型：指定的媒体类型匹配展示文档所使用的设备类型
-
-   - 媒体特性：媒体特性表达式(0或多个)最终会被解析为true或false
-
-     ~~~css
-     /* link元素中的css媒体查询 */
-     <link rel="stylesheet" href="demo.css" media="screen and (max-width: 800px)">
-     
-     /* 样式表中的css媒体查询 */
-     /* 在彩色屏幕下，最大宽度是600px，设置的样式会生效 */
-     @media screen and (max-width: 600px) {
-         .demo{
-             background: pink;
-             color: deeppink;
-         }
-     }
-     ~~~
-
-     F12控制台Network可以看到所有引入（请求）的资源
-
-   媒体类型有下图这些
-
-   ![1559213194001](E:\笔记\imgCSS\媒体类型.png)
-
-   媒体特性有下图这些
-
-   ![1559213377089](E:\笔记\imgCSS\媒体特性.png)
-
-   常用的有max-width	min-width	orentation
-
-   - 媒体查询的逻辑操作符
-
-     and操作符
-
-     逗号分隔列表
-     	等同于or逻辑操作符
-
-     ~~~css
-     @media (max-width: 300px), screen and (orientation: landscape)
-     ~~~
-
-     not操作符
-
-     ~~~css
-     @media not screen and (min-width: 500px) and (max-width: 800px)
-     ~~~
-
-     only操作符
-
-     ​	防止老旧的浏览器不支持带媒体属性的查询而应用到给定的样式
-
-     ~~~css
-     @media only screen and (min-width: 500px) and (max-width: 800px)
-     ~~~
-     
-     
-
-## 移动端布局
-
-- 百分比布局
-
-- flex布局
-
-- 单位rem
-
-  1rem 取决于 html 的 font-size，1em 取决于父级的 font-size大小
-
-  通过 js 动态设置 html 的 font-size 属性值实现等比缩放
-
-  ~~~html
-  <style>
-      body {
-          margin: 0;
-          padding: 0;
-      }
-      .demo {
-          font-size: 1rem;
-          width: 2rem;  /* 这里宽度占屏幕 20% */
-          height: 2rem;
-          background: pink;
-      }
-  </style>
-  
-  <div class="demo"></div>
-  <script>
-      // 通过 js 动态设置 html 的 font-size 属性值
-      window.onload = function () {
-          var w = document.documentElement.clientWidth;
-          document.documentElement.style.fontSize = w/10 +"px";
-          // document.documentElement 属性始终指向 HTML 页面中的 <html> 元素，是内置的快捷方式 p254
-      }
-  </script>
-  ~~~
-
-  
-
-- 单位vw vh
-
-  把屏幕分成100份
-
-  ~~~html
-  <style>
-      body {
-          margin: 0;
-          padding: 0;
-      }
-      .demo {
-          font-size: 1rem;
-          width: 20vw;  /* 这里宽度占屏幕 20% ，不用 js 控制*/
-          height: 2rem;
-          background: pink;
-      }
-  </style>
-  
-  <div class="demo"></div>
-  ~~~
-
-
-
-**viewport**
-
-物理像素：物理像素又被称为设备像素，他是显示设备中一个最小的物理部件。每个像素可以根据操作系统设置自己的颜色和亮度。物理光子
-
-逻辑像素：一个可以由程序使用的虚拟像素(比如说CSS像素)，然后由相关系统转换为物理像素。
-
-设备像素比(dpr) = 物理像素/逻辑像素
-	
-
-~~~javascript
-viewport是严格等于浏览器的窗口。在桌面浏览器中，viewport就是浏览器窗口的宽度高度。但在移动端设备上就有点复杂。
-
-viewport就是浏览器上，用来显示网页的那一部分的区域。Ios及新版本浏览器默认viewport为980px。
-
-// 一般用js动态生成meta标签，来匹配不同的dpr
-var oMeta = document.createElement("meta");
-oMeta.setAttribute("name","viewport");
-
-if(window.devicePixelRatio >= 2) {
-    oMeta.setAttribute("contenr","width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, user-scalable=no");
-}
-if(window.devicePixelRatio >= 3) {
-    oMeta.setAttribute("contenr","width=device-width, initial-scale=0.3, minimum-scale=0.3, maximum-scale=0.3, user-scalable=no");
-}
-
-document.getElementsByTagName("head")[0].appendChild(oMeta);
-
-// 公司开发一般给750px的设计稿，iphone6/7/8，dpr = 2,  宽度375
-
-~~~
-
-viewport默认有6个属性：
-
-| 属性          |                                                          |
-| ------------- | -------------------------------------------------------- |
-| width         | 设置viewport宽度，可以为一个整数，或字符串"device-width" |
-| initial-scale | 页面初始的缩放值，为数字，可以是小数                     |
-| minimum-scale | 允许用户的最小缩放值，为数字，可以是小数                 |
-| maximum-scale | 允许用户的最大缩放值，为数字，可以是小数                 |
-| height        | 设置viewport的高度（一般不管，高度由内容撑开）           |
-| user-scalable | 允许用户进行缩放，'no'为不允许，'yes’为允许              |
-
-
-
-举例：
-iphone6/7/8  dpr = 2 ,,两个物理像素等于1个逻辑像素
-本身设备宽度是375px，排了750个光子，所以逻辑像素要放大2倍才能每个像素对应1个光子
-
-
-
-
-
-
-
-
-
-
-
-**根据 dpr 的值来修改 viewport 实现1px的线？**
-
-1.js动态生成mate标签
-
-~~~html
-<meta name="viewport"
-content="width=device-width, initial-scale=0.5, maximum-scale=0.5,minimum-scale=0.5, user-scalable=no">
-~~~
-
-
-
-~~~html
-很难对安卓手机进行兼容，下面解决对ios的不同 dpr 显示出 1px 的处理方法
-<!-- 设置浏览器视口等于设备的宽度 -->
-<!-- initial-scale 设置是否缩放,dpr = 2，设置0.5 -->
-<!-- initial-scale 设置是否缩放,dpr = 3，设置0.3333 -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
-    .demo {
-        /* 这里border为1px 前面initial-scale = 0.5，可以找到 */
-        /* 设置0.5px的话，浏览器可能解析成0 */
-        border: 1px solid #000; 
-        font-size: 1rem;
-        width: 20vw;  /* 这里宽度占屏幕 20% ，不用 js 控制*/
-        height: 2rem;
-        background: pink;
-    }
-</style>
-<div class="demo"></div>
-~~~
-
-
-
-2.css3 transform:scale缩放
-
-~~~css
-/* 另一种方法 css3 transform:scale缩放 */
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and ( min--moz-device-pixel-ratio: 2),
-only screen and ( -o-min-device-pixel-ratio: 2/1),
-only screen and ( min-device-pixel-ratio: 2),
-only screen and ( min-resolution: 192dpi),
-only screen and ( min-resolution: 2dppx){ 
-    div{
-             ……
-        transform: scale(0.5, 0.5);
-        transform-origin: 0 0; // 设置缩放原点
-      }
-}
-~~~
-
-
-
-**综合解决方案**
-
-方案一：手淘解决方案 flexbile（可解决1px显示和等比缩放）
-
-<http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js>
-
-1、根据屏幕大小动态改变html的fontSize，达到等比缩放问题
-
-2、给body设置fontSize，字体大小可以直接继承body的font-size
-
-3、给html标签添加data-dpr属性，可以通过查找该属性，给不同dpr元素设置个性化属性
-
-```css
- [data-dpr='2'] div{
- font-size:  26px;
- }
-```
-
-方案二： Vw+postcss(插件) （推荐）
-
-根据设置稿（如宽度750px的设计稿），以px为单位写大小，转换成vw。解决等比缩放问题。  使用插件px2vw   cssrem
-
-px to rem移动端？？ 自动浏览器css样式前缀Autoprefixer
-
-至于小于等于1px的线，以px为单位不专成vw。 postcss-write-svg插件主要用来处理移动端1px的解决方案。该插件主要使用的是border-image和background来做1px的相关处理，编译出来是border-image或者background
-
-
-
-**dpr 不同的设备上图片的适配问题？**
-
-1.media媒体查询
-
-~~~css
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and ( min--moz-device-pixel-ratio: 2),
-only screen and ( -o-min-device-pixel-ratio: 2/1),
-only screen and ( min-device-pixel-ratio: 2),
-only screen and ( min-resolution: 192dpi),
-only screen and ( min-resolution: 2dppx){ 
-    background: url(高清图); //dpr是2
-    background: url(标清图); //dpr是1
-}
-~~~
-
-2.js动态改图片
-
-~~~javascript
-window.onload = function () {
-    if(window.devicePixelRatio > 1) {
-    var images = Array.prototype.slice.call(document.getElementsByTagName("img"));
-    images.forEach(function (ele, index) {
-        var lowers = images[index].getAttribute("src");
-        var highres = lowers.replace(".", "@2x.");
-        images[index].setAttribute("src", highres);
-    })
-    }
-}
-~~~
-
-由于高清图放普通屏上不锐利（不影响）
-标清图放高清屏上会模糊
-一般直接只用高清图
-
-小结移动端布局三个问题：比缩放问题、不同 dpr 的1px显示问题（针对IOS）、不同 dpr 图片适配问题
-
-
-
-## Bootstrap快速使用
-
-Bootstrap （UI 类框架）是最受欢迎的 HTML、CSS 和 JS 框架，用于开发响应式布局、移动设备优先的 WEB 项目。  
-
-bootstrap4引用了flex布局
-
-特点：虽然可以直接使用 Bootstrap 提供的 CSS 样式表，但Bootstrap 的源码是基于最流行的 CSS 预处理脚本 Less和 Sass 开发的。你可以采用预编译的 CSS 文件快速开发，也可以从源码定制自己需要的样式。
-
-你的网站和应用能在 Bootstrap 的帮助下通过同一份代码快速、有效适配手机、平板、PC 设备，这一切都是 CSS 媒体查询（Media Query）的功劳。
-
-Bootstrap 提供了全面、美观的文档。你能在这里找到关于 HTML 元素、HTML 和 CSS 组件、jQuery 插件方面的所有详细文档。
-
-- 全局样式：表格、按钮、辅助类
-- 组件：按钮组、下拉菜单、字体图标、导航条
-- 栅格系统  .col-md-offset-*
-- 插件：模态框、轮播图
-
-[Bootstrap中文网](http://www.bootcss.com/)
-
-
-
-## transform形状变换
-
-CSS3中动画、形变
-
-transform属性向元素应用 2D 或 3D 转换。该属性允许我们对元素进行移动、缩放、旋转或倾斜。
-
-~~~javascript
-transform: translate | scale | rotate | skew
-transform: translate(-50%， -50%) scale()
-
-移动: translate
-translateX()
-translateY()
-translateZ() //有3D效果
-translate3d(x,y,z) //有3D效果  这里是矢量值 往合力方向移动
-简写：translate(x,y)
-
-缩放：scale   +-代表方向  默认中心位置是缩放原点
-scaleX()
-scaleY()
-scaleZ() //有3D效果
-scale3d(x,y,z) //有3D效果
-简写：scale(x,y) | scale(n)   ->scale(n,n)
-
-旋转: rotate
-rotateX()
-rotateY()
-rotateZ()
-rotate3d(x,y,z) //有3D效果
-简写：rotate()rotateZ()
-
-倾斜：skew
-skewX(ndeg)
-skewY(ndeg)
-scale3d(x,y) //有3D效果
-简写：skew(x, y)
-
-
-transform-origin //设置元素原点位置
-transform-origin: 50% 50% 0; //默认值
-X轴方向：left | center | right | length | %
-Y轴方向：top | center | bottom | length | %
-Z轴方向：length
-
-
-~~~
-
-练习设置时钟圆盘
-
-~~~html
-<style>
-        body, ul, li {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        ul {
-            position: relative;
-            margin: 0 auto;
-            width: 300px;
-            height: 300px;
-            border: 1px solid black;
-            border-radius: 50%;
-        }
-        li {
-            position: absolute;
-            left: 50%;
-            width: 2px;
-            height: 10px;
-            background: black;
-        }
-        li {
-            transform-origin: 0 150px;
-        }
-</style>
-
-<ul></ul>
-
-<script>
-    var oUl = document.getElementsByTagName("ul")[0];
-    var str = "";
-    for(var i = 1; i<= 12; i++) {
-        str += '<li style="transform: rotate('+ i * 30 + 'deg)"></li>';
-    }
-    console.log(str);
-    oUl.innerHTML = str;
-</script>
-~~~
-
-
-
-left会重新layout 或者重新repay    translateX不会引起重新的layout(性能更好)
-
-
-
-
-
-## transition过渡动画
-
-~~~css
-transition: property duration timing-function delay;
-
-transition-property //规定设置过渡效果的 CSS 属性的名称。
-transition-duration //规定完成过渡效果需要多少秒或毫秒。
-transition-timing-function  //规定速度效果的速度曲线。
-transition-delay    //定义过渡效果何时开始。
-
-~~~
-
-~~~css
-transition-timing-function 规定设置过渡效果的 CSS 属性的名称。属性值详解如下：
-transition-timing-function: linear | ease | ease-in | ease-out | ease-in-out | cubic-
-bezier(n,n,n,n);  
-
-linear //匀速, cubic-bezier(0,0,1,1) 
-ease //慢快慢， cubic-bezier(0.25,0.1,0.25,1) 
-ease-in //慢速开始的过渡， cubic-bezier(0.42,0,1,1) 
-ease-out //慢速结束的过渡， cubic-bezier(0,0,0.58,1) 
-ease-in-out //慢速开始和结束的过渡， cubic-bezier(0.42,0,0.58,1) 
-cubic-bezier(n,n,n,n) //在 cubic-bezier 函数中定义自己的值。可能的值是 0 ~1 之间的数值。
-
-~~~
-
-有数字值的属性才能有过渡效果
-
-
-
-
-
-## animation动画
-
-优点：有Y轴或Z轴可以开启浏览器渲染动画GPU加速
-缺点：老版本浏览器不支持
-
-~~~css
-animation:动画名称 动画时间 运动曲线  何时开始  播放次数  是否反方向;
-~~~
-
-
-
-~~~css
-animation 属性是一个简写属性，用于设置动画属性。属性值详解如下：
-
-animation-name  //规定需要绑定到选择器的 keyframe 名称。。
-animation-duration  //规定完成动画所花费的时间，以秒或毫秒计。
-animation-timing-function   //规定动画的速度曲线。
-animation-delay //规定在动画开始之前的延迟。
-
-animation-iteration-count   //规定动画应该播放的次数。
-animation-direction //规定是否应该轮流反向播放动画。
-animation-fill-mode //属性规定动画在播放之前或之后，其动画效果是否可见。
-animation-play-state //属性规定动画正在运行还是暂停。
-
-~~~
-
-
-
-~~~css
-animation-iteration-count   规定动画应该播放的次数。属性值详解如下：
-        n //播放n次
-        infinite //无限次
-
-animation-direction 规定是否应该轮流反向播放动画。属性值详解如下：
-        normal //默认值，按照顺序正常播放
-        reverse //动画反向播放
-        alternate //动画在奇数次正向，偶数次反向播放
-        alternate-reverse //动画在奇数次反向，偶数次正向播放
-
-~~~
-
-
-
-~~~css
-animation-fill-mode 规定动画在播放之前或之后，其动画效果是否可见。属性值详解如下：
-        none    //不改变默认行为。
-        forwards    停留在最后一帧
-//当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）。
-        backwards   在第一帧等待
-//在 animation-delay 所指定的一段时间内，在动画显示之前，应用开始属性值（在第一个关键帧中定义）。  在哪一个位置等待延迟
-        both    //向前和向后填充模式都被应用。 在第一帧等待 停留在最后一帧
-
-animation-play-state 属性规定动画正在运行还是暂停。属性值详解如下：
-        paused  //规定动画已暂停。
-        running //规定动画正在播放。
-
-~~~
-
-
-
-~~~css
-@keyframes move {
-    100% {
-        left: 600px;
-    }
-}
-等同于
-@keyframes move {
-    0% {
-        left: 100px;
-    }
-    100% {
-        left: 600px;
-    }
-}
-等同于
-@keyframes move {
-    from {
-        left: 100px;
-    }
-    to {
-        left: 600px;
-    }
-}
-~~~
-
-
-
-~~~javascript
-练习动画项目要点：
-1.感知鼠标滑过方向图片遮罩效果，注意长方形压缩
-2.根据鼠标进入和移出的方向，控制描述文字进入和移出
-~~~
-
-
-
-## 3D变换动画
-
-perspective 景深
-定义：3D 元素距视图的距离，以像素计。当为元素定义 perspective 属性时，其子元素会获得透视效果，而不是元素本身。
-
-~~~css
-放在在父元素
-perspective：600px;
-
-保留3d效果(3D空间)
-transform-style: preserve-3d;
-~~~
-
-~~~css
-transform-style指定嵌套元素是怎样在三维空间中呈现。
-transform-style: flat|preserve-3d;
-注：设置了transfrom-style:preserve-3d的元素，不能防止子元素溢出，即不能设置overflow:hidden；否则persever-3d失效；
-~~~
-
-~~~css
-perspective-origin视点得位置
-      perspective-origin: x y;//默认50% 50% 50%;
-~~~
-
-~~~css
-backface-visibility 属性定义当元素背面是否可见。 
-backface-visibility: visible | hidden;
-~~~
 
