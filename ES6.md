@@ -805,8 +805,8 @@ function Worker(name, age, job) {
     Person.call(this, name, age); // 完成父类属性的继承
     this.job = job;
 }
-Worker.prototype = new Person();
-Worker.prototype.constructor = Worker;
+Worker.prototype = new Person(); // 继承父类的方法
+Worker.prototype.constructor = Worker; // 纠正子类实例化后的构造函数
 Worker.prototype.showJob = function () {
     alert(this.job);
 };
@@ -815,6 +815,12 @@ let w = new Worker("blue", 18 , "suibian");
 w.showName();
 w.showAge();
 w.showJob();
+
+/*
+1.constructor指向问题
+2.属性共享问题
+3.参数
+*/
 ~~~
 
 

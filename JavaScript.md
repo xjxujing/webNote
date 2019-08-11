@@ -1077,12 +1077,12 @@ bookPrototype.author = "tt";
 构造函数.isPrototypeOf(对象)
 ~~~
 
-- for  /   in  可枚举属性  包括原型链
+- for  /   in  可枚举属性  包括**原型链**
 
 - 检测私有属性
 
 ~~~javascript
-对象.hasOwnProperty(属性名)
+对象.hasOwnProperty('属性名')
 ~~~
 
 - 获取私有属性
@@ -1396,8 +1396,8 @@ a1[0][1]
 
 ~~~javascript
 // 模拟堆栈
-push()	//从尾部添加元素 原数组被修改
-pop()	//从尾部删除元素 原数组被修改 出栈
+push()	//从尾部添加元素 原数组被修改  返回新数组的长度
+pop()	//从尾部删除元素 原数组被修改 出栈 返回删除的元素的值
 
 shift()	   // 从头部删除元素  返回删除的元素  原数组被修改  
 unshift()  // 在头部插入元素  返回新数组长度 原数组被修改
@@ -1406,7 +1406,7 @@ unshift()  // 在头部插入元素  返回新数组长度 原数组被修改
 
 
 ~~~javascript
-// 连接数组
+// 连接数组 不会改变数组 返回新的数组
 concat()   
 
 var a = [0,1];
@@ -1454,7 +1454,7 @@ var b = a.slice(2);  // 一直到结束
 
 ~~~javascript
 改变数组顺序
-a.reverse() // 颠倒数组顺序  原数组被修改
+a.reverse() // 颠倒数组顺序  原数组被修改 并返回该数组
 a.sort() // // 数组顺序  原数组被修改
 数字从小到大，字母从a-z
 
@@ -1472,7 +1472,7 @@ function f(a, b) {
     // if( a > b) return 1;正数 b a 
     // if( a < b) return -1;负数 a b 
     // if(a == b) return 0;
-}  
+}
 // 返回["a", "b", "c", "ac", "ba"]
 ~~~
 
@@ -1505,7 +1505,7 @@ var a = ["a","ac","b","a","c","ba"];
 
 a.forEach(f); // 数组中每个参数执行函数
 function f(value, index, ary) {
-    console.log("index: " + index + "value: " + value)
+    console.log("index: " + index + ",value: " + value)
 }
 // 打印结果
 index: 0value: a
@@ -1743,12 +1743,12 @@ s.match(/(asd)|(sfd)/) // asd sfd都匹配试试
 
 ~~~javascript
 3.重复
-+: 至少一个 1+
-*: 零个或多个 0+
-?: 零个或一个 0/1
-{x}: x个
-{x,y}: x到y个
-{x,}: 至少x个
++ 至少一个 1+
+* 零个或多个 0+
+? 零个或一个 0/1
+{x} x个
+{x,y} x到y个
+{x,} 至少x个
 默认贪婪模式 加上?变成懒惰模式
  
  var s = "tt tct tcct tccct tcccct tcccct"
@@ -1794,7 +1794,6 @@ s.match(/\w+(?=:)/) // ["tt", index: 0, input: "tt:cc qq=cc", groups: undefined]
 s.match(/\w+=\d+/) // ["a=1", index: 0, input: "a=1,b=2,c=d", groups: undefined]
 s.match(/(\w+)=(\d+)/) // ["a=1", "a", "1", index: 0, input: "a=1,b=2,c=d", groups: undefined]
 s.match(/(?:\w+)=(\d+)/) // ["a=1", "1", index: 0, input: "a=1,b=2,c=d", groups: undefined] 
-
 ?: 就不会被存到数组
 
 引用

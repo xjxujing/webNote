@@ -209,9 +209,9 @@ Number()、String()、Boolean()创建的是对象
 
   注意null function
 
-  ​	`typeof null `会判断的是Object
+  ​	`typeof null `会判断的是`"object"`
 
-  ​	`typeof function(){}` 判断的是function
+  ​	`typeof function(){}` 判断的是`"function"`
 
   无法判断对象的具体类型
 
@@ -250,6 +250,8 @@ Number()、String()、Boolean()创建的是对象
   
   // 类数组转数组
   Array.prototype.slice.call(类数组)
+  Array.from(类数组)
+  [...类数组名]
   ~~~
   
   
@@ -283,6 +285,37 @@ typeof()
 //看数据类型
 ~~~
 
+
+
+### 自定义数据类型判断
+
+~~~javascript
+function func(x) {
+    // 基本类型
+    var type = typeof x;
+
+    if(type == "object"){
+        // js提供的对象类型
+        type = Object.prototype.toString.call(x);
+
+        if(type == "[object Object]") {
+            // 自定义对象
+            type = "[object " + x.constructor.name + "]";
+        }
+        if(type ==  "[object Null]"){
+            // 因为null属于基本类型，为了统一
+            type = "null";
+        }
+        return type;
+    }
+    return type;
+}
+~~~
+
+
+
+
+
 ### 数据类型的转换
 
 - 转数字
@@ -297,49 +330,51 @@ typeof()
 
   a.toString()  系统自带的
 
+
+
+
+
 ### 流程控制
 
-- 条件判断
+条件判断
 
-  ~~~javascript
-  if(表达式){
-      语句
-  }
-  ~~~
+~~~javascript
+if(表达式){
+    语句
+}
+~~~
 
-  
+switch选择
 
-- switch选择
+~~~javascript
+switch(表达式 的值){
+    case: 1:
+     	a = 1; 
+        b ++;
+        break;
+        //break跳出
+    case: 2:
+        break;
+    default:
+        a ++;
+        //默认做啥啥啥
+}
+~~~
 
-  ~~~javascript
-  switch(表达式 的值){
-      case: 1:
-       	a = 1; 
-          b ++;
-          break;
-          //break跳出
-      case: 2:
-          break;
-      default:
-          a ++;
-          //默认做啥啥啥
-  }
-  ~~~
+循环
 
-- 循环
+重复多次的做事情
 
-  重复多次的做事情
+~~~javascript
+for( var a = 1; a <= 10; a++){
+	console.log("XXXX");
+}
 
-  ~~~javascript
-  for( var a = 1; a <= 10; a++){
-  	console.log("XXXX");
-  }
-  
-  // b< 10才是真正判断有效的次数
-  for(var a = 0, b= 0; a<5, b<10; a++, b++) {
-      k = a+b; //18 a、b都是9
-  } 
-  ~~~
+// b< 10才是真正判断有效的次数
+for(var a = 0, b= 0; a<5, b<10; a++, b++) {
+    k = a+b; //18 a、b都是9
+} 
+~~~
 
 
 
@@ -462,6 +497,19 @@ function add(){
 }
 
 var rs = add(1,2,4,5,23);
+
+// 完善后的写法
+function add() {
+    let result;
+    let len = arguments.length;
+    if (len) { // 有传入参数才会计算
+        result = 0;
+        for (let i = 0; i < len; i++) {
+            result = result + arguments[i];
+        }
+    }
+    return result;
+}
 ~~~
 
 
@@ -509,11 +557,13 @@ js不是编译类的语言  是解析语言
 
 起到局部变量的作用
 
+**闭包是指有权访问另一个函数作用域中变量的函数**
+
 ~~~javascript
 // 计数器每次调用都加一
 function add(){
     var counter = 0;
-    counter ++;
+    counte++;
 }
 
 
@@ -560,7 +610,7 @@ function add(){
     var counter = 0;  //局部变量
     
     return function() {  //此处才真正有效 需要调用这个方法
-        counter ++; //伪全局变量  有全部变量的生命周期
+        counter++; //伪全局变量  有全部变量的生命周期
         console.log("counter  = " + counter);
     }
 }
@@ -576,7 +626,6 @@ var plus = (function() {
         console.log("counter  = " + counter);
     }
 })();
-
 ~~~
 
 
@@ -890,6 +939,7 @@ history.length  查看有多少历史记录
 ```javascript
 navigator 
 关注userAgent字段
+navigator.userAgent 查看浏览器信息
 ```
 
 - 分辨率
@@ -1322,18 +1372,16 @@ var x = 0x00A
 
 
 2^10 = 1024
+计算机最小存储计量单位是 bit
 1个字节B = 8位
-1bit = 
-1024个字节 = 1kB
+(1Byte = 8 bit)
+1024Bytes(1024字节) = 1kB
 1024kB = 1MB
 1024MB = 1GB
 TB PB ZB YB BB NB DB
-
 ~~~
 
 
-
-![1558568749531](E:\笔记\img\1558568749531.png)
 
 2^53就是最大安全值
 
@@ -1410,7 +1458,7 @@ TB PB ZB YB BB NB DB
 
 2. 同一优先级从左往右
 
-   ![1558580089624](E:\笔记\img\1558580089624.png)
+   
 
 优先级简单记忆：
 
@@ -1644,17 +1692,3 @@ function setClick(){
 </script>
 
 ~~~
-
-
-
-##     对象属性的高级用法
-
-![1558666941985](E:\笔记\img\1558666941985.png)
-
- ![1558667505202](E:\笔记\img\1558667505202.png)
-
-
-
-## 正则表达式资料
-
-[正则表达式](<https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions>)

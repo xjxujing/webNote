@@ -69,7 +69,7 @@ position: absolute / fixed  和  float   这三个脱离会文档流
 
 ```css
 因为周期长，正式标准成立前，被选择的属性写成：(加上了内核)
--webkiy-border: 1px solid #000;
+-webkit-border: 1px solid #000;
 
 -moz 火狐使用Mozilla浏览器引擎的浏览器
 -webkit-   Safari、谷歌浏览器等使用Webkit引擎的浏览器
@@ -140,7 +140,7 @@ E ~ F 匹配任何在E元素之后的同级F元素,兄弟选择器
 :checked 匹配表单中被选中的radio(单选按钮)或checkbox(复选框)元素
 
 :target
-:root 根元素
+:root 根元素html
 
 ```
 
@@ -156,7 +156,6 @@ E ~ F 匹配任何在E元素之后的同级F元素,兄弟选择器
 ::before 
 ::after{content: ''}
 ::selection 设置对象被选择时的元素的样式
-
 ```
 
 ```css
@@ -164,7 +163,6 @@ body {
     /* 设置不能选择内容 */
     user-select: none;  
 }
-
 ```
 
 ```css
@@ -203,7 +201,6 @@ after
 }
 详解清除浮动：
 https://blog.csdn.net/FE_dev/article/details/68954481
-
 ```
 
 
@@ -226,8 +223,6 @@ text-shadow 文字阴影 /（性能杀手）
 rgba(r, g, b, a)
 /* 注意与opacity的区别
 rgba子元素不继承，opacity子元素继承透明度 */
-
-
 ```
 
 
@@ -268,7 +263,6 @@ position //中心点位置
     }
 </style>
 <div class="wrapper"></div>
-
 ```
 
 
@@ -401,8 +395,6 @@ column-gap // 列宽，默认由font-size决定
 column-rule: column-rule-width column-rule-style column-style-colro //列边框样式
 
 column-span: none(无) | all(横跨所有列)
-
-
 ```
 
 用的不多
@@ -497,11 +489,11 @@ stretch //为设置高度时 该元素高度为flex容器高度
 
 盒子居中的三种方式
 
-- 定位absolute,	top,le ft各50%，再走margin-left，margin-top自己宽高的一半,可以用下面的方式（相对于自身宽高的一半）
+- 定位`absolute,top,left`各50%，再走`margin-left，margin-top`自己宽高的一半,可以用下面的方式（相对于自身宽高的一半）
 
   transform：translate(-50%, -50%)；
 
-- 定位position,     top，left，bottom，right都是0，然后设置margin为auto
+- 定位position,  top，left，bottom，right都是0，然后设置`margin`为auto
 
   这种方法只能设定已知宽、高的元素
 
@@ -611,49 +603,46 @@ stretch //为设置高度时 该元素高度为flex容器高度
              color: deeppink;
          }
      }
-     
      ```
+     
 
-     F12控制台Network可以看到所有引入（请求）的资源
+F12控制台Network可以看到所有引入（请求）的资源
 
-   媒体类型有下图这些
+媒体类型有下图这些
 
-   ![1559213194001](E:\笔记\imgCSS\媒体类型.png)
 
-   媒体特性有下图这些
 
-   ![1559213377089](E:\笔记\imgCSS\媒体特性.png)
+媒体特性有下图这些
 
-   常用的有max-width	min-width	orentation
 
-   - 媒体查询的逻辑操作符
 
-     and操作符
+常用的有max-width	min-width	orentation
 
-     逗号分隔列表
+- 媒体查询的逻辑操作符
+  
+  and操作符
+  
+  逗号分隔列表
      	等同于or逻辑操作符
-
-     ```css
+  
+  ```css
      @media (max-width: 300px), screen and (orientation: landscape)
-     
-     ```
-
-     not操作符
-
-     ```css
-     @media not screen and (min-width: 500px) and (max-width: 800px)
-     
-     ```
-
+  ```
+  
+   not操作符
+  
+   ```css
+  @media not screen and (min-width: 500px) and (max-width: 800px)
+   ```
+  
      only操作符
-
-     ​	防止老旧的浏览器不支持带媒体属性的查询而应用到给定的样式
-
-     ```css
-     @media only screen and (min-width: 500px) and (max-width: 800px)
-     
-     ```
-
+  
+  ​	防止老旧的浏览器不支持带媒体属性的查询而应用到给定的样式
+  
+  ```css
+   @media only screen and (min-width: 500px) and (max-width: 800px)
+  ```
+  
      
 
 ## 移动端布局
@@ -664,7 +653,7 @@ stretch //为设置高度时 该元素高度为flex容器高度
 
 - 单位rem
 
-  1rem 取决于 html 的 font-size，1em 取决于父级的 font-size大小
+  1rem 取决于 html 的 font-size，1em 一般取决于父级的 font-size大小，如果自己有font-size，则取决于自身的font-size
 
   通过 js 动态设置 html 的 font-size 属性值实现等比缩放
 
@@ -691,11 +680,10 @@ stretch //为设置高度时 该元素高度为flex容器高度
           // document.documentElement 属性始终指向 HTML 页面中的 <html> 元素，是内置的快捷方式 p254
       }
   </script>
-  
   ```
-
   
 
+  
 - 单位vw vh
 
   把屏幕分成100份
@@ -715,7 +703,6 @@ stretch //为设置高度时 该元素高度为flex容器高度
   </style>
   
   <div class="demo"></div>
-  
   ```
 
 
@@ -727,12 +714,13 @@ stretch //为设置高度时 该元素高度为flex容器高度
 逻辑像素：一个可以由程序使用的虚拟像素(比如说CSS像素)，然后由相关系统转换为物理像素。
 
 设备像素比(dpr) = 物理像素/逻辑像素
-	
+
+​	[查看设备像素比的网站](https://bjango.com/articles/min-device-pixel-ratio/)
 
 ```javascript
 viewport是严格等于浏览器的窗口。在桌面浏览器中，viewport就是浏览器窗口的宽度高度。但在移动端设备上就有点复杂。
 
-viewport就是浏览器上，用来显示网页的那一部分的区域。Ios及新版本浏览器默认viewport为980px。
+viewport就是浏览器上，用来显示网页的那一部分的区域。iOS及新版本浏览器默认viewport为980px。
 
 // 一般用js动态生成meta标签，来匹配不同的dpr
 var oMeta = document.createElement("meta");
@@ -748,8 +736,6 @@ if(window.devicePixelRatio >= 3) {
 document.getElementsByTagName("head")[0].appendChild(oMeta);
 
 // 公司开发一般给750px的设计稿，iphone6/7/8，dpr = 2,  宽度375
-
-
 ```
 
 viewport默认有6个属性：
@@ -771,14 +757,6 @@ iphone6/7/8  dpr = 2 ,,两个物理像素等于1个逻辑像素
 
 
 
-
-
-
-
-
-
-
-
 **根据 dpr 的值来修改 viewport 实现1px的线？**
 
 1.js动态生成mate标签
@@ -792,7 +770,7 @@ content="width=device-width, initial-scale=0.5, maximum-scale=0.5,minimum-scale=
 
 
 ```html
-很难对安卓手机进行兼容，下面解决对ios的不同 dpr 显示出 1px 的处理方法
+很难对安卓手机进行兼容，下面解决对 iOS 的不同 dpr 显示出 1px 的处理方法
 <!-- 设置浏览器视口等于设备的宽度 -->
 <!-- initial-scale 设置是否缩放,dpr = 2，设置0.5 -->
 <!-- initial-scale 设置是否缩放,dpr = 3，设置0.3333 -->
@@ -856,7 +834,6 @@ only screen and ( min-resolution: 2dppx){
  [data-dpr='2'] div{
  font-size:  26px;
  }
-
 ```
 
 方案二： Vw+postcss(插件) （推荐）
@@ -961,7 +938,7 @@ rotateX()
 rotateY()
 rotateZ()
 rotate3d(x,y,z) //有3D效果
-简写：rotate()rotateZ()
+简写：rotate() rotateZ()
 
 倾斜：skew
 skewX(ndeg)
@@ -975,9 +952,6 @@ transform-origin: 50% 50% 0; //默认值
 X轴方向：left | center | right | length | %
 Y轴方向：top | center | bottom | length | %
 Z轴方向：length
-
-
-
 ```
 
 练习设置时钟圆盘
@@ -1618,7 +1592,6 @@ addVolume.onclick = function () {
 play() 播放
 pause() 停止
 load():重置媒体元素并重新载入媒体，可中止正在进行的任务或事件
-
 ```
 
 事件
@@ -1672,7 +1645,6 @@ console.log(myCanvas.offsetHeight); // 202
 // canvas的API这样获取,canvas是画布，ctx相当于拿到了画笔
 var ctx = myCanvas.getContext("2d");
 </script>
-
 ```
 
 
@@ -1714,7 +1686,6 @@ ctx.moveTo(100, 100);
 ctx.lineTo(200, 100);
 ctx.lineTo(200, 200);
 ctx.lineTo(100,100);
-
 ```
 
 
@@ -1758,7 +1729,6 @@ arcTo(x1, y1, x2, y2, r);
 5、二次方、三次方曲线方程
 quadraticCurveTo(cpx, cpy,x, y);
 bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x,y);
-
 ```
 
 
@@ -2445,10 +2415,6 @@ none: 不保持自己的宽高，扭曲纵横比以充分适应viewport
 
 
 
-
-
-
-
 ## Drag和Drog拖放操作
 
 拖放API基础
@@ -3083,3 +3049,4 @@ ul.innerHTML = str;
 
 《高性能javascript》
 ```
+
