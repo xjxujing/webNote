@@ -111,7 +111,6 @@ E[att*='val'] 属性att的值包含"val"的元素
 ```html
 E + F 毗邻元素选择器，匹配所有紧随E元素之后的同级元素F
 E ~ F 匹配任何在E元素之后的同级F元素,兄弟选择器
-
 ```
 
 做选项卡中用过 E~F
@@ -329,14 +328,12 @@ white-space:nowrap;  //强制文本在一行内显示
 overflow:hidden;  //溢出内容为隐藏
 
 多行打点：
--webkit-line-clamp: 2;
-text-overflow: ellipsis;
 display: -webkit-box;
+-webkit-line-clamp: 2;
 -webkit-box-orient: vertical;//子元素被垂直排列
+text-overflow: ellipsis;
 overflow:hidden;
 多行打点兼容性不好，可用js操作（拼接，可以看下视频）
-
-
 ```
 
 
@@ -1330,8 +1327,6 @@ var timer = setInterval(function () {
 
 ## HTML5表单元素
 
-
-
 ```html
 <input type="text">	文本框
 <input type="radio" name=""> 小圆点  name值一样是单选
@@ -1545,7 +1540,6 @@ lessVolume.onclick = function () {
 addVolume.onclick = function () {
     myAudio.volume += 0.1;
     console.log(myAudio.volume);
-
 }
 </script>
 

@@ -84,7 +84,7 @@ git checkout master
 
 #创建远程分支login(本地分支push到远程)
 git push origin login
-https://www.cnblogs.com/springbarley/archive/2012/11/03/2752984.html
+可参考https://www.cnblogs.com/springbarley/archive/2012/11/03/2752984.html
 
 # 删除远程分支
 git push origin :test 
@@ -93,6 +93,10 @@ git branch -d 分支名（remotes/origin/分支名）
 #强制删本地
 git branch -D 分支名
 ~~~
+
+git 拉取远程分支到本地   [地址](https://blog.csdn.net/carfge/article/details/79691360)
+
+
 
 
 
