@@ -1136,7 +1136,7 @@ perspective 景深
 
 ```css
 放在在父元素
-perspective：600px;
+perspective: 600px;
 
 保留3d效果(3D空间)
 transform-style: preserve-3d;

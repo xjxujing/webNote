@@ -813,7 +813,6 @@ Math.radom(); // 0-1 之间的浮点数
 Math.radom()*10
 // 1-10 之间的整数
 Math.floor(Math.random() * 10 + 1)
-
 ~~~
 
 
@@ -1373,7 +1372,7 @@ var x = 0x00A
 
 2^10 = 1024
 计算机最小存储计量单位是 bit
-1个字节B = 8位
+1个字节B = 8位  utf-8 1个汉字 3个字节
 (1Byte = 8 bit)
 1024Bytes(1024字节) = 1kB
 1024kB = 1MB

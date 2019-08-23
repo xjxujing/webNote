@@ -1334,6 +1334,12 @@ for(var i = 0; i< ary.length; i++){
 for(var i in ary) {
     
 }
+1.index索引为字符串型数字，不能直接进行几何运算
+2.遍历顺序有可能不是按照实际数组的内部顺序
+3.使用for in会遍历数组所有的可枚举属性，包括原型。例如上栗的原型方法method和name属性
+
+for in 遍历的是索引(key)
+而for of遍历的是数组元素值。 所以for in更适合遍历对象，不要使用for in遍历数组。
 ~~~
 
 
@@ -1779,7 +1785,7 @@ s.match(/tc*t$/g) // ["tcccct"]
 
 ~~~javascript
 5.声明量词 （条件判断）
-(?=as) 目标是取?的内容
+(?=as) 目标是取?的内容 后面跟的是as
 (?!as)
 
 var s = "tt:cc qq=cc" // 想取到tt

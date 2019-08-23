@@ -1004,7 +1004,7 @@ console.log(arr.includes(8)) // ES7 直接返回true,判断是否存在
 ~~~
 
 ~~~javascript
-ES8
+ES8(ECMA 2017)
 promise是ES5.5的
 async/await是ES8的
 ~~~
@@ -1013,7 +1013,7 @@ async/await是ES8的
 ES9
 rest/spread类似async/await
 异步迭代 
-Promise.fianlly
+Promise.fianlly()
 正则表达式增强
 ~~~
 

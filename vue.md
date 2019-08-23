@@ -1,22 +1,36 @@
-## 
+## 准备
 
 原生实现的问题
 
 UI和数据不同步
 
-
-
 vue的原则 数据双向绑定 不操作dom
 
+MVC	MVP	MVVM
+
+前端渲染 VS 后台渲染
+
+| 前端渲染                   | 后台渲染   |
+| -------------------------- | ---------- |
+| 降低服务器负担、带宽压力小 | SEO友好    |
+| 用户体验好                 | 兼容性好   |
+|                            | 安全性更好 |
+
+vue的核心是数据  典型的MVVM开发模式
 
 
-## 实例化vue对象
 
-## 数据和方法
+## 
+
+## 指令
+
+directive	补充了html的属性 
+
+
 
 ## 属性绑定 
 
- `v-bind`
+ `v-bind`   `v-html`  `v-text`(少用)
 
 ~~~html
 <div id="app">
@@ -45,11 +59,14 @@ new Vue({
 </script>
 ~~~
 
-
-
 ~~~html
-el: 
+class和style可以分别绑定数组和json对象
+
+v-html 会转译标签 有风险
+v-text 不转义标签
 ~~~
+
+> methods不要用箭头函数 ，因为this会被固定指向window
 
 
 
@@ -65,6 +82,7 @@ el:
 <div class="app">
         <!-- 只能点击一次 -->
         <button v-on:click.once="add(1)">涨一岁</button>
+    
         <button v-on:click="subtract(1)">减一岁</button>
         <button v-on:dblclick="add(10)">涨十岁</button>
         <button v-on:dblclick="subtract(10)">减十岁</button>
@@ -142,12 +160,18 @@ new Vue({
 
 
 
-### 双向数据绑定
+## 双向数据绑定
+
+v-model
 
 ~~~html
 input select textarea
 
-输入框中输入内容 页面中相应的地方跟着变动
+text 和 textarea 元素使用 value 属性和 input 事件
+checkbox 和 radio 使用 checked 属性和 change 事件
+select 字段将 value 作为 prop 并将 change 作为事件
+
+通过v-mode进来的数据都是字符串  数据计算加parseInt()
 ~~~
 
 ~~~html
@@ -183,6 +207,15 @@ new Vue({
 });
 </script>
 ~~~
+
+~~~html
+v-model是语法糖
+<input type="text" :value="name" @input="name=$event.target.value">
+~~~
+
+
+
+
 
 
 
@@ -307,9 +340,14 @@ new Vue({
 ## v-if 和v-show
 
 ~~~html
+v-show控制的是display:none
+v-if是删掉元素
+
+表单中input隐藏了也会起作用
+
 <div class="app">
     <button v-on:click="error = !error">toggle error</button>
-    <button v-on:click="success= !success">toogle success</button>
+    <button v-on:click="success = !success">toogle success</button>
 
     <!-- 元素会不在dom结构中 -->
     <!-- <p v-if="error">网络连接错误：404</p>
@@ -334,6 +372,15 @@ new Vue({
 
 
 ## v-for循环
+
+~~~javascript
+1. 数组 v-for="item,index in items"
+2. json v-for="val,key in json"
+3. 字符串 v-for="char,index in str"
+4. 数组  v-for="i in num"
+~~~
+
+
 
 ~~~html
 <div class="app">
@@ -372,9 +419,7 @@ new Vue({
             {{key}} - {{val}}
         </div>
     </div>
-    
 </div>
-
 
 <script>
 new Vue({
@@ -389,6 +434,61 @@ new Vue({
     }
 });
 </script>
+~~~
+
+
+
+### 虚拟Dom
+
+~~~html
+:key属性
+虚拟Dom是一个大json
+<ul>
+    <li>
+    	<h2></h2>
+        <p></p>
+    </li>
+</ul>
+vue开始执行的时候先解析页面 生成自己的虚拟dom
+~~~
+
+~~~javascript
+{
+    tag:"ul",
+    children:[
+        {tag:"li",children:[
+            ....
+        ]}
+    ]
+}
+实际操作的是虚拟dom  再渲染到dom 可以减少重复渲染的次数
+
+vue需要跟踪数据的变化过程
+对于循环生成的元素，通过key来标记,实现跟踪
+数据中一般加id
+~~~
+
+
+
+~~~
+虚拟DOM:
+合并请求
+快速查询
+局部刷新
+~~~
+
+
+
+## 其他指令
+
+~~~html
+v-pre: 预编译
+提高性能 防止意外
+
+v-clock: 配合CSS 渲染后才会显示
+*[v-block] {
+	display: none
+}
 ~~~
 
 
@@ -1016,6 +1116,8 @@ created(){  // 组件实例化完毕,但页面还未显示
 
 本地请求：保存post.json到static 不能随便放 
 
+
+
 ### fetch
 
 ~~~javascript
@@ -1038,20 +1140,12 @@ created(){   // 组件实例化完毕,但页面还未显示
     // .then(data => {
     //   console.log(data)
     // })
-
-    
-    // axios
-    this.$axios.post("/apis/test/testToken.php",{username:"hello",password:"123456"})
-        .then(data => {
-          console.log(data)
-        })
   }
 
-
 搜索vue proxytable
-
 到config->index.js    搜索proxyTable
 
+跨域配置
 proxyTable: {
       '/apis': {
         // 测试环境
@@ -1069,6 +1163,8 @@ proxyTable: {
 ### axios
 
 axios是目前主流的http请求库，基于Promise实现异步
+
+封装的ajax 返回的一个promise 还自带了前端拦截器 自动转化json等功能
 
 ~~~javascript
 cnpm install --save axios
@@ -1251,5 +1347,178 @@ Vue响应式核心原理
 Oberserve观察者
 
 
+~~~
+
+
+
+## vue动画
+
+~~~shell
+cnpm i vue2-animate -D
+
+main.js 
+import 'vue2-animate/dist/vue2-animate.min.css'
+~~~
+
+### 一个东西
+
+~~~html
+<input type="button" value="显示或隐藏" @click="b=!b">
+<transition name="fade"> 可以是fadeDown fadeUp
+	<div class="box" v-if="b"></div>
+</transition>
+
+<script>
+data() {
+	return {
+		b: true
+    }
+}
+</script>
+
+<style>
+    .box {
+        width: 200px;
+        height:200px;
+        background: #ccc;
+        animation-duratoin: 1s;
+    }
+</style>
+~~~
+
+
+
+### 一组东西
+
+~~~html
+<input type="button" value="显示或隐藏" @click="b=!b">
+动画的name可以是bounce
+<transition-group tag="ul" class="list" name="fade">
+        <li v-for="item,index in arr" @click="del(index)" :key="index">{{item}}</li>
+</transition-group>
+注意key最好用数据的id
+
+<script>
+data() {
+	return {
+		b: true，
+        arr:[12,5,8,9,33,27]
+    }
+},
+methods:{
+	del(index) {
+        this.arr.splice(index,1);
+    }
+</script>
+
+<style>
+    .list li {
+        w100
+        h100
+        margin 20
+        list-style none
+        bac #ccc
+        animation-duration: 10s
+    }
+</style>
+~~~
+
+[animate.css官网](https://daneden.github.io/animate.css/)
+
+
+
+
+
+## vue原理
+
+### 数据单项绑定
+
+~~~html
+<div id="div1">
+	姓名：{{name}}<br>
+	年龄：{{age}}
+</div>
+
+<script>
+let el = document.getElementById("div1")
+let template = el.innerHTML;
+
+// Proxy
+let _data = {
+    "name": "blue",
+    "age": 18
+}
+let data = new Proxy(_data, {
+    set(obj, name, value) {
+        obj[name] = value;
+        // console.log("数据改变");
+
+        render();
+    },
+    // get(){}  不要有这个
+});
+
+render();
+function render() {
+    el.innerHTML = template.replace(/\{\{\w+\}\}/g, str => {
+        str = str.substring(2, str.length - 2);
+
+        return _data[str];
+    });
+}
+// data.name = "blue2"
+</script>
+~~~
+
+### 数据双向绑定
+
+~~~html
+<div id="div1">
+    <input type="text" v-model="name"><br>
+    姓名：{{name}}<br>
+    年龄：{{age}}
+</div>
+<script>
+    let el = document.getElementById("div1")
+    let template = el.innerHTML;
+
+    // Proxy
+    let _data = {
+        "name": "blue",
+        "age": 18
+    }
+    let data = new Proxy(_data, {
+        set(obj, name, value) {
+            obj[name] = value;
+            // console.log("数据改变");
+
+            render();
+        },
+    });
+
+    render();
+
+    function render() {
+        // 数据渲染
+        el.innerHTML = template.replace(/\{\{\w+\}\}/g, str => {
+            str = str.substring(2, str.length - 2);
+
+            return _data[str];
+        });
+
+
+        // 找所有的v-model
+        Array.from(el.getElementsByTagName("input"))
+        .filter(ele=>ele.getAttribute("v-model"))
+        .forEach(input=>{
+            let name = input.getAttribute("v-model");
+            input.value = _data[name];
+
+            input.oninpu= function(){
+                data[name] = this.value;
+            }
+        })
+    }
+</script>
 ~~~
 

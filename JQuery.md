@@ -1922,7 +1922,8 @@ $("input").on("input", function () {
         // },
         data: 'wd=' + $("input").val(),
         crossDomain: true,
-        dataType: "jsonp", // 预期服务器返回的数据类型
+        dataType: "jsonp", // 预期服务器返回的数据类型,如果不给，后台需要通过content-type声明数据
+        // 常见类型有text xml json jsonp
         jsonp: "cb",
         jsonpCallback: "asdf"
     })
