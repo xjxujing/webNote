@@ -1107,7 +1107,7 @@ img1.removeAttribute("属性名")
 var p1 = document.getElementById("p1");
 p1.innerHtml = "文本内容"
 //可以直接加标签
-p1.innerHtml = "<a></a>"
+p1.innerHtml = "<a></a>" //会解析标签
 
 //直接加文本
 p1.textContent = "会是纯文本内容"

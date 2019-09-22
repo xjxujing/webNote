@@ -1908,6 +1908,21 @@ s.match(/(\w+):(\w+) \1\2/) // 按左括号的顺序
 
 
 
+邮箱正则
+
+~~~javascript
+/^(\w|\-|\.)+\@(\w|\-|\.)+\.(\w{2,4})$/
+// 匹配一个单字字符（字母、数字或者下划线）。等价于 [A-Za-z0-9_]
+
+
+名称允许汉字、字母、数字，域名只允许英文域名
+/^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
+~~~
+
+
+
+
+
 [MDN正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
 
 
