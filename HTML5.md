@@ -1430,7 +1430,7 @@ btn.onclick =function() {
 
 
 
-Blob对象
+### Blob对象
 
 ~~~css
 1、blob对象的访问
