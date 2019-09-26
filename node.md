@@ -196,12 +196,20 @@ POST 发送
 ## 接受浏览器的GET数据
 
 ~~~javascript
+serve_get.js
 const http = require('http')
-const fs = require('fs')
-
+const url = require('url')
+const queryString = require('queryString')
 // 创建服务器
 let server = http.createServer((req, res) => {
-    console.log(req.url)
+    // 使用url模块
+    let [pathname, query] = url.parse(req.url, true)
+    console.log(pathname, query)
+    
+    // 使用queryString模块
+    let [url, query] = req.url.split('?')
+    let get = queryString.parse(query)
+    console.log(url, get)
 })
 
 // 监听--等待客户端的连接
@@ -215,8 +223,6 @@ server.listen(8080)
     <input type="submit" value="提交">
 </form>
 ~~~
-
-
 
 
 
