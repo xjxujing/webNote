@@ -1107,11 +1107,12 @@ Object.getOwnPropertyNames
 ~~~javascript
 var obj = { x: 1, y: 2 };
 
+// 数据属性
 // 新加一个z属性，z属性不可修改
 Object.defineProperty(obj,"z",{
     value: 3,
     writable: false, // 不可写		是否可以设置该属性值
-    enumerable: true, // 可枚举	for 是否可以获得该值
+    enumerable: true, // 可枚举	for in 是否可以获得该值 遍历索引
     configurable: true // 可配置	是否可以删除或修改该属性特性
 })
 
@@ -1164,11 +1165,12 @@ Object.defineProperties(obj, {
 ~~~javascript
 私有属性的特性描述
 Object.getOwnPropertyDescriptor(obj, "t")
+返回值是一个对象
 ~~~
 
 
 
-三、 `set`和`get`
+三、 `set`和`get`(访问器属性)
 
 **应用场景**
 
@@ -1183,12 +1185,14 @@ var class1 = {
 }
 Object.defineProperty(class1,"onemoney",{
     // 注意set和get中都不允许出现onemoney,也就是当前设置的属性,会报错
+    // 写入访问器属性
     set: function (money) {
         // this.onemoney = 10 // 这样会死循环		  
         // console.log("set num: " + this.num++);
         
         this.allmoney = money * (this.boy + this.girl);
     },
+    // 读取访问器属性
     get: function () {
         return "总共" + this.allmoney + "元";
     },

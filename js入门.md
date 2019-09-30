@@ -704,11 +704,11 @@ https://www.cnblogs.com/dongjc/p/5179561.html
 //查  用 . 或者 []
 person1.name  
 //必须引号的必须用[]
-person1.["name"]
+person1["name"]
 
 
 //改
-person.["name"] = "xiaoming2";
+person["name"] = "xiaoming2";
 
 //加
 直接赋值。。
@@ -721,7 +721,7 @@ for (var pN  in person1 ){ // 这是遍历索引
     console.log("person1的属性名：" + pN + "值 = " + person1[pN] );
 }
 
-for value of result中的value是值，
+for value of result中的value是值
 for value in result的value是索引
 ~~~
 
