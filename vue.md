@@ -1232,21 +1232,7 @@ methods: {
 
 
 
-
-
-
-
-
-
 ## Vue-Cli3.0
-
-
-
-~~~shell
-
-~~~
-
-
 
 在这里看文档
 
@@ -1272,8 +1258,6 @@ init 生成一个项目
 安装vue cli3后还是可以使用 vue2.0的 vue init webpack 项目名称
 npm install -g @vue/cli-init
 ~~~
-
-
 
 
 
@@ -1309,8 +1293,6 @@ npm install	 -g的提示安装
 
 
 
-
-
 ## vuex
 
 主要应用于Vue.js中管理数据状态的一个库
@@ -1323,10 +1305,6 @@ store可以理解为单一数据源 ：	C1  C2  C3  C4
 # 安装vuex
 npm install vuex --save
 ~~~
-
-
-
-
 
 
 
