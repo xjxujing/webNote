@@ -334,14 +334,12 @@ http.createServer((req, res) => {
 
 
 
+### 模拟注册登录
+
 ~~~javascript
 http://localhost:8080/reg?username=blue&password=123
 http://localhost:8080/login?username=blue&password=123
 ~~~
-
-
-
-### 模拟注册登录
 
 ~~~javascript
 const http = require('http')
@@ -496,6 +494,329 @@ http.createServer((req, res) => {
 </body>
 
 </html>
+~~~
+
+
+
+## 模块系统
+
+1.定义模块
+
+`CMD` 同步
+`AMD`
+`ESM`  可延迟加载、分布加载
+
+~~~html
+1.导出
+module 批量导出
+exports
+
+2.导入
+require
+如果有路径，去路径下面找
+如果没有，先找node_modules，再找系统node_modules
+~~~
+
+~~~javascript
+exports.a = 12
+exports.b = 5
+
+// 导出json
+module.exports = { a: 12, b: 5}
+// 导出函数
+module.exports = function () {
+	console.log('aa')
+}
+// 导出类
+module.exports = class {
+    constructor(name) {
+        this.name = name
+    }
+    show() {
+        console.log(this.name)
+    }
+}
+
+const mod1 = require('mod1')
+mod1.a   mod1.b
+~~~
+
+
+
+## package.json
+
+~~~shell
+npm----包管理器
+npm init
+npm init -y 默认都是y
+
+
+npm i yarn -g  (facebook react)
+yarn add xxx
+
+
+bower----前端包管理工具
+npm i bower -g
+bower i jquery
+~~~
+
+
+
+~~~javascript
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xujing",
+  "license": "ISC",
+   // 开发依赖 -D
+  "devDependencies": {
+    "koa": "^2.8.2" // 2.8.* 2.8中的最高版本  ^表示向上兼容 
+  }
+}
+
+~~~
+
+package-lock.json 错误信息
+
+## 系统模块
+
+### assert
+
+断言: 符合要求就过 ，不符合要求就报错
+
+~~~javascript
+const assert = require('assert')
+assert(条件,'消息')
+
+函数内容步骤很多可以加断言确保中间是正确的
+还有函数的参数
+~~~
+
+~~~javascript
+// 深层比较 ==
+assert.deepEqual(变量, 预期值, msg)
+// ===
+assert.deepStrictEqual(变量, 预期值, msg)
+~~~
+
+
+
+### path
+
+路径相关 路径拼装
+
+~~~javascript
+const path = require('path')
+
+let str = '/root/a/b/1.txt'
+
+console.log(path.dirname(str)) // /root/a/b 提取路径
+console.log(path.extname(str)) // .txt 提取后缀名
+console.log(path.basename(str)) // 1.txt 提取文件名
+console.log(path.resolve('/root/a/b', '../c', 'build', '..', 'strict'))  // E:\root\a\c\strict  路径整合
+console.log(path.resolve(__dirname, 'build')) // 快速获取某个文件的绝对路径  E:\NOTE\node2\package\build
+~~~
+
+
+
+### url
+
+~~~javascript
+const url = require('url')
+
+let str = 'https://www.bilibili.com/video/av60349461/?p=6'
+console.log(url.parse(str))
+打印:
+Url {
+  protocol: 'https:',
+  slashes: true,
+  auth: null,
+  host: 'www.bilibili.com',
+  port: null,
+  hostname: 'www.bilibili.com',
+  hash: null,
+  search: '?p=6',
+  query: 'p=6', // 如果key值相同,合并到数组
+  pathname: '/video/av60349461/',
+  path: '/video/av60349461/?p=6',
+  href: 'https://www.bilibili.com/video/av60349461/?p=6' }
+~~~
+
+
+
+### querystring
+
+请求数据格式
+
+~~~javascript
+const querystring = require('querystring')
+
+console.log(querystring.parse('a=12&b=5&c=9'))
+// [Object: null prototype] { a: '12', b: '5', c: '9' } 解析query字符串
+
+console.log(querystring.stringify({ a: 12, b: 6 }))
+// a=12&b=6 拼成query字符串
+~~~
+
+
+
+### net
+
+网络通信模块
+
+OSI七层参考模型 处于传输层
+
+~~~javascript
+数据通信
+GET
+POST
+	普通数据 querystring
+   	文件数据
+~~~
+
+
+
+## 处理POST文件（二进制数据）
+
+前端
+
+~~~html
+<form action="http://localhost:8080/upload" method="POST" enctype="multipart/form-data">
+    用户: <input type="text" name="username"><br>
+    密码: <input type="password" name="password"><br>
+    <input type="file" name="f1">
+    <input type="submit" value="提交">
+</form>
+~~~
+
+后端
+
+~~~javascript
+const http = require('http')
+
+http.createServer((req,res)=>{
+    let arr = []
+    req.on('data',buffer=>{
+        arr.push(buffer)
+    })
+    
+    req.on('end',()=>{
+        let buffer = Buffer.concat(arr)
+
+        console.log(buffer.toString())
+    })
+}).listen(8080)
+~~~
+
+
+
+
+
+~~~javascript
+------WebKitFormBoundaryLpr886V2oAr7H9Ou // 分隔符  +\r\n 可以从req.headers中得到
+Content-Disposition: form-data; name="username"
+
+blu
+------WebKitFormBoundaryLpr886V2oAr7H9Ou
+Content-Disposition: form-data; name="password"
+
+456
+------WebKitFormBoundaryLpr886V2oAr7H9Ou 
+Content-Disposition: form-data; name="f1"; filename="aaa.txt" // 字段说明
+Content-Type: text/plain
+
+asdfghjk
+------WebKitFormBoundaryLpr886V2oAr7H9Ou--
+~~~
+
+
+
+用分割符切分
+
+~~~javascript
+[
+	null,
+    "\r\n字段信息\r\n\r\n内容\r\n",
+     "\r\n字段信息\r\n\r\n内容\r\n",
+     "\r\n字段信息\r\n\r\n内容\r\n",
+    "--"
+]
+
+去掉第0个和最后1个
+[
+    "\r\n字段信息\r\n\r\n内容\r\n",
+     "\r\n字段信息\r\n\r\n内容\r\n",
+     "\r\n字段信息\r\n\r\n内容\r\n",
+]
+    
+每一项
+"\r\n字段信息\r\n\r\n内容\r\n",
+    
+"字段信息\r\n\r\n内容"
+ 
+"字段信息"  "内容"
+    
+注意：是在二进制下操作
+~~~
+
+
+
+### bufer操作
+
+预备知识
+
+~~~javascript
+let buffer = new Buffer('abc\r\nsdjkfljklds\r\ndkfjakdjs')
+let buffer2 = new Buffer('\r\n')
+console.log(buffer.indexOf(buffer2)) // 3
+
+
+let buffer = new Buffer('abc\r\nsdjkfljklds\r\ndkfjakdjs')
+console.log(buffer.slice(0,3).toString()) // abc
+~~~
+
+进行分割
+
+~~~javascript
+let buffer = new Buffer('abc\r\nsdjkfljklds\r\ndkfjakdjs')
+
+function bufferSplit(buffer, delimiter) {
+    let arr = []
+    let n = 0
+
+    while ((n = buffer.indexOf(delimiter)) != -1) {
+        arr.push(buffer.slice(0, n))
+        buffer = buffer.slice(n + delimiter.length)
+    }
+    arr.push(buffer)
+
+    return arr
+}
+console.log(bufferSplit(buffer,'\r\n').map(b=>b.toString())) // [ 'abc', 'sdjkfljklds', 'dkfjakdjs' ]
+~~~
+
+
+
+封装进buffer_util.js
+
+~~~javascript
+exports.bufferSplit = function (buffer, delimiter) {
+    let arr = []
+    let n = 0
+
+    while ((n = buffer.indexOf(delimiter)) != -1) {
+        arr.push(buffer.slice(0, n))
+        buffer = buffer.slice(n + delimiter.length)
+    }
+    arr.push(buffer)
+
+    return arr
+}
 ~~~
 
 
