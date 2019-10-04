@@ -1125,21 +1125,21 @@ created(){  // 组件实例化完毕,但页面还未显示
 添加钩子函数
 created(){   // 组件实例化完毕,但页面还未显示
     // fetch
-    // fetch("/apis/test/testToken.php",{
-    //   method:"post",
-    //   headers:{
-    //     "Content-type":"application/json",  // 可以加也可以不加
-    //     token:"f4c902c9ae5a2a9d8f84868ad064e706" // 该接口需要有token
-    //   },
-    //   body:JSON.stringify({username:"henry",password:"321321"})  // 必须要传的json数据 要转成字符串
-    // })
-    // .then(result => {
-    //   // console.log(result)
-    //   return result.json()   // 解读readableStream要进行json解析
-    // })   // 解析完后还要then
-    // .then(data => {
-    //   console.log(data)
-    // })
+    fetch("/apis/test/testToken.php",{
+       method:"post",
+       headers:{
+         "Content-type":"application/json",  // 可以加也可以不加
+         token:"f4c902c9ae5a2a9d8f84868ad064e706" // 该接口需要有token
+       },
+       body:JSON.stringify({username:"henry",password:"321321"})  // 必须要传的json数据 要转成字符串
+     })
+    .then(result => {
+       // console.log(result)
+       return result.json()   // 解读readableStream要进行json解析
+     })   // 解析完后还要then
+     .then(data => {
+       console.log(data)
+     })
   }
 
 搜索vue proxytable

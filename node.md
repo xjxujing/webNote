@@ -1,5 +1,25 @@
 
 
+### 使用
+
+~~~shell
+# 初始化 package.json
+cnpm init -y
+
+# 安装模块并保存到配置package.json
+cnpm i xxx -D
+
+# 添加快捷命名 package.json "scripts"
+"start": "node server.js"
+=> npm run start  =====运行node server.js命令
+~~~
+
+
+
+
+
+
+
 node.js简单、性能高   注意没有window对象、document对象(浏览器才有)
 
 ## 卸载低版本
@@ -667,6 +687,8 @@ console.log(querystring.stringify({ a: 12, b: 6 }))
 
 ### net
 
+用于创建更原始的服务
+
 网络通信模块
 
 OSI七层参考模型 处于传输层
@@ -715,7 +737,7 @@ http.createServer((req,res)=>{
 
 
 
-
+打印的结果
 
 ~~~javascript
 ------WebKitFormBoundaryLpr886V2oAr7H9Ou // 分隔符  +\r\n 可以从req.headers中得到
@@ -736,7 +758,7 @@ asdfghjk
 
 
 
-用分割符切分
+用分割符切分 思路
 
 ~~~javascript
 [
@@ -817,6 +839,456 @@ exports.bufferSplit = function (buffer, delimiter) {
 
     return arr
 }
+~~~
+
+
+
+### 文件上传实现（原生）
+
+~~~javascript
+const http = require('http')
+const util = require('buffer_util')
+const fs = require('fs')
+
+http.createServer((req, res) => {
+    let boundary = '--' + req.headers['content-type'].split('; ')[1].split('=')[1]
+    let arr = []
+
+    req.on('data', buffer => {
+        arr.push(buffer)
+    })
+
+    req.on('end', () => {
+        let buffer = Buffer.concat(arr)
+        // console.log(buffer.toString())
+
+        // 1. 按照分隔符切分
+        let result = util.bufferSplit(buffer, boundary)
+
+        result.pop() // 去尾
+        result.shift() // 去头
+
+        // 2. 中间每个处理
+        result.forEach(buffer => {
+            buffer = buffer.slice(2, buffer.length - 2)
+
+            let n = buffer.indexOf('\r\n\r\n')
+            let info = buffer.slice(0, n).toString()
+            let data = buffer.slice(n + 4)
+
+            if (info.indexOf('\r\n') != -1) {
+                // 文件
+                let res = info.split('\r\n')[0].split('; ')
+                let name = res[1].split('=')[1]
+                let filename = res[2].split('=')[1]
+
+                name = name.substring(1, name.length - 1)
+                filename = filename.substring(1, filename.length - 1)
+
+                // 上传文件 注意新建upload文件夹
+                fs.writeFile(`upload/${filename}`, data, err => {
+                    if(err) {
+                        console.log(err)
+                    }else {
+                        console.log('上传成功')
+                    }
+                })
+            } else {
+                // 普通信息
+                let name = info.split('; ')[1].split('=')[1]
+                name = name.substring(1, name.length - 1)
+
+                console.log(name)
+            }
+            console.log(data.toString())
+        })
+    })
+}).listen(8080)
+~~~
+
+
+
+### multiparty
+
+~~~javascript
+const http = require('http')
+const multiparty = require('multiparty')
+
+http.createServer((req, res) => {
+    let form = new multiparty.Form({
+        uploadDir: './upload'
+    })
+    form.parse(req)
+    form.on('field', (name, value) => {
+        console.log('字段: ', name, value)
+
+    })
+    form.on('file', (name, file) => {
+        console.log('文件', name, file)
+    })
+
+    form.on('close', () => {
+        console.log('表单解析完成')
+    })
+}).listen(8080)
+~~~
+
+
+
+## 数据交互
+
+ajax	jsonp 	WebSocket
+
+
+
+SOP同源策略 
+
+**同源限制是浏览器的操作，服务器需要允许同源**
+
+~~~javascript
+let allowOrigin = {
+    'http://localhost': true,
+    'http://aaa.com': true,
+    'https://aaa.com': true
+}
+
+http.createServer((req,res)=>{
+    let {origin} = req.headers
+    
+    if(allowOrigin[origin]) {
+        res.serHeader('access-control-allow-origin','*')
+    }
+})
+~~~
+
+
+
+### fetch（ajax的封装）
+
+前端解析数据
+
+~~~javascript
+oBtn.onclick = async function() {
+    // 1.请求
+    let res = await fetch('data/1.txt')
+    // console.log(res)
+    
+    // 2.解析--文本数据
+    let str = await res.text()
+    console.log(str)
+	
+    // 解析json
+    let json = await res.json()
+    
+    // 解析图片
+    let res = await fetch('data/1.png')
+    let data = await res.blob()
+    console.log(data)
+    
+    // 显示图片
+    let url = URL.createObjectURL(data) // 二进制数据临时写入
+    oImg.src = url
+}
+~~~
+
+
+
+### jsonp
+
+**原理**
+
+html内容
+
+~~~html
+<script>
+    function show(data) {
+        alert(data.a + data.b)
+    }
+</script>
+<script src="1.js"></script>
+~~~
+
+`1.js`内容
+
+~~~javascript
+show({
+    a: 22, b: 23
+}) 
+~~~
+
+
+
+### FormData （Ajax2.0）
+
+前端代码
+
+~~~javascript
+let oForm = document.querySelector('#form')
+oForm.onsubmit = function() {
+    let formdata = new FormData(oForm)
+    
+    let xhr = new XMLHttpRequest()
+    
+    xhr.open(oForm.method, oForm.action, true)
+    xhr.send(formdata)
+    
+    xhr.onreadystatechange = function() {
+        if(xhr.readyStatus == 4) {
+            if(xhr.status == 200) {
+                alert('成功')
+            }else{
+                alert('失败')
+        }
+    }
+    return false // 取消submit默认动作
+}
+~~~
+
+后端可以用multiparty
+
+
+
+JQery
+
+~~~html
+<form id="form1" action="http://localhost:8080/" method="post">
+  用户：<input type="text" name="user" /><br>
+  密码：<input type="password" name="pass" /><br>
+  文件：<input type="file" name="f1" /><br>
+  <input type="submit" value="提交">
+</form>
+<script src="jquery.js" charset="utf-8"></script>
+<script>
+$('#form1').on('submit', function (){
+  let formdata=new FormData(this);
+
+  $.ajax({
+    url: this.action,
+    type: this.method,
+    data: formdata,
+    processData: false, // 注意这里两个设置false
+    contentType: false
+  }).then(res=>{
+    alert('成功');
+  }, res=>{
+    alert('失败');
+  });
+
+  return false;
+});
+</script>
+~~~
+
+
+
+### 构建form
+
+~~~html
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div id="div1">
+      用户：<input type="text" id="user" /><br>
+      密码：<input type="password" id="pass" /><br>
+      文件：<input type="file" id="f1" /><br>
+      <input id="btn1" type="button" value="提交">
+    </div>
+  </body>
+  <script>
+  let oBtn=document.querySelector('#btn1');
+  oBtn.onclick=function (){
+    let formdata=new FormData();
+
+    formdata.append('username', document.querySelector('#user').value);
+    formdata.append('password', document.querySelector('#pass').value);
+    formdata.append('f1', document.querySelector('#f1').files[0]);
+      
+    let xhr=new XMLHttpRequest();
+      
+	// 这里自己写请求方法和请求地址
+    xhr.open('post', 'http://localhost:8080/', true);
+    xhr.send(formdata);
+
+    xhr.onreadystatechange=function (){
+      if(xhr.readyState==4){
+        if(xhr.status==200){
+          alert('成功');
+        }else{
+          alert('失败');
+        }
+      }
+    };
+  };
+  </script>
+</html>
+~~~
+
+
+
+### webSocket
+
+性能高
+
+双向
+
+#### socket.io
+
+~~~html
+socket.io
+1.简单、方便
+2.兼容 IE5
+3.自动数据解析
+~~~
+
+~~~shell
+cnpm i socket.io -D
+~~~
+
+
+
+**建立服务器**
+
+~~~javascript
+const http=require('http');
+const io=require('socket.io');
+
+//1.建立普通http
+let server=http.createServer((req, res)=>{});
+server.listen(8080);
+
+//2.建立ws  io监听服务
+let wsServer=io.listen(server);
+wsServer.on('connection', sock=>{
+  // 利用返回的sock对象
+  //sock.emit('name', 数据)
+  //sock.on('name', function (数据){});
+
+  /*sock.on('aaa', function (a, b){
+    console.log(a, b, a+b);
+  });*/
+
+  // 服务器向浏览器发数据
+  setInterval(function (){
+    sock.emit('timer', new Date().getTime());
+  }, 1000);
+});
+
+~~~
+
+
+
+**前端**
+
+~~~html
+<script src="http://localhost:8080/socket.io/socket.io.js" charset="utf-8"></script>
+<script>
+    let sock = io.connect('ws://localhost:8080/');
+	
+    // 浏览器发,服务器收
+    //sock.emit('aaa', 12, 5);
+    
+    // 接受服务器发的数据
+    sock.on('timer', time => {
+        console.log(time);
+    });
+
+//sock.emit
+//sock.on
+</script>
+~~~
+
+
+
+#### 原生
+
+服务器
+
+~~~javascript
+const net=require('net');
+const crypto=require('crypto');
+
+function parseHeader(str){
+  let arr=str.split('\r\n').filter(line=>line);
+  arr.shift();
+
+  let headers={};
+  arr.forEach(line=>{
+    let [name, value]=line.split(':');
+
+    name=name.replace(/^\s+|\s+$/g, '').toLowerCase();
+    value=value.replace(/^\s+|\s+$/g, '');
+
+    headers[name]=value;
+  });
+
+  return headers;
+}
+
+let server=net.createServer(sock=>{
+  sock.once('data', buffer=>{
+    let str=buffer.toString();
+    let headers=parseHeader(str);
+
+    if(headers['upgrade']!='websocket'){
+      console.log('no upgrade');
+      sock.end();
+    }else if(headers['sec-websocket-version']!='13'){
+      console.log('no 13');
+      sock.end();
+    }else{
+      let key=headers['sec-websocket-key'];
+      let uuid='258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
+      let hash=crypto.createHash('sha1');
+
+      hash.update(key+uuid);
+      let key2=hash.digest('base64');
+
+      sock.write(`HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection:upgrade\r\nSec-Websocket-Accept:${key2}\r\n\r\n`);
+    }
+  });
+
+  sock.on('end', ()=>{
+
+  });
+});
+server.listen(8080);
+~~~
+
+
+
+前端
+
+~~~html
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script>
+    let ws=new WebSocket('ws://localhost:8080/');
+
+    // 以下四个事件
+    ws.onopen=function (){
+      alert('连接已建立');
+    };
+    // 有消息过来
+    ws.onmessage=function (){};
+
+    // 双方协商关闭
+    ws.onclose=function (){};
+
+    // 发生错误
+    ws.onerror=function (){};
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>
 ~~~
 
 
