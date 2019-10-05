@@ -1,6 +1,6 @@
 
 
-### 使用
+## 使用
 
 ~~~shell
 # 初始化 package.json
@@ -1293,3 +1293,202 @@ server.listen(8080);
 
 
 
+## 数据库
+
+1.分类
+
+~~~html
+文件型: 简单    access    sqlite
+
+关系型：MySQL
+
+分布式: mongoDB
+
+NoSQL: 支持巨大的并发 memcache    redis(接口缓存 数据缓存)
+~~~
+
+2.安全
+
+~~~html
+注入
+~~~
+
+3.操作
+
+~~~html
+管理
+增删查改
+~~~
+
+
+
+### 管理工具
+
+~~~html
+navicat
+wamp--phpmyadmin
+
+新建数据库
+phpmyadmin
+选择排序方式: utf8_general_ci(常用)    big5_chinese_ci(偏旁部首)
+
+~~~
+
+
+
+### 数据类型
+
+
+
+```html
+数字
+文本
+	varchar-短
+	text-2G
+```
+
+
+
+### 主键
+
+1.不重复
+
+2.性能高
+
+### 
+
+### SQL
+
+数据库查询语言
+
+~~~sql
+增 INSERT
+INSERT INTO <表> (字段, ...) VALUES(值, ...);
+INSERT INTO user_table (username, password) VALUES('lisi', '111111');
+
+删 DELETE
+DELETE FROM <表> WHERE 条件;
+DELETE FROM user_table 会删掉表的所有数据
+DELETE FROM user_table WHERE ID=2;
+
+改 UPDATE
+UPDATE <表> SET 字段=新值,字段=新值,... WHERE 条件;
+UPDATE user_table SET password='654321', username='blue2' WHERE ID=1;
+
+查 SELECT
+SELECT 字段列表 FROM <表> WHERE 条件 ORDER BY 字段 LIMIT 30,30;
+~~~
+
+
+
+## node操作数据库
+
+安装库
+
+~~~shell
+cnpm i mysql -D
+~~~
+
+服务器
+
+~~~javascript
+const http=require('http');
+const mysql=require('mysql');
+
+//1.连接到服务器
+let db=mysql.createConnection({host: 'localhost', user: 'root', password: '', database: '20181101'});
+
+// 查询数据库
+db.query('SELECT * FROM user_table', (err, data)=>{
+  if(err){
+    console.log('错了', err); // 打印报错可以定位问题
+  }else{
+    console.log(JSON.stringify(data);
+  }
+});
+
+// 增
+let username='blue';
+let password='6666666';
+db.query(`INSERT INTO user_table (username, password) VALUES('${username}', '${password}')`, (err, data)=>{
+  if(err){
+    console.log('错了', err);
+  }else{
+    console.log(data);
+  }
+});
+~~~
+
+
+
+​	结合前端实例
+
+~~~javascript
+const http=require('http');
+const mysql=require('mysql');
+const url=require('url');
+const fs=require('fs');
+
+//1.连接到服务器
+let db=mysql.createConnection({host: 'localhost', user: 'root', password: '', database: '20181101'});
+
+//2.跟http配合
+http.createServer((req, res)=>{
+  const {pathname, query}=url.parse(req.url, true);
+
+  if(pathname=='/reg'){
+    //0.参数是否正确
+    let {username, password}=query;
+    if(!username || !password){
+      res.write('用户和密码不能为空');
+      res.end();
+    }else if(username.length>32){
+      res.write('用户名最大32个字');
+      res.end();
+    }else if(password.length>32){
+      res.write('用户名最大32个字');
+      res.end();
+    }else{
+      //1.检查用户名是不是用过
+      db.query(`SELECT ID FROM user_table WHERE username='${username}'`, (err, data)=>{
+        if(err){
+          res.write('数据库有错');
+          res.end();
+        }else if(data.length>0){
+          res.write('此用户名已被占用');
+          res.end();
+        }else{
+          //2.插入
+          db.query(`INSERT INTO user_table (username, password) VALUES('${username}', '${password}')`, err=>{
+            if(err){
+              res.write('数据库有错');
+              res.end();
+            }else{
+              res.write('成功');
+              res.end();
+            }
+          });
+        }
+      });
+    }
+  }else if(pathname=='/login'){
+    //1.检查用户是否存在
+    //2.密码对不对
+    //3.返回
+  }else{
+    fs.readFile('www'+pathname, (err, buffer)=>{
+      if(err){
+        res.writeHeader(404);
+        res.write('not found');
+      }else{
+        res.write(buffer);
+      }
+      res.end();
+    });
+  }
+}).listen(8080);
+~~~
+
+
+
+### co-mysql异步
