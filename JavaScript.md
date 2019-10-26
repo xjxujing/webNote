@@ -1224,10 +1224,10 @@ Object.preventExtensions(obj);
 
 ~~~javascript
 var obj = { x: 1, y: 2 };
-// Object.preventExtensions(obj);
+
+Object.preventExtensions(obj);
+
 Object.seal(obj);
-
-
 Object.defineProperty(obj,"x", {
     writable: true,
     enumerable: false,

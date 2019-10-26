@@ -523,7 +523,7 @@ http.createServer((req, res) => {
 1.定义模块
 
 `CMD` 同步
-`AMD`
+`AMD` 异步
 `ESM`  可延迟加载、分布加载
 
 ~~~html
