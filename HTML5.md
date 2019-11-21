@@ -1455,6 +1455,69 @@ reader.onload = function () {
 
 
 
+## 读取文件
+
+结合掘金 《前端本地文件操作与上传》
+
+[前端本地文件操作与上传]( https://juejin.im/post/5a193b4bf265da43052e528a )
+
+~~~html
+<form>
+    <input type="file" name="file-content" id="file-input" />
+</form>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script>
+    // jQuery
+    $('#file-input').on('change', function() {
+        console.log(this); // 指向input元素
+        console.log(this.value); // 是个假路径
+
+        let formData = new FormData();
+        formData.append('fileName', this.value);
+        console.log(formData); // 打印FormData {}__proto__: FormData 无法看到内容
+
+
+        // 利用FileReader读取文件
+        let fileReader = new FileReader(),
+            fileType = this.files[0].type;
+        // files是file类型的input的属性
+
+
+        console.log(this.files[0]);
+        /* 打印原始File对象
+                    lastModified: 1572327842574
+                    lastModifiedDate: Tue Oct 29 2019 13:44:02 GMT+0800 (中国标准时间) {}
+                    name: "0ef30e9129f8a82d127d9ca244201f3f.jpg"
+                    size: 347821
+                    type: "image/jpeg"
+                    webkitRelativePath: ""
+                    */
+
+        fileReader.onload = function() {
+            if( /^image/.test(fileType) ) {
+                // console.log(this.result)
+                $(`<img src="${this.result}">"`).appendTo('body')
+            }
+
+        }
+
+        // base64方式读取
+        fileReader.readAsDataURL(this.files[0])
+    });
+
+    // 原生监听
+    /*
+    let fileInput = document.querySelector('#file-input');
+        fileInput.addEventListener('change', function() {
+        console.log(fileInput.value);
+    });
+	*/
+</script>
+~~~
+
+
+
 
 
 ## ECharts
