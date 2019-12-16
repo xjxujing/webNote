@@ -1084,14 +1084,14 @@ new Vue({
 ### vue-resource的使用
 
 ~~~css
-npm vue-resource --save-dev  安装模块
+npm vue-resource --save  安装模块
 
 安装好后重启
 ~~~
 
 ~~~js
 回到main.js
-inport VueResource from 'vue-resource'
+import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 
