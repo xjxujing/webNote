@@ -996,7 +996,7 @@ new Vue({
         // 1 字符串dom节点
         // 2 对象 div的class或者id 也可以没有
         // 3 数组 文本节点
-        return createElement("div", ["hi", createElement("p",["liuluwei"])])
+        return createElement("div", [ "hi", createElement( "p",["liuluwei"] ) ] )
     }
 })
 createElement() // 也可以直接放组件
