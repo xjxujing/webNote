@@ -524,6 +524,9 @@ ctx.moveTo(100, 100);
 ctx.lineTo(200, 100);
 ctx.lineTo(200, 200);
 ctx.lineTo(100,100);
+
+ctx.closePath() // 闭合
+ctx.stroke() // 渲染出来：描边渲染
 ~~~
 
 
