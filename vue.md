@@ -1492,7 +1492,7 @@ function render() {
             let name = input.getAttribute("v-model");
             input.value = _data[name];
 
-            input.oninpu= function(){
+            input.oninput = function(){
                 data[name] = this.value;
             }
         })
