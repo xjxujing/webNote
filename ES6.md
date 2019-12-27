@@ -889,7 +889,7 @@ import * as mod1 from 'xxx'
 import mod1 from 'xxx'
 
 // 引入部分成员
-import (a, b as name) from 'xxx'  // b名称变成name
+import { a, b as name } from 'xxx'  // b名称变成name
 
 // 只引入 可引入css文件
 import 'xxx'
