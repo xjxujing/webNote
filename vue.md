@@ -1010,6 +1010,40 @@ createElement() // 也可以直接放组件
 
 
 
+### 父组件子组件路由生命周期
+
+~~~css
+路由全局钩子beforeEach
+
+组件路由钩子beforeRouteEnter
+
+路由全局钩子afterEach
+
+根组件beforeCreate
+
+根组件created
+
+根组件beforeMount
+
+组件beforeCreate
+
+组件created
+
+组件beforeMount
+
+指令binging
+
+指令inserted
+
+组件mounted
+
+根组件mounted
+
+组件路由钩子beforeRouteEnter的next
+
+nextTick
+~~~
+
 
 
 
@@ -1019,10 +1053,6 @@ node_model 下
 vue文件夹 src是源码 core
 dist是打包后
 ~~~
-
-
-
-
 
 
 
