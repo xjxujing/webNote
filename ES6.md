@@ -923,9 +923,9 @@ async/await是ES8的
 
 ~~~javascript
 ES9
-rest/spread类似async/await
+rest/spread 类似 async/await
 异步迭代 
-Promise.fianlly()
+Promise.fianlly ()
 正则表达式增强
 ~~~
 

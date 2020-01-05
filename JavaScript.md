@@ -17,7 +17,7 @@
 
    下载
    解析
-   执行执行
+   执行
 
 ## JS加载模式
 
@@ -1928,6 +1928,43 @@ s.match(/(\w+):(\w+) \1\2/) // 按左括号的顺序
 
 
 [MDN正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions)
+
+
+
+## 内置对象
+
+不依赖宿主环境的对象，在程序执行前就已经存在了
+
+
+
+## 全局对象（Global）
+
+1. 全局对象的方法（全局函数）
+
+~~~html
+isNaN()
+isFinite()
+parseInt()
+parseFloat()
+
+String()
+Number()
+Boolean()
+
+encodeURI()  用于整个URI，YTF-8编码替换所有无效字符，不对特殊字符编码
+encodeURIComponent()  URI中的某一层
+eval()
+~~~
+
+2. 全局对象的属性
+
+
+
+> Web 浏览器实现了承担该角色的 window 对象
+> 全局变量和函数都是 Global 对象的属性
+> setTimeout 是 window 对象的一个方法，如果 window 当做全局对象（浏览器里），是全局函数
+
+
 
 
 
