@@ -1291,6 +1291,49 @@ function clone(obj) {
 var obj1 = clone(obj);
 ~~~
 
+~~~javascript
+// 另一个例子
+let a = {
+    1: '1',
+    q: {
+        a: [1, 2],
+        b: {
+            a: [1]
+        }
+    },
+    a: [3]
+};
+function clone(obj) {
+    var obj1 = {};
+    for (var i in obj) {
+        if (typeof obj[i] == 'object') {
+            obj1[i] = clone(obj[i]);
+        } else {
+            obj1[i] = obj[i];
+        }
+    }
+    return obj1;
+}
+
+function cloneTest(obj, ret = {}) {
+    for (let i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            if (typeof obj[i] == 'object') {
+                obj[i] instanceof Array ? ret[i] = [] : ret[i] = {}
+                cloneTest(obj[i], ret[i]);
+            } else {
+                ret[i] = obj[i];
+            }
+        }
+    }
+    return ret
+}
+
+cloneTest(a, {})
+~~~
+
+
+
 
 
 ~~~javascript
