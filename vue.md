@@ -874,6 +874,20 @@ methods: {
 
 
 
+## 动态组件
+
+~~~html
+<keep-alive>
+	<component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+
+使用场景：
+1.填写表单的数据回显
+2.请求后的数据缓存，只需要请求一次
+~~~
+
+
+
 
 
 传值：基本类型
