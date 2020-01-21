@@ -15,6 +15,39 @@
 4. 变量的延迟加载
 ~~~
 
+~~~less
+// 变量的延迟加载
+@var: 0;
+
+.class {
+    @var: 1;
+    .brass {
+        @var: 2;
+        three: @var; // 是3，等这个{}作用域的变量解析完后
+        @var: 3;
+    }
+    one: @var
+}
+
+
+// 编译后
+.class: {
+    one: 1;
+}
+
+.class .brass {
+    three: 3;
+}
+~~~
+
+
+
+
+
+
+
+
+
 ## 嵌套规则
 
 ~~~html
