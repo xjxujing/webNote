@@ -1,3 +1,9 @@
+[TOC]
+
+
+
+
+
 ## 准备
 
 原生实现的问题
@@ -485,7 +491,7 @@ vue需要跟踪数据的变化过程
 v-pre: 预编译
 提高性能 防止意外
 
-v-clock: 配合CSS 渲染后才会显示
+v-block: 配合CSS 渲染后才会显示
 *[v-block] {
 	display: none
 }
@@ -1343,8 +1349,6 @@ npm install	 -g的提示安装
 
 创建一个集中的数据存储，供程序中所有组件访问
 
-store可以理解为单一数据源 ：	C1  C2  C3  C4
-
 ~~~shell
 # 安装vuex
 npm install vuex --save
@@ -1367,8 +1371,6 @@ Vue响应式核心原理
 ~~~javascript
 深度遍历了data属性的Object.defineProperty() 实现数据劫持？
 Oberserve观察者
-
-
 ~~~
 
 
@@ -1416,7 +1418,7 @@ data() {
 <input type="button" value="显示或隐藏" @click="b=!b">
 动画的name可以是bounce
 <transition-group tag="ul" class="list" name="fade">
-        <li v-for="item,index in arr" @click="del(index)" :key="index">{{item}}</li>
+    <li v-for="item,index in arr" @click="del(index)" :key="index">{{item}}</li>
 </transition-group>
 注意key最好用数据的id
 
@@ -1542,5 +1544,76 @@ function render() {
         })
     }
 </script>
+~~~
+
+
+
+## 单元测试
+
+单元测试就是测试最小单元（一个方法，一个组件）
+
+### TDD & BDD
+
+- Test-Driven Development （测试驱动开发）
+  - 先编写好测试用例代码，然后针对测试用例编写功能代码
+  - 很好的诠释了代码即文档
+  - 清晰地了解软件的需求
+- Behavior Driven Development （行为驱动开发）
+  - 系统业务专家、开发者、测试人员合作讨论，分析需求
+  - 保证程序实现效果和用户需求一致
+
+### 测试工具
+
+- `mocha（测试框架） + chai（断言库） / jest`
+- `karma + Jasmine + chrom-launcher`
+- `karma + mocha +chai / jest`使用`jsdom`
+
+> Karma为前端自动化测试提供了跨浏览器测试的能力
+
+
+
+### 实践
+
+#### 创建项目
+
+~~~shell
+vue create mocha-vue
+
+# 选择手动配置, 并选中下列
+Babel, Router, Vuex, Unit Test
+
+# 路由mode模式
+Yes
+
+# 选择单元测试的方案
+Mocha + chai
+Jest
+
+# 配置文件
+In dedicated config files
+
+# 进入项目目录 (package.json -> scripts -> test:unit )
+npm run test:unit  
+
+# 测试的是tests/unit/example.spec.js (.spec.js结尾)
+~~~
+
+
+
+复制代码到`src/code/parser.js`
+
+前端自测的问题：不会保留测试代码，测试代码会混在源码中
+
+创建测试文件`src/tests/unit/parser.spec.js`
+
+~~~javascript
+import { parser, stringify } from '@/code/parser'
+import {}
+
+// 我要测试的方法
+// 一个用例
+it('我要测试 parser 是否靠谱', () => {
+    parser('name=zfpx')
+})
 ~~~
 
