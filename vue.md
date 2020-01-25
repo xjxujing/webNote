@@ -1602,18 +1602,65 @@ npm run test:unit
 
 复制代码到`src/code/parser.js`
 
+~~~javascript
+export let parser = str => {
+  let obj = {};
+  str.replace(/([^&=]*)=([^&=]*)/g, function() {
+    obj[arguments[1]] = arguments[2];
+  });
+  return obj;
+};
+
+export let stringify = obj => {
+  let arr = [];
+  for (let key in obj) {
+    arr.push(`${key}=${obj[key]}`);
+  }
+  return arr.join("&");
+};
+
+~~~
+
+
+
 前端自测的问题：不会保留测试代码，测试代码会混在源码中
 
 创建测试文件`src/tests/unit/parser.spec.js`
 
 ~~~javascript
-import { parser, stringify } from '@/code/parser'
-import {}
+import { parser, stringify } from "@/code/parser";
+// 引入期望
+import { expect } from "chai";
 
 // 我要测试的方法
 // 一个用例
-it('我要测试 parser 是否靠谱', () => {
-    parser('name=zfpx')
-})
+describe("专门测试 parser", () => {
+  it("我要测试 parser 是否靠谱", () => {
+    expect(parser("name=zfpx")).to.be.deep.equal({ name: "zfpx" });
+  });
+});
+
+describe("专门测试 stringify", () => {
+  it("我要测试 stringify 是否靠谱", () => {
+    expect(stringify({ name: "zfpx" })).to.be.equal("name=zfpx");
+  });
+});
+
+describe("测试方法", () => {
+  it("相等关系", () => {
+    expect(1 + 1).to.be.equal(2);
+    expect([1, 2, 3]).to.be.lengthOf(3);
+    expect(true).to.be.true;
+  });
+});
+
 ~~~
+
+
+
+~~~shell
+npm run test:unit
+~~~
+
+
 
