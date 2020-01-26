@@ -1645,15 +1645,6 @@ describe("专门测试 stringify", () => {
     expect(stringify({ name: "zfpx" })).to.be.equal("name=zfpx");
   });
 });
-
-describe("测试方法", () => {
-  it("相等关系", () => {
-    expect(1 + 1).to.be.equal(2);
-    expect([1, 2, 3]).to.be.lengthOf(3);
-    expect(true).to.be.true;
-  });
-});
-
 ~~~
 
 
@@ -1663,4 +1654,79 @@ npm run test:unit
 ~~~
 
 
+
+#### 常见方法
+
+~~~javascript
+import { parser, stringify } from "@/code/parser";
+// 引入期望
+import { expect } from "chai";
+
+describe("测试方法", () => {
+    it("相等关系", () => {
+      expect(1 + 1).to.be.equal(2);
+      expect([1, 2, 3]).to.be.lengthOf(3);
+      expect(true).to.be.true;
+  });
+    it("包含", () => {
+        expect("zfpx").to.be.contain("zf"); // 包含
+        expect("zfpx").to.be.match(/zf/); // 匹配
+    });
+    it("大于 小于", () => {
+        expect(5).to.be.greaterThan(3);
+        expect(3).to.be.lessThan(5);
+        expect(3).to.be.not.greaterThan(10);
+    });
+});
+~~~
+
+> 可以参考文档`https://www.chaijs.com/api`
+
+
+
+#### 测试UI
+
+`HellWorld.spec.js`
+
+~~~javascript
+import HelloWorld from "@/components/HelloWorld";
+import Vue from "vue";
+import { expect } from "chai";
+import { mount } from "@vue/test-utils";
+
+describe("Hello World .vue-----使用原生方法", () => {
+  it("传递属性后能否正常显示结果", () => {
+    /**
+     * 原生-自己测试vue
+     * extend 方法可以根据实例创建一个类
+     */
+    let Constructor = Vue.extend(HelloWorld);
+
+    /**
+     *  挂载组件 vm.$el
+     *  借助 mocha 的 jsdom 在 node 环境获取当前组件元素
+     */
+    let vm = new Constructor({
+      propsData: { msg: "hello" }
+    }).$mount();
+
+    expect(vm.$el.querySelector("h1").innerHTML).to.be.contain("hello");
+  });
+});
+
+describe("Hello World .vue-----使用库方法", () => {
+  it("测试", () => {
+    // 一步挂载并传参
+    // let wrapper = mount(HelloWorld, {
+    //   propsData: { msg: "hello" }
+    // });
+
+    // 或者这么写
+    let wrapper = mount(HelloWorld);
+    wrapper.setProps({ msg: "hello" });
+
+    expect(wrapper.find("h1").text()).to.be.contain("hello");
+  });
+});
+~~~
 
