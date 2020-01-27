@@ -1574,6 +1574,10 @@ function render() {
 
 ### 实践
 
+可以参考 vue 单元测试的 API
+
+
+
 #### 创建项目
 
 ~~~shell
@@ -1586,8 +1590,8 @@ Babel, Router, Vuex, Unit Test
 Yes
 
 # 选择单元测试的方案
-Mocha + chai
-Jest
+√ Mocha + chai
+  Jest
 
 # 配置文件
 In dedicated config files
@@ -1686,13 +1690,35 @@ describe("测试方法", () => {
 
 #### 测试UI
 
-`HellWorld.spec.js`
+`src/components/HelloWorld.vue`
+
+~~~html
+<template>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "HelloWorld",
+  props: {
+    msg: String
+  }
+};
+</script>
+~~~
+
+
+
+`src/components/HellWorld.spec.js`
 
 ~~~javascript
-import HelloWorld from "@/components/HelloWorld";
-import Vue from "vue";
+import Vue from "vue"; // 使用原生方法，需要引入
 import { expect } from "chai";
 import { mount } from "@vue/test-utils";
+
+import HelloWorld from "@/components/HelloWorld";
 
 describe("Hello World .vue-----使用原生方法", () => {
   it("传递属性后能否正常显示结果", () => {
@@ -1730,3 +1756,64 @@ describe("Hello World .vue-----使用库方法", () => {
 });
 ~~~
 
+
+
+#### 测试功能
+
+`src/components/Counter.vue`
+
+~~~html
+<template>
+  <div>
+    <span id="count">{{ count }}</span>
+    <button @click="increment">+</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      count: 10
+    };
+  },
+
+  methods: {
+    increment() {
+      this.count++;
+    }
+  }
+};
+</script>
+
+<style></style>
+~~~
+
+
+
+`test/unit/Counter.spec.js`
+
+~~~javascript
+import { expect } from "chai";
+import { mount } from "@vue/test-utils";
+
+import Counter from "@/components/Counter";
+
+describe("测试Counter组件", () => {
+  it("测试点击按钮后 能否+1", () => {
+    let wrapper = mount(Counter);
+    expect(wrapper.find("#count").text()).to.be.equal("10");
+
+    // 触发 click 事件
+    wrapper.find("button").trigger("click");
+    expect(wrapper.find("#count").text()).to.be.equal("11");
+      
+    wrapper.find("button").exists(); // 判断 DOM 是否存在 返回布尔值
+    wrapper.find("button").isVisible(); // 判断 DOM 显示还是隐藏
+  });
+});
+~~~
+
+
+
+#### 异步获取数据
