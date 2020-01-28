@@ -37,11 +37,30 @@ webpack的Tapable
 
 ## 安装
 
+
+
 ~~~shell
 npm init -y  # 生成package.json
 
 # 安装webpack核心库、命令行工具、webpack服务器，并保存到开发环境
 npm add webpack webpack-cli webpack-dev-server -D
+~~~
+
+
+
+~~~shell
+# 没有 -y
+npm init
+
+# 自己配置package.json
+package name: gulu
+version: 0.0.1
+description: 这是一个UI框架
+entry command: 
+git repository: 
+keywords: vue,ui
+author: xujing
+license: MIT
 ~~~
 
 
