@@ -457,6 +457,7 @@ space-around //每跟轴两侧空隙相等
 
 可以设置多个主轴，但只有一个交叉轴
 
+7、order
 
 ```
 
@@ -613,7 +614,7 @@ F12控制台Network可以看到所有引入（请求）的资源
 
 
 
-常用的有max-width	min-width	orentation
+常用的有`max-width	min-width	orentation`
 
 - 媒体查询的逻辑操作符
   
@@ -646,11 +647,11 @@ F12控制台Network可以看到所有引入（请求）的资源
 
 - 百分比布局
 
-- flex布局
+- `flex`布局
 
-- 单位rem
+- 单位`rem`
 
-  1rem 取决于 html 的 font-size，1em 一般取决于父级的 font-size大小，如果自己有font-size，则取决于自身的font-size
+  `1rem `取决于`html `的 `font-size`，`1em ` 一般取决于父级的 `font-size`大小，如果自己有`font-size`，则取决于自身的`font-size`
 
   通过 js 动态设置 html 的 font-size 属性值实现等比缩放
 
@@ -681,9 +682,9 @@ F12控制台Network可以看到所有引入（请求）的资源
   
 
   
-- 单位vw vh
+- 单位`vw vh`
 
-  把屏幕分成100份
+  把屏幕分成`100`份
 
   ```html
   <style>
