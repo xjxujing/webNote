@@ -24,9 +24,9 @@ node.js简单、性能高   注意没有window对象、document对象(浏览器�
 
 ## 卸载低版本
 
-1. 卸载Node本身、删除nodejs目录
-2. 手动删除node_modules文件夹 公共cli
-3. C盘用户---当前账户---删除node_modules文件夹 装的包
+1. 卸载 Node 本身、删除 nodejs 目录
+2. 手动删除 node_modules 文件夹 公共 cli
+3. C盘用户---当前账户---删除 node_modules 文件夹 装的包
 
 一般可以直接覆盖安装  brew remove node
 

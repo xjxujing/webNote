@@ -1814,6 +1814,16 @@ describe("测试Counter组件", () => {
 });
 ~~~
 
+~~~javascript
+// BDD （行为驱动测试）
+
+describe "人类"
+it has eyes
+it has mounth
+~~~
+
+
+
 
 
 #### 异步获取数据
