@@ -57,6 +57,17 @@ position: absolute / fixed  和  float   这三个脱离会文档流
 
 
 
+## CSS 伪类顺序
+
+~~~css
+:link
+:visited 
+:hover 经过
+:active 激活
+~~~
+
+
+
 ## CSS属性前缀
 
 来历：W3C小组	
