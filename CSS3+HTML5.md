@@ -483,7 +483,7 @@ space-around //每跟轴两侧空隙相等
 
 4、flex: flex-grow flex-shrink flex-basis //默认值 0 1 auto
 
-5、align-self单个项目在cross轴上的对齐方式，属性值详解如下：
+5、align-self 单个项目在 cross 轴上的对齐方式，属性值详解如下：
 flex-start  //cross-start齐平
 flex-end //cross-end齐平
 center //居中

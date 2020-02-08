@@ -1568,7 +1568,24 @@ function render() {
 - `karma + Jasmine + chrom-launcher`
 - `karma + mocha +chai / jest`使用`jsdom`
 
-> Karma为前端自动化测试提供了跨浏览器测试的能力
+> Karma 为前端自动化测试提供了跨浏览器测试的能力
+
+
+
+~~~html
+karma 打开浏览器，引入 mocha, sinon-chai
+
+mocha 提供 describe ,it
+chai 提供 expect
+sinon 提供 测试的函数
+还引入了测试用例
+
+
+~~~
+
+
+
+
 
 
 
@@ -1821,8 +1838,6 @@ describe "人类"
 it has eyes
 it has mounth
 ~~~
-
-
 
 
 
