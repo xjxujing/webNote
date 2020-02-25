@@ -517,3 +517,94 @@ class Cat extends Animal {
 red
 ~~~
 
+
+
+## Widget
+
+### 简单的一个应用
+
+
+
+### 颜色和字体
+
+[material 官网](https://material.io/design)  =>`Design` => `Color` => `Tools for picking colors`
+
+[谷歌字体库](http://www.googlefonts.cn/)   选择字体`zip`包，解压后，将`ttf`文件放到`/fonts`文件夹下
+
+`pubspec.yaml`配置
+
+~~~yaml
+fonts:
+	- family: IndieFlower
+	fonts:
+		- asset: fonts/IndieFlower.ttf
+		
+	- family: KirangHaerang-Regular
+    fonts:
+        - asset: fonts/KirangHaerang-Regular.ttf
+~~~
+
+
+
+### 热加载和无状态`widget`
+
+1. `hot reload`
+
+   需要用到无状态的`widget`
+
+   ~~~dart
+   class Home extends StatelessWidget {
+     @override // 强类型语言中，重写父类的方法，起到提醒作用
+     Widget build(BuildContext context) {
+       return Container();
+     }
+   }
+   ~~~
+
+   ~~~dart
+   import 'package:flutter/material.dart';
+   
+   void main() => runApp(MaterialApp(home: Home()));
+   
+   class Home extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text("海贼王new"),
+           centerTitle: true,
+           backgroundColor: Colors.red[600],
+         ),
+         body: Center(
+           child: Text("new world!",
+           style: TextStyle(
+             fontSize: 20.0,
+             fontWeight: FontWeight.bold,
+             letterSpacing: 2.0,
+             color: Colors.grey[600],
+             fontFamily: "IndieFlower",
+           ),),
+         ),
+         floatingActionButton: FloatingActionButton(
+           onPressed: null,
+           child: Text("点击"),
+           backgroundColor: Colors.red[600],
+         ),
+       );
+     }
+   }
+   ~~~
+
+   
+
+2. 无状态`widget`
+
+~~~html
+widget 设计的时候不可变
+无状态 widget：image
+有状态 widget: checkbox
+
+~~~
+
+
+
