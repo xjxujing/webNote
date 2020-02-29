@@ -1217,7 +1217,7 @@ axios是目前主流的http请求库，基于Promise实现异步
 封装的ajax 返回的一个promise 还自带了前端拦截器 自动转化json等功能
 
 ~~~javascript
-cnpm install --save axios
+npm install --save axios
 
 main.js中
 import axios from 'axios' 引入模块

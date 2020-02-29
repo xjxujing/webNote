@@ -603,8 +603,191 @@ fonts:
 widget 设计的时候不可变
 无状态 widget：image
 有状态 widget: checkbox
-
 ~~~
 
 
+
+### 图片
+
+1. 网络图片
+
+   ~~~dart
+   // 两种都可
+   body: Center(
+       // child: Image.network(
+       //     "https://images.pexels.com/photos/1553962/pexels-photo-1553962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+       child: Image(
+           image: NetworkImage(
+               "https://images.pexels.com/photos/1553962/pexels-photo-1553962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+       ),
+   ),
+   ~~~
+
+   
+
+2. 本地图片
+
+   `pubspec.yaml`配置
+
+   ~~~yaml
+    # 表示文件夹下面的所有图片，也可具体到图片
+    assets:
+    - assets/images/
+   ~~~
+
+   ~~~dart
+   body: Center(
+       child: Image(
+           image: AssetImage("assets/images/image.jpeg"),
+       ),
+   ),
+   ~~~
+
+   
+
+### 图标和按钮
+
+1. 图标
+
+   ~~~dart
+   body: Center(
+       child: Icon(
+           Icons.add_a_photo,
+           color: Colors.red,
+           size: 100.0,
+       ),
+   ),
+   ~~~
+
+2. 按钮
+
+   (1) 普通按钮
+
+   ~~~dart
+   body: Center(
+       child: RaisedButton(
+           onPressed: () {
+               print("321 茄子");
+           },
+           child: Text("拍照"),
+           color: Colors.red,
+       ),
+   ),
+   ~~~
+
+   （2）带图标的按钮
+
+   ~~~dart
+   body: Center(
+       child: RaisedButton.icon(
+           onPressed: () {
+               print("我是带图标的按钮");
+           },
+           icon: Icon(Icons.mail),
+           label: Text("mail me"), // 一定要有这个
+           color: Colors.red,
+       ),
+   ),
+   ~~~
+
+   （3）按钮图标
+
+   ~~~dart
+   body: Center(
+       child: IconButton(
+           icon: Icon(Icons.add_call),
+           onPressed: () {
+               print("call me");
+           },
+           color: Colors.red[800],
+           iconSize: 98.0,
+       ),
+   ),
+   ~~~
+
+### 两种容器
+
+1.  `Container`
+
+~~~dart
+body: Container(
+    child: Text("hello world"),
+    color: Colors.grey[400],
+    // 三种方式设置 padding
+    // padding: EdgeInsets.all(90.0),
+    // padding: EdgeInsets.fromLTRB(10.0, 20.0, 30.0, 40.0),
+    padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 40.0),
+),
+~~~
+
+2. `Padding`（带有内边距的容器）
+
+~~~dart
+body: Padding(
+    padding: EdgeInsets.all(60.0),
+    child: Text("new world"),
+),
+~~~
+
+
+
+### 行内布局
+
+~~~dart
+body: Row(
+    // 主轴对齐方式（与 flex 类似）
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    // 交叉轴对齐方式（用 baseline 会报错）
+    crossAxisAlignment: CrossAxisAlignment.stretch, // 在交叉轴上拉伸
+    children: <Widget>[
+        Text("hi lucky"),
+        FlatButton(
+            onPressed: () {},
+            color: Colors.amber,
+            child: Text("按钮"),
+        ),
+        Container(
+            color: Colors.cyan,
+            padding: EdgeInsets.all(30.0),
+            child: Text("这是 Container")
+        )
+    ],
+),
+~~~
+
+
+
+### 列布局
+
+~~~dart
+body: Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: <Widget>[
+        Row(
+            children: <Widget>[
+                Text("hihiihihi"),
+                Text("wwwworld")
+            ],
+        ),
+        Container(
+            color: Colors.blue,
+            padding: EdgeInsets.all(20.0),
+            child: Text("one")
+        ),
+        Container(
+            color: Colors.cyan,
+            padding: EdgeInsets.all(30.0),
+            child: Text("two")
+        ),
+        Container(
+            color: Colors.red,
+            padding: EdgeInsets.all(40.0),
+            child: Text("three")
+        )
+    ],
+),
+
+// 注意： 宽度以最宽的元素为准，以此来对齐
+~~~
 
