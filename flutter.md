@@ -791,3 +791,41 @@ body: Column(
 // 注意： 宽度以最宽的元素为准，以此来对齐
 ~~~
 
+### flex
+
+~~~dart
+// Expanded 相当于 flex-grow: 1 (拉伸)
+// 用 flex 给相对比例
+body: Row(children: <Widget>[
+    // 加图片
+    Expanded(
+        flex: 2,
+        child: Image.asset("assets/images/image.jpeg"),
+    ),
+    Expanded(
+        flex: 1,
+        child: Container(
+            child: Text("1"),
+            color: Colors.cyan,
+            padding: EdgeInsets.all(30.0),
+        ),
+    ),
+    Expanded(
+        flex: 2,
+        child: Container(
+            child: Text("2"),
+            color: Colors.amber,
+            padding: EdgeInsets.all(30.0),
+        ),
+    ),
+    Expanded(
+        flex: 3,
+        child: Container(
+            child: Text("3"),
+            color: Colors.red,
+            padding: EdgeInsets.all(30.0),
+        ),
+    ),
+]),
+~~~
+
