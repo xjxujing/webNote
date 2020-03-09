@@ -2426,7 +2426,7 @@ none: 不保持自己的宽高，扭曲纵横比以充分适应viewport
 拖放API基础
 
 ```css
-要加draggable属性
+要加 draggable 属性
 
 事件：
 dragstart 被拖放元素 开始被拖拽时触发
