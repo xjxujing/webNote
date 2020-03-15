@@ -254,6 +254,8 @@
 }
 ~~~
 
+### 
+
 
 
 ## less的计算
@@ -521,6 +523,22 @@ juzhong-extend.less  注意是继承类，不要带括号
 ~~~
 
 
+
+## scss
+
+~~~scss
+使用混合（mixin）：
+@include box-shadow2;
+
+使用函数加参数：
+$border-color: #999;
+$border-color-light: lignten($border-color, )
+
+使用继承 （placeholder）
+@extend .box-shadow;
+
+
+~~~
 
 
 
