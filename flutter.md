@@ -855,7 +855,7 @@ class Home extends StatelessWidget {
           children: <Widget>[
             Center(
               child: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/image.jpeg"),
+                // backgroundImage: AssetImage("assets/images/image.jpeg")
                 radius: 40.0,
               ),
             ),
@@ -913,4 +913,142 @@ class Home extends StatelessWidget {
 ~~~
 
 
+
+### 有状态的 `widget`
+
+~~~dart
+class Homee extends StatefulWidget {
+  @override
+  _HomeeState createState() => _HomeeState();
+}
+
+class _HomeeState extends State<Homee> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // 和无状态的一样，可以把内容放在这里
+  }
+}
+~~~
+
+> 可以使用 IDE 的小灯泡 ，直接把个人名片 demo 转成有状态 （convert to ）
+
+
+
+~~~dart
+使用 setState 更改状态
+改变状态需要重启
+~~~
+
+
+
+### 使用列表数据
+
+~~~dart
+class _HomeState extends State<Home> {
+//  定义一个列表
+  List<String> datas = ["hello world", "hello flutter", "hello niuniu"];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("个人介绍"),
+        centerTitle: true,
+        backgroundColor: Colors.grey[850],
+      ),
+      body: Column(
+//        children: datas.map((data){
+//          return Text(data);
+//        }).toList(),
+        children: datas.map((data) => Text(data)).toList(),
+//        children: <Widget>[
+//          Text("hello world"),
+//          Text("hello flutter"),
+//          Text("hello niuniu"),
+//        ],
+      ),
+    );
+  }
+}
+~~~
+
+
+
+### 自定义对象数据
+
+
+
+两种写法
+
+~~~dart
+class Datas {
+  String text;
+  String author;
+
+  Datas({String text, String author}) {
+    this.text = text;
+    this.author = author;
+  }
+}
+
+// 实例化
+Datas myData = Datas(text: "hello", author: "niuniu");
+~~~
+
+
+
+~~~dart
+class Datas {
+  String text;
+  String author;
+
+  Datas({this.text, this.author}) {}
+}
+// 实例化
+Datas myData = Datas(text: "hello", author: "niuniu");
+~~~
+
+
+
+~~~dart
+class Datas {
+  String text;
+  String author;
+
+  Datas({this.text, this.author});
+}
+
+class _HomeState extends State<Home> {
+  List<Datas> datas = [
+    Datas(text: "hello", author: "lucy"),
+    Datas(text: "hello", author: "niuniu"),
+    Datas(text: "hello", author: "lufei"),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("个人介绍"),
+        centerTitle: true,
+        backgroundColor: Colors.grey[850],
+      ),
+      body: Column(
+//        children: datas.map((data){
+//          return Text(data);
+//        }).toList(),
+        children:
+            datas.map((data) => Text('${data.text}:${data.author}')).toList(),
+//        children: <Widget>[
+//          Text("hello world"),
+//          Text("hello flutter"),
+//          Text("hello niuniu"),
+//        ],
+      ),
+    );
+  }
+}
+~~~
 
