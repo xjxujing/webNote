@@ -1052,3 +1052,35 @@ class _HomeState extends State<Home> {
 }
 ~~~
 
+
+
+### 封装 `widget`
+
+### 优化封装卡片
+
+通过`flutterOutline` 把封装的 `Widget` 右击 `Extract Widget`
+
+分别抽离了出`datas_card.dart`（自己的卡片 `widget`）和 `datas.dart`（定义了类）
+
+
+
+### 事件传递
+
+注意：
+
+1. 无状态的 `Widget`里面定义的数据最好使用关键字
+
+~~~dart
+表示数据不可变：
+final Datas data;
+final Function delete;
+~~~
+
+2. 数据在哪里，操作就在哪里
+
+   在 `datas_card.dart` 里面注册事件
+
+   在`main.dart`里面执行事件
+
+
+
