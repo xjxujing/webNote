@@ -1084,3 +1084,103 @@ final Function delete;
 
 
 
+## 重构项目
+
+目录结构：
+
+`pages/home.dart`
+
+`pages/choose_location.dart`
+
+`pages/loading.dart`
+
+
+
+`pages/home.dart`
+
+~~~dart
+import 'package:flutter/material.dart';
+
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(child: Text("home screen")), // SafeArea Widget 从状态栏下面开始
+    );
+  }
+}
+
+~~~
+
+
+
+## 使用路由
+
+~~~dart
+// 配置路由
+initialRoute: "/home",
+routes: {
+    "/": (context) => Loading(),
+    "/home": (context) => Home(),
+    "/location": (context) => ChooseLocation()
+},
+
+onPressed: () {
+    Navigator.pushNamed(context, "/location"); // 使用 Navigator 跳转
+},
+跳转到新的页面相当于在原有页面加了一个，appBar 里面会默认又返回按钮
+~~~
+
+
+
+## 生命周期函数
+
+1. 无状态的`Widget`
+   1. 整个周期所定义的状态不会发生变化
+   2. 所创建的函数只会运行一次
+
+2. 有状态的`Widget`
+   1. 整个周期状态是可以发生变化的
+   2. 可以通过`setState`实现状态更新
+
+- `initSate()` `Widget`被创建时执行（一次）
+- `Build()` 构建渲染`Widget`，一旦使用`setState()`就会执行`Build()`
+- `Dispose()`  `Widget`被删除，就会触发
+
+
+
+## 代码异步操作
+
+`async` 和 `await` 注意配合`Future`使用
+
+
+
+## http 模块
+
+搜索`Dart packages` 相当于使用`npm`包、插件
+
+在这里搜`http`
+
+按照文档复制到`pubspec.yaml`
+
+然后安装
+
+测试接口`jsonplaceholder`
+
+
+
+## World Time API
+
+[世界时间 API 网址](wordtimeapi.org)
+
+
+
+
+
+## 封装请求
