@@ -521,6 +521,14 @@ red
 
 ## Widget
 
+布局 widget（可见）
+
+可见 widget（不可见）
+
+
+
+
+
 ### 简单的一个应用
 
 
@@ -1094,8 +1102,6 @@ final Function delete;
 
 `pages/loading.dart`
 
-
-
 `pages/home.dart`
 
 ~~~dart
@@ -1134,7 +1140,7 @@ routes: {
 onPressed: () {
     Navigator.pushNamed(context, "/location"); // 使用 Navigator 跳转
 },
-跳转到新的页面相当于在原有页面加了一个，appBar 里面会默认又返回按钮
+// 跳转到新的页面相当于在原有页面加了一个，appBar 里面会默认又返回按钮
 ~~~
 
 
@@ -1177,7 +1183,7 @@ onPressed: () {
 
 ## World Time API
 
-[世界时间 API 网址](wordtimeapi.org)
+[世界时间 API 网址](http://worldtimeapi.org/)
 
 
 
