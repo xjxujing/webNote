@@ -1671,7 +1671,7 @@ function showID(id){
 }
 function setClick(){
     var ary = document.getElementsByTagName("li");
-    for(var i = 0;i< 5; i++){
+    for(var i = 0;i < 5; i++){
         let id = i;
         ary[id].onclick = function (){
             showID(id + 1);

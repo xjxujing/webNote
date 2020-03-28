@@ -1579,13 +1579,7 @@ mocha 提供 describe ,it
 chai 提供 expect
 sinon 提供 测试的函数
 还引入了测试用例
-
-
 ~~~
-
-
-
-
 
 
 
