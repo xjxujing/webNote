@@ -727,7 +727,7 @@ F12控制台Network可以看到所有引入（请求）的资源
 ​	[查看设备像素比的网站](https://bjango.com/articles/min-device-pixel-ratio/)
 
 ```javascript
-viewport是严格等于浏览器的窗口。在桌面浏览器中，viewport就是浏览器窗口的宽度高度。但在移动端设备上就有点复杂。
+viewport 是严格等于浏览器的窗口。在桌面浏览器中，viewport 就是浏览器窗口的宽度高度。但在移动端设备上就有点复杂。
 
 viewport就是浏览器上，用来显示网页的那一部分的区域。iOS及新版本浏览器默认viewport为980px。
 
@@ -736,10 +736,10 @@ var oMeta = document.createElement("meta");
 oMeta.setAttribute("name","viewport");
 
 if(window.devicePixelRatio >= 2) {
-    oMeta.setAttribute("contenr","width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, user-scalable=no");
+    oMeta.setAttribute("content","width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, user-scalable=no");
 }
 if(window.devicePixelRatio >= 3) {
-    oMeta.setAttribute("contenr","width=device-width, initial-scale=0.3, minimum-scale=0.3, maximum-scale=0.3, user-scalable=no");
+    oMeta.setAttribute("content","width=device-width, initial-scale=0.3, minimum-scale=0.3, maximum-scale=0.3, user-scalable=no");
 }
 
 document.getElementsByTagName("head")[0].appendChild(oMeta);
@@ -747,22 +747,22 @@ document.getElementsByTagName("head")[0].appendChild(oMeta);
 // 公司开发一般给750px的设计稿，iphone6/7/8，dpr = 2,  宽度375
 ```
 
-viewport默认有6个属性：
+`viewport`默认有6个属性：
 
-| 属性          |                                                          |
-| ------------- | -------------------------------------------------------- |
-| width         | 设置viewport宽度，可以为一个整数，或字符串"device-width" |
-| initial-scale | 页面初始的缩放值，为数字，可以是小数                     |
-| minimum-scale | 允许用户的最小缩放值，为数字，可以是小数                 |
-| maximum-scale | 允许用户的最大缩放值，为数字，可以是小数                 |
-| height        | 设置viewport的高度（一般不管，高度由内容撑开）           |
-| user-scalable | 允许用户进行缩放，'no'为不允许，'yes’为允许              |
+| 属性          |                                                            |
+| ------------- | ---------------------------------------------------------- |
+| width         | 设置`viewport`宽度，可以为一个整数，或字符串`device-width` |
+| initial-scale | 页面初始的缩放值，为数字，可以是小数                       |
+| minimum-scale | 允许用户的最小缩放值，为数字，可以是小数                   |
+| maximum-scale | 允许用户的最大缩放值，为数字，可以是小数                   |
+| height        | 设置viewport的高度（一般不管，高度由内容撑开）             |
+| user-scalable | 允许用户进行缩放，`no`为不允许，`yes`为允许                |
 
 
 
 举例：
-iphone6/7/8  dpr = 2 ,,两个物理像素等于1个逻辑像素
-本身设备宽度是375px，排了750个光子，所以逻辑像素要放大2倍才能每个像素对应1个光子
+iphone6 / 7 / 8 ，dpr = 2 两个物理像素等于1个逻辑像素
+本身设备宽度是 375px，排了 750 个光子，所以逻辑像素要放大2倍才能每个像素对应 1 个光子
 
 
 

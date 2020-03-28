@@ -117,8 +117,9 @@ let {code,data} = $.ajax("xxx"); // 可以直接拿出值
 
 
 
+举例：
+
 ~~~javascript
-举例
 let {a,b} = {a: 12, b: 5, c: 88};
 console.log(a,b);  // 打印12 5,注意c会报错undefined
 ~~~
@@ -275,8 +276,6 @@ fn.call(obj);  // 打印1 因为setTimeout定时器 100ms后执行fn,这时候�
 ### 参数展开
 
 ~~~javascript
-展开参数
-收集参数
 function show(a,b, ...c) { // 必须是这个格式
 	console.log(a,b,c);
 }
@@ -521,12 +520,13 @@ Promise.all([
 
 竞速
 
-可能用法： cdn读取，哪个快用哪个 
+可能用法： cdn 读取，哪个快用哪个 
 
 都失败才走失败的回调，只要有一个成功就用哪个
 
+举例：
+
 ~~~javascript
-举例
 // 比如不同用户请求不同的广告接口
 if (user_data.vip) { // vip用户，vip广告
     let user_data = $.ajax({ url: "./1.txt", dataType: "json" });
@@ -549,9 +549,9 @@ ajax("httpxxxx/api/user").then(user_data=>{
 
 ### async/await
 
-generator/yield 已经被废弃 生成器和暂停
+`generator/ yield `已经被废弃 生成器和暂停
 
-async/await 函数的特殊形式
+`async/await `函数的特殊形式
 
 ~~~javascript
 async function show() { // 声明函数中包含异步操作
