@@ -1573,7 +1573,7 @@ function render() {
 
 
 ~~~html
-karma 打开浏览器，引入 mocha, sinon-chai
+karma 打开浏览器，引入 mocha, sinon-chai (使 chai 支持断言)
 
 mocha 提供 describe ,it
 chai 提供 expect
@@ -1836,3 +1836,4 @@ it has mounth
 
 
 #### 异步获取数据
+
