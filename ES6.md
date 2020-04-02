@@ -330,7 +330,7 @@ key和value必须要有双引号，不过js中可以简写
 
 
 
-## Babel.js编译
+## Babel.js  转译
 
 语法检查、可单独可组合（webpack）
 
@@ -544,6 +544,14 @@ ajax("httpxxxx/api/user").then(user_data=>{
     alert("xxx");
 })
 ~~~
+
+
+
+### 普通请求封装成 Promise
+
+
+
+
 
 
 

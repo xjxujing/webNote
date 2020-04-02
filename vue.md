@@ -1212,7 +1212,7 @@ proxyTable: {
 
 ### axios
 
-axios是目前主流的http请求库，基于Promise实现异步
+axios 是目前主流的 http 请求库，基于 Promise 实现异步
 
 封装的ajax 返回的一个promise 还自带了前端拦截器 自动转化json等功能
 
