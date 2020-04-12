@@ -531,13 +531,13 @@ function add(x,y){
 
 2. 局部作用域（局部变量）
 
-注意函数内定义变量不加var，会被认为是全局变量
+注意函数内定义变量不加 var，会被认为是全局变量
 
 ### 预解析
 
-js不是编译类的语言  是解析语言
+js 不是编译类的语言  是解析语言
 
-浏览器（js解析器）获得js文件时 ，不立刻执行代码 ，先全篇快速扫描 ，针对变量预先解析
+浏览器（ js 解析器）获得 js 文件时 ，不立刻执行代码 ，先全篇快速扫描 ，针对变量预先解析
 
 **变量声明**、 **函数声明提前**
 
@@ -560,11 +560,13 @@ js不是编译类的语言  是解析语言
 **闭包是指有权访问另一个函数作用域中变量的函数**
 
 ~~~javascript
-// 计数器每次调用都加一
+// 计数器每次调用都加一，counter 定义在里面，让这个方法是完整的！
 function add(){
     var counter = 0;
-    counte++;
+    counter++;
+    console.log("counter  = " + counter)
 }
+// 这样写，counter 一直是 1
 
 
 // 换种写法
@@ -573,32 +575,31 @@ function add(){
     
     plus = function(){  //此处才真正有效 需要调用这个方法
         counter ++; //伪全局变量  有全部变量的生命周期
-        console.log("counter  = " + counter);
+        console.log("counter = " + counter);
     }
 }
-
-// plus没有加var  是全局函数
+// plus 没有加 var，是全局函数
 
 // 调用方式
-add();  // 先调用add() counter初始化为1
-plus();  
-plus();
+add();  // 先调用add() counter 初始化为 0
+plus(); // 然后就可以实现了
+plus(); 
 
 // 注意外面不能直接访问counter，counter是局部变量
 
 
 // 再换种写法
 function add(){
-    var counter = 0;  //局部变量
+    var counter = 0;  // 局部变量
     
-    var plus = function() {  //此处才真正有效 需要调用这个方法
-        counter ++; //伪全局变量  有全部变量的生命周期
-        console.log("counter  = " + counter);
+    var plus = function() {  // 此处才真正有效 需要调用这个方法
+        counter ++; // 伪全局变量，有全部变量的生命周期
+        console.log("counter = " + counter);
     }
     return plus;
 }
 
-var plus = add();
+var plus = add(); // 前面方法中定义的 plus 是局部的，这里调用 add 后返回值赋给另一个变量，可以是其他名字
 plus();
 plus();
 
@@ -615,14 +616,14 @@ function add(){
     }
 }
 // 函数的立即执行：函数声明和函数执行放在一起
-(add)();
+add()();
 
-// 把add换成本身的内容,再加上var plus = , 得到闭包传统（标准）的写法
+// 把 add 换成本身的内容,再加上var plus = , 得到闭包传统（标准）的写法
 var plus = (function() {
     var counter = 0;  //局部变量
     
     return function(){  //此处才真正有效 需要调用这个方法
-        counter ++; //伪全局变量  有全部变量的生命周期
+        counter ++; // 伪全局变量  有全部变量的生命周期
         console.log("counter  = " + counter);
     }
 })();
