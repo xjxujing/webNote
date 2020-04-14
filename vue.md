@@ -939,7 +939,7 @@ methods: {
 beforeDestory(){
         alert('组件销毁前');
     }
-Destoryed(){
+destoryed(){
         alert('组件销毁前');
     }
 ~~~
