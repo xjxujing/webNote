@@ -475,23 +475,22 @@ space-around //每跟轴两侧空隙相等
 **flex元素属性**
 
 ```css
-1、flex-basis: length; //定义该元素的main-size。
+1、flex-basis: length; // 定义该元素的 main-size。
 
-2、flex-grow: number; //对剩余的空间设置拉伸比例，默认值为0(不拉伸)
+2、flex-grow: number; // 对剩余的空间设置拉伸比例，默认值为0(不拉伸)
 
-3、flex-shrink: number; //压缩比例，默认值为1
+3、flex-shrink: number; // 压缩比例，默认值为1
 
 4、flex: flex-grow flex-shrink flex-basis //默认值 0 1 auto
 
 5、align-self 单个项目在 cross 轴上的对齐方式，属性值详解如下：
-flex-start  //cross-start齐平
-flex-end //cross-end齐平
-center //居中
-baseline //第一行文字
-stretch //为设置高度时 该元素高度为flex容器高度 
+flex-start  // cross-start 齐平
+flex-end // cross-end 齐平
+center // 居中
+baseline // 第一行文字
+stretch // 为设置高度时 该元素高度为 flex 容器高度 
 
 6、order：number; //该项目排列的位置 值从小到大排列
-
 ```
 
 
@@ -1262,11 +1261,11 @@ CSS1Compat 表示标准模式 按照规范解析
 
 ## HTML5结构元素
 
-1.header整个页面的头部，某块区域的标题、页眉。
+1.header 整个页面的头部，某块区域的标题、页眉。
 
-2.footer文档或者某一块的底部、页脚
+2.footer 文档或者某一块的底部、页脚
 
-3.main主要内容区域
+3.main 主要内容区域
 
 4.nav 导航链接部分
 
@@ -1274,7 +1273,7 @@ CSS1Compat 表示标准模式 按照规范解析
 
 6.article 它代表一个独立的、完整的相关内容块。  比如博客包括博文和评论完整的内容
 
-7.aside元素表示一个页面的一部分， 它的内容跟这个页面的其它内容的关联性不强，或者是没有关联，单独存在。
+7.aside 元素表示一个页面的一部分， 它的内容跟这个页面的其它内容的关联性不强，或者是没有关联，单独存在。
 页面广告有的是frame做的，然后插到页面上的
 
 8.figure 标签规定独立的流内容（图像、图表、照片、代码等等） 单独拿出来不影响阅读
@@ -1283,13 +1282,13 @@ CSS1Compat 表示标准模式 按照规范解析
 
 ## HTML5功能元素
 
-video视频
+video 视频
 
 ```html
 <video width=500  controls  src=""></video>
 ```
 
-audio音频
+audio 音频
 
 ```html
 <audio src="" controls></audio>	本身没有大小
@@ -1304,7 +1303,7 @@ source 资源
 </audio>
 ```
 
-figcaption标签定义 figure 元素的标题（了解）
+figcaption 标签定义 figure 元素的标题（了解）
 
 ​	h1,h2可以替代
 
