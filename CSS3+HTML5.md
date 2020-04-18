@@ -1082,7 +1082,6 @@ animation-direction 规定是否应该轮流反向播放动画。属性值详解
         reverse //动画反向播放
         alternate //动画在奇数次正向，偶数次反向播放
         alternate-reverse //动画在奇数次反向，偶数次正向播放
-
 ```
 
 
