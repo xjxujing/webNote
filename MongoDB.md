@@ -1,5 +1,3 @@
-
-
 ~~~html
 NoSQL Database(JS)
 
@@ -127,6 +125,9 @@ module.exports = MarioChar;
 ~~~html
 用于测试Mongoose的框架
 
+测试数据库是否连接成功
+测试数据增删改查
+
 npmjs.com
 搜索mocha
 ~~~
@@ -142,13 +143,14 @@ npm install mocha --save
 test文件夹下
 demotest.js
 
-//
 const macha = require("mocha");
 const assert = require("assert"); //自带的 引入断言模块
 
-
+/**
+ * 测试哪个数据库
+ * @param 参数1 写测试哪个 参数2
+ */
 // 测试时对当前测试的一个描述
-// 测试哪个数据库 参数1 写测试哪个 参数2 
 descirbe("demo test",function() {
     // 创建需要测试的任务
     // 参数1 任务名 
