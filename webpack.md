@@ -43,7 +43,7 @@ webpack的Tapable
 npm init -y  # 生成package.json
 
 # 安装webpack核心库、命令行工具、webpack服务器，并保存到开发环境
-npm add webpack webpack-cli webpack-dev-server -D
+npm i webpack webpack-cli webpack-dev-server -D
 ~~~
 
 
