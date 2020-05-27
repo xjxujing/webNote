@@ -936,7 +936,7 @@ methods: {
     }
 
 
-beforeDestory(){
+beforeDestroy(){
         alert('组件销毁前');
     }
 destoryed(){
@@ -996,7 +996,7 @@ watch: {}对具体某个数变化做统一处理
 
 
 5.实例销毁
-销毁前beforeDestory() 解除所有事件绑定 数据监听 销毁组件
+销毁前beforeDestroy() 解除所有事件绑定 数据监听 销毁组件
 销毁后destoryed
 vm.$destory()
 ~~~
