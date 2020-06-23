@@ -396,7 +396,7 @@ columns: column-width | column-count;。//每列的宽度  或  显示的列数
 
 column-width //每列的宽度
 
-column-conunt //显示的列数
+column-count //显示的列数
 
 column-gap // 列宽，默认由font-size决定
 
