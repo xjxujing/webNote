@@ -527,17 +527,36 @@ juzhong-extend.less  注意是继承类，不要带括号
 ## scss
 
 ~~~scss
-使用混合（mixin）：
-@include box-shadow2;
-
-使用函数加参数：
-$border-color: #999;
-$border-color-light: lignten($border-color, )
+1. 使用混合（mixin）：
+@mixin paneactive($image, $level, $vertical) {
+  background: url($image) no-repeat $level $vertical;
+  height: 100px;
+  width: 30px;
+  position: relative;
+  top: 50%;
+}
+&--left-active {
+  @include paneactive($btn-flip, 0, 0);
+}
+&--right-active {
+  @include paneactive($btn-flip, 0, -105px);
+}
 
     
-使用继承 （placeholder）：不重复输出这些样式属性；
-@extend .box-shadow;
-
+2. 使用继承 （placeholder）：不重复输出这些样式属性；
+.common-mod {
+  height: 250px;
+  width: 50%;
+  background-color: #fff;
+  text-align: center;
+}
+&-mod {
+  @extend .common-mod;
+  float: right;
+}
+&-mod2 {
+  @extend .common-mod;
+}
 
 综上所述，如果你需要传参数，只能使用 @mixin 混合器，否则用 @extend 继承来实现更优。
 ~~~
