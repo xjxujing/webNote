@@ -534,10 +534,12 @@ juzhong-extend.less  注意是继承类，不要带括号
 $border-color: #999;
 $border-color-light: lignten($border-color, )
 
-使用继承 （placeholder）
+    
+使用继承 （placeholder）：不重复输出这些样式属性；
 @extend .box-shadow;
 
 
+综上所述，如果你需要传参数，只能使用 @mixin 混合器，否则用 @extend 继承来实现更优。
 ~~~
 
 
