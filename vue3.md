@@ -78,7 +78,7 @@ npx create-vite-app <project-name>
 npm info vue-router versions
 
 # 安装
-yarn add vur-router@4.0.0-beta.3
+yarn add vue-router@4.0.0-beta.3
 ```
 
 main.js => main.ts
