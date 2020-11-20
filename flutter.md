@@ -63,7 +63,7 @@ flutter create first_app (要使用下划线)
 然后会提示 Configure plugins, 安装 flutter, ok => accept 再 restart
 ~~~
 
-
+###  在编辑器中运行模拟器
 
 ~~~shell
 # 在编辑器中运行模拟器
@@ -115,15 +115,118 @@ first_app.iml
 pubspec.yaml 相当于依赖包（重要）
 ~~~
 
+## vscode
 
+安装flutter dart 插件
 
 ## Dart 语法
 
 ### main 入口文件
 
+项目文件的 main.dart
+
+```dart
+void main() {
+  print('hello world');
+}
+
+// 单行注释， 所有代码写在 main 里面
+/**
+*
+*多行注释
+*/
+```
+
+### 变量和数据类型
+
+```dart
+void main() {
+    // Number: int / double
+    int score = 32;
+    double percentage = 3.14;
+    
+    // String
+    String name = "哈哈";
+    
+    // String 转义
+    String s1 = 'I\'m herny';
+    
+    // String 拼接
+    print("my name is " + name);
+   	print("my name's length is " + name.length.toString());
+    print("my name's length is ${name.length}");
+    
+     // $
+    int a = 20;
+   	int b = 10;
+    print("the sum of $a and $b is ${a + b}");
+    
+    // Boolean
+    bool isValid = true;    
+}
+```
+
 ### 分支语句
 
+```dart
+void main() {
+    var salary = 20;
+    if (salary < 2000) {
+        print("$salary < 2000");
+    }
+    
+    // ? : 表达式
+    int a = 2;
+    int b = 3;
+    a < b ? print("$a 更小") : print("$b 更小");
+    
+    // ?? 表达式 ( 相当于 || )
+    String name = "啦啦";
+    String nameToPrint = name ?? "lalal";
+    
+    // switch
+    String grade = "A";
+    switch (grade) {
+        case 'A':
+            print('棒！');
+            break;
+        case 'B':
+            print('不错！');
+            break;
+        default:
+            print('....');
+    }
+}
+```
+
 ### 循环、列表、关键字
+
+```dart
+
+void main() {
+    // for loop 
+    for(int i = 0; i <= 10; i++){
+        if(i % 2 == 0){
+            print(i);
+        }
+    }
+    
+    List people = ["Bucky", "Luffy", "Kitty"];
+    for (int i = 0; i <= people.length; i++) {
+        print(people[i]);
+    }
+    
+    // for in 
+    for (String person in people) {
+        print(person);
+    }
+    
+    // while loop
+    
+}
+```
+
+
 
 ### 函数的9个知识点
 
