@@ -221,7 +221,34 @@ void main() {
         print(person);
     }
     
-    // while loop
+     int i = 0;
+    // while loop 不知道循环次数
+    while(i < people.length) {
+        print(people[i]);
+        i++;
+    }
+    // do while loop
+    do {
+        print(people[i]);
+        i++;
+    }while (i < people.length);
+    
+  
+    // break 停止这个循环，continue 停止某次的循环
+    // 指定停止某个循环
+      outerLoop:
+      for (int i = 0; i < 3; i++) {
+
+        innerLoop:
+        for (int j = 0; j < 3; j++) {
+
+          print("$i, $j");
+
+          if(i == 2 && j == 2){
+            break innerLoop;
+          }
+        }
+  }
     
 }
 ```
