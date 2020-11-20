@@ -588,8 +588,10 @@ delete obj.e;
 // 注意这种写法
 var x = 1;
 var y = 2;
-function add() {
-    // console.log(this); 这里指向window对象
+function add(x, y) {
+    console.log(this); //不用 call,这里指向window对象
+    this.x = x
+    this.y = y
     return this.x + this.y;
 }
 var obj = {
