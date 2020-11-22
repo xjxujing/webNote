@@ -257,7 +257,54 @@ void main() {
 
 ### 函数的9个知识点
 
+```dart
+void main() {
+    sumValue();
+}
+// 1. 定义函数和 2. 函数传参
+void sumValue(int a, int b) {
+    int sum = a + b;
+    print("a + b 的和为：$sum");
+}
+
+// 3. 函数返回值  4. 如果没有 return 返回 null
+int sumValue(int a, int b) {
+    int sum = a + b;
+    return sum;
+}
+
+// 5. 箭头函数（无返回值）
+void sumValue(int a, int b) => print("和为：${a + b}");
+
+
+// 6. 箭头函数（有返回值）
+int sumValue(int a, int b) => a + b;
+
+// 7. 函数参数（可选参数）
+void printCities(String name1, [String name2,String name3]){
+    
+}
+
+// 8.函数参数命名,调用的时候要加上参数名字
+void findVolume(int length, int height,{int width}) {
+    
+}
+
+// 9. 函数参数默认值
+void findVolume(int length, {int height, int width = 20}) {
+    
+}
+```
+
+
+
+
+
 ### 异常捕获
+
+
+
+try catch on finally
 
 一个异常：
 
@@ -439,13 +486,14 @@ class Student {
      int id;
      String name;
    
+       // 构造函数，注意前面没有关键字
      Student(int id, String name) {
        print("这个就是构造函数，只要对象被实例，就会自动执行，并且先执行");
        this.id = id;
        this.name = name;
      }
      
-     // 也可以写成下面这样
+     // 也可以写成下面这样!
      // Student(int _id, String _name) {
      //   print("这个就是构造函数，只要对象被实例，就会自动执行，并且先执行");
      //   id = _id;
@@ -502,9 +550,7 @@ class Student {
      Student(this.id, this.name);
    
      // 自定义构造函数
-     Student.myCustomConstructor(this.id, this.name) {
-       print("hello custom constructor");
-     }
+     Student.myCustomConstructor(this.id, this.name);
    
      void study() {
        print("${this.name} is studing");
@@ -621,26 +667,29 @@ void main() {
 }
 
 class Animal {
-  String color = "yellow";
-  void eat() {
-    print("eat");
-  }
+    String color = "yellow";
+    void eat() {
+        print("Animal eat");
+    }
 }
 
 class Dog extends Animal {
-  String color = "red";
-  String name;
-  void bark() {
-    print("bark");
-  }
+    String color = "red";
+    String name;
+    void bark() {
+        print("bark");
+    }
+    void eat() {
+        print("Dog eat");
+    }
 }
 
 class Cat extends Animal {
-  // String color;
-  int age;
-  void meow() {
-    print("meow");
-  }
+    // String color;
+    int age;
+    void meow() {
+        print("meow");
+    }
 }
 
 // 打印
@@ -654,10 +703,6 @@ red
 布局 widget（可见）
 
 可见 widget（不可见）
-
-
-
-
 
 ### 简单的一个应用
 
