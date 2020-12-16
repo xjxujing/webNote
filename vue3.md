@@ -234,10 +234,6 @@ App.vue
         loading></Button>
 ```
 
-
-
-
-
 ```vue
 <template>
 	<div :size="size">
