@@ -185,7 +185,7 @@ App.vue
         name: 'App',
         setup() {
             const width = document.documentElement.clientWith
-            // 后面改成 asideVisible
+            // 后面改成 asideVisible, tips： vscode 安装 auto import 插件，Tab 可快捷引入
             const menuVisible = ref(width <= 500 ? false : true)
             provide('xxx', menuVisible) // set
         }
