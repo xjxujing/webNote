@@ -327,7 +327,46 @@ ol {
 
 # Dialog 组件
 
+
+
+## API
+
+~~~vue
+<Dialog
+        visible
+        title="标题"
+        @yes="fn1"
+        @no="fn2"></Dialog>
+~~~
+
+
+
 # Tabs 组件
+
+## 需求
+
+1. 点击 tab 切换
+2. 一条线在动
+
+## API
+
+~~~vue
+<Tabs>
+	<Tab title="title1"> 内容 1 </Tab>
+    <Tab title="title2"> 内容 2 </Tab>
+</Tabs>
+
+or
+
+<Tabs 
+      :data="[
+             {title: 'title 1', content: '内容 1'},
+             {title: 'title 2', content: '内容 2'},
+             {title: 'title 3', content: 'h(Component1, {x, 'h1'})'},
+             ]"></Tabs>
+~~~
+
+
 
 # 官网细节完善
 
