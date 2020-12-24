@@ -353,7 +353,7 @@ ol {
 ~~~vue
 <Tabs>
 	<Tab title="title1"> 内容 1 </Tab>
-    <Tab title="title2"> 内容 2 </Tab>
+    <Tab title="title2"><Component1 /></Tab>
 </Tabs>
 
 or
@@ -368,6 +368,140 @@ or
 
 
 
+## JS 获取插槽内容
+
+~~~vue
+<templat>
+	<div>
+        <component :is="default[0]"/>
+        <component :is="default[1]"/>
+    </div>
+</templat>
+
+<script>
+setup(props, context) {
+    // const defaults = context.slots.default()
+    // console.log(defaults[0].type === Tab)
+    
+    const defaults = context.slots.default()
+    defaults.forEach((tag) => {
+        if (tag.type !== Tab) {
+            throw new Error('Tabs 子标签必须是 Tab')
+        }
+    })
+}
+</script>
+~~~
+
+## TypeScript 泛型
+
+~~~typescript
+const indicator = ref <HTMLDivElemnet>(null)
+~~~
+
+## ES6 解构赋值重命名
+
+
+
 # 官网细节完善
+
+## 素材推荐
+
+- dribbble.com 搜 website
+- 参考同行（antDesign,  elementUI）
+- themeforest.net 付费
+
+## 渐变色
+
+css gradient 配置
+
+## icon 和 logo
+
+参考 symbol 文档
+
+- iconfont 找到图标 
+- symbol 复制 js 链接 
+- vue 项目 index.html  加 `script` 
+- vue 项目 index.scss 复制 css 
+- 使用 svg
+
+## 画圆弧
+
+~~~css
+.arc-path: {
+    cli-path: ellipse(80% 60% at 50% 40%);
+}
+~~~
+
+## Grid 布局
+
+
+
+
+
+## 响应式页面
+
+先手机样式
+
+然后 `@media(min-width: 600px)`
+
+600-800( pad )
+
+然后`@media(min-width: 800px) + (min-width: 1200px)` 
+
+## 引入 github 的 markdown 样式
+
+安装 `github-markdown-css` ,  main.js 里引入
+
+标签加上 class="markdown-body"
+
+## 自制 vite 插件
+
+直接引入 markdown 文件
+
+vue3 vite plugin
+
+- 根目录创建 plugin/md.ts （执行 yarn add marked -D）
+- 根目录创建 vite.config.ts 
+- src 下创建 markdown / intro.md，即可用 md 语法书写
+
+## 服务器测试 markdown
+
+~~~shell
+yarn build
+
+# 开 server
+yarn global add http-server
+
+hs dist/ -c-1
+~~~
+
+## tip
+
+开发使用的是  koa 
+
+部署是 rollup 
+
+## 优化
+
+~~~vue
+<script>
+export default {
+    setup(props) {
+        const content = ref < string > (null)
+        import(props.path).then(result => { // 异步的 import
+          content.value = result.default
+        })
+        return { content }
+  	}
+}
+</script>
+~~~
+
+## 展示 UI 的代码
+
+commit:  更新 switchDemo
+
+
 
 # 发布到 npm
