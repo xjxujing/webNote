@@ -500,7 +500,17 @@ export default {
 
 ## 展示 UI 的代码
 
+1. 展示
+
 commit:  更新 switchDemo
+
+`vue-loader` 的 Custom Blocks 功能
+
+vite. config.js 添加配置
+
+2. 高亮代码
+
+   使用 prismjs 和 v-html
 
 
 
