@@ -179,27 +179,27 @@
 
 ### 数据类型
 
-js是弱类型
+`javaScript`是弱类型语言
 
-- 小结
+- 目前有 6 种基本类型：
 
-  6种基本类型：
+number:    int	float
 
-  number   int	float
+string:  字符串
 
-  string   字符串
+boolean: 只有两个值  true false
 
-  boolean  true false
+null: 只有一个值  对象是空 null
 
-  null   对象是空 null
+undefined: 只有一个值  undefined  变量未定义  var x   x这时候是undefied
 
-  undefined   undefined  变量未定义  var x   x这时候是undefied
+- 1 种引用类型
 
-  object   除了上面，都是对象
+object   除了上面，都是对象
 
 null = = undefined   结果是true
 
-Number()、String()、Boolean()创建的是对象
+`Number() String() Boolean()` 创建的是对象
 
 #### 判断数据类型
 
