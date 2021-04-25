@@ -89,9 +89,12 @@ class App extends React.Component {
 
 
 
+##  Create React App
 
-
-### 
+```powershell
+# 安装
+npx create-react-app my-app
+```
 
 
 
