@@ -52,10 +52,44 @@ data 数据、 UI 状态
 
 ### 修改状态
 
-### 例子
+
+
+##  Create React App
+
+```powershell
+# 安装
+npx create-react-app my-app
+```
+
+### 单页面应用
+
+### 组件嵌套
+
+### Props 传参
+
+### 列表渲染
+
+### 容器组件
+
+- state
+- 生命周期
+- 不包含 UI
+- 类创建
+
+### UI 组件
+
+- 没有 state
+- props 传数据
+- 只包含 UI
+- 函数创建
+
+
+
+
+
+## 例子
 
 ```react
-
 class App extends React.Component {
       state = {
         name: 'Lucy',
@@ -90,19 +124,6 @@ class App extends React.Component {
     ReactDOM.render(<App />, document.getElementById('app'))
 
 ```
-
-
-
-##  Create React App
-
-```powershell
-# 安装
-npx create-react-app my-app
-```
-
-
-
-
 
 
 
