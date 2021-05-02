@@ -133,15 +133,83 @@ class App extends React.Component {
 
 ### routers
 
+```jsx
+BrowserRouter 
+
+Route
+
+Link
+
+NavLink
+
+Switch
+```
+
+
+
 ### route parameters
+
+```jsx
+props.history.push('/about')
+
+当组件不受路由控制的时候使用 withRouter([组件名]) 获取路由参数
+
+props.history
+props.match.params
+```
 
 ### redirects
 
 
 
+## Higher Order Components(HOC)
+
+react 复用组件的技巧
+
+参数为组件，返回一个新组件的函数
+
+
+
+
+
+## 图片导入
+
 
 
 ## Redux
+
+JavaScript 状态容器 可预测化的状态管理
+
+```javascript
+const { createStore } = Redux
+
+3.
+const initState = {
+    todos: [],
+    posts=: []
+}
+
+2.
+function myReducer(state = initState, action) {
+    
+}
+
+1.
+const store = createStore(myReducer)
+
+4.
+const postAction = {
+    type: 'ADD_POST',
+    post: 'my first blog'
+}
+
+5.
+store.dispatch(postAction)
+```
+
+
+
+
 
 ### stores
 
