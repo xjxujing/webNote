@@ -178,34 +178,135 @@ react 复用组件的技巧
 
 ## Redux
 
-JavaScript 状态容器 可预测化的状态管理
+1. MDN 使用
+
+JavaScript 状态容器 可预测化的状态管理 codepen 中的例子 ， babel cdnjs.com
 
 ```javascript
 const { createStore } = Redux
 
-3.
+// 3.
 const initState = {
     todos: [],
-    posts=: []
+    posts: []
 }
 
-2.
+// 2.
 function myReducer(state = initState, action) {
-    
+   if(action.type === 'ADD_POST') {
+  console.log([...state.posts, action.post])
+     return {
+       ...state,
+       posts: [...state.posts, action.post]
+     }
+   } 
 }
 
-1.
+// 1.
 const store = createStore(myReducer)
 
-4.
+
+// 6. 订阅 store (监听 store 如果 state 变化就执行)  注意顺序
+store.subscribe(() => {
+    console.log('store 已更新', store.getState())
+});
+
+
+
+// 4.
 const postAction = {
     type: 'ADD_POST',
     post: 'my first blog'
 }
 
-5.
+// 5. 
 store.dispatch(postAction)
+
 ```
+
+
+
+
+
+2. react 项目中使用
+
+```shell
+npm install redux react-redux
+```
+
+
+
+```javascript
+// rootReducer.js
+const initState = {
+    posts: [
+        {id: '1'}
+    ]
+}
+
+const rootReducer = (state = initState, action) => {
+    return state
+}
+
+export default rootReducer
+```
+
+
+
+```react
+// index.js
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+const store = createStore(rootReducer)
+
+ReactDOM.render(
+	<React.StrictMode>
+    	// Provider 包裹组件
+		<Provider store={store}><App /></Provider>
+    </React.StrictMode>,
+	document.getElementById('root')
+)
+```
+
+
+
+```react
+// Home.js
+import { connect } from 'react-redux'
+import { Component } from 'react'
+
+
+class Home extends Component {
+    render() {
+        // 看看有哪些结果
+        console.log(this.props)
+    }
+    
+}
+
+const mapStateToProps  = (state, ownProps) => {
+    // ownProps 相当于获取 props
+    return {
+        posts: state.posts
+    }
+}  // 和 reducer 关联
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deletePost: (id) => dispatch({
+            type: 'DELETE_POST',
+            id: id
+        })
+    }
+}
+
+// rootReducer 可以和 store 拿数据了
+export default connect(mapStateToProps, mapDispatchToProps)(Home) 
+```
+
+
 
 
 
