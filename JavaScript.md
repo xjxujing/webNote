@@ -1171,6 +1171,14 @@ Object.defineProperties(obj, {
 })
 ~~~
 
+**如果一个属性的 enumerable 为 false，下面三个操作不会取到该属性**。
+
+* for..in循环
+* Object.keys方法
+* JSON.stringify方法
+
+
+
 
 
 二、查看属性的特性`Object.getOwnPropertyDescriptor(对象，属性名字符串)`
