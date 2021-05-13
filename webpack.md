@@ -274,3 +274,32 @@ npm add html-withimg-loader -D
 
 
 
+
+
+
+
+## 项目搭建
+
+```powershell
+npm init -y
+
+
+# 根目录创建 src、dist 目录
+src/index.html
+
+# 打包的入口文件。打包好后自动引入到 index.html 文件中
+src/main.js 
+
+```
+
+
+
+```javascript
+// /package.json
+
+"script": {
+    "dev": "webpack-dev-server --open firefox --port 3000 --hot --host 127.0.0.1"
+}
+
+```
+
