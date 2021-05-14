@@ -306,3 +306,22 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Home) 
 ```
 
+
+
+
+
+## Context API
+
+针对状态管理（state management) 设计的 API
+
+解决使用 props 来处理嵌套的 UI 的状态共享的问题
+
+1. 获取 context 数据
+
+- `Class.contextType`  类组件可用
+- `Context.Consumer`   类组件、函数组件都可用
+
+2. 更新 context 数据
+
+3. 创建多个 context 和获取多个 context
+
