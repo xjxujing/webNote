@@ -128,9 +128,15 @@ console.log(a,b);  // 打印12 5,注意c会报错undefined
 
 ### 箭头函数
 
-箭头函数和this、参数扩展、数组展开（vue属性映射）
+箭头函数和 this、参数扩展、数组展开（vue 属性映射）
 
-不能使用arguments、不能当做构造函数（不能new）、借助父亲的this
+- 不能使用 arguments ,  可以用（...） 实现
+
+- 不能当做构造函数（不能 new ）
+
+- 借助父亲的 this
+
+- 没有 prototype
 
 ~~~javascript
 箭头函数
