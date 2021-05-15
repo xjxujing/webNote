@@ -325,3 +325,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 3. 创建多个 context 和获取多个 context
 
+
+
+
+
+## Hooks
+
+v16.8
+
+- `useState()`
+- `useEffect()`  初始化组件和 render 的时候都会被调用
+- `useContext()`
