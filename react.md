@@ -308,6 +308,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 
 
+小结 Reducer 函数通过 Action 操作 state/data， 通过 dispatch
+
+Action :` dispatch({type: 'ADD_BOOK', book: {}})` 
+
+`Reducer(action, state)`
+
+- 验证 action 的 type 类型
+- 更新 state 里面保存的对象
+- 返回一个 state 值 
+
+
+
 
 
 ## Context API

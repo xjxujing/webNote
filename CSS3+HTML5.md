@@ -378,13 +378,11 @@ word-wrap: normal|break-word; 属性值详解如下：
 定义显示方式 box-sizing: content-box(标准盒模型) | border-box(怪异盒模型)
 
 可控大小
-resize: nont | horizontal | vertical | both; 
+resize: none | horizontal | vertical | both; 
 结合属性overflow: auto; 
 
 定义轮廓
  outline: outline-width outline-style outline-color;
-
-
 ```
 
 
