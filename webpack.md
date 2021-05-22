@@ -303,5 +303,5 @@ src/main.js
 
 ```
 
-
+## build 默认加载 js 和 json
 

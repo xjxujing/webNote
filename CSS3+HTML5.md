@@ -466,8 +466,6 @@ space-around //每跟轴两侧空隙相等
 
 可以设置多个主轴，但只有一个交叉轴
 
-7、order
-
 ```
 
 **flex元素属性**
@@ -2127,7 +2125,7 @@ svg属于xml，不属于html5，严格遵循Xml， svg是矢量图，canvas是�
 
 ```css
 Html:
-<svg xmlns=“http://www.w3.org/2000/svg” version=“1.1”></svg>
+<svg xmlns="http://www.w3.org/2000/svg"></svg>
 
 Js:
 var char = "http://www.w3.org/2000/svg";
