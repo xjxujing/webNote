@@ -133,12 +133,12 @@ E ~ F 匹配任何在E元素之后的同级F元素,兄弟选择器
 ```css
 :not(s)不含有s选择符的元素E 
 
-:first-child匹配父元素的第一个子元素
+:first-child 匹配父元素的第一个子元素
 :last-child
 :nth-child(n) 
 :nth-last-child(n)
 
-:first-of-type
+:first-of-type 指定父元素的首个元素：
 :last-of-type
 :nth-of-type(odd) 奇数行
 :nth-last-of-type
@@ -1721,6 +1721,8 @@ fillRect( x, y, w, h); // 不会对之前的路径产生影响
 
 ```javascript
 3、圆形
+// 中心点坐标 x y， 半径 r ，起始弧度和终止弧度 
+// Math.PI 3.14 相当于 180度
 arc(x, y, r, sAngle, eAngle, c); // c是false，顺时针
 
 ctx.arc(200, 200, 100, 0, Math.PI * 2) // 画一个圆
@@ -1825,12 +1827,12 @@ var ctx = myCanvas.getContext("2d");
 var img = document.getElementById("img");
 
 img.onload = function () {
+     // 也可以放 canvas 或者视频 poster
     var bg = ctx.createPattern(img, 'no-repeat');
     ctx.fillStyle = bg;
     ctx.fillRect(0,0,400,400);
 }
 </script>
-视频poster也可以用这种方式
 ```
 
 
@@ -2026,12 +2028,20 @@ var timer = setInterval(function () {
 
 ```css
 1、 drawImage导入图片
-drawImage(image, x, y); 在画布上定位图像
-drawImage(image, x, y, width, height); 在画布上定位图像,并规定图像的宽度和高度
-drawImage(image, sx, sy, swidth, sheight, x, y, width, height); 剪切图像，并在画布上定位被剪切的部分
+在画布上定位图像 xy 是左上顶角位置
+image = new Image()
+image.src = ''
+ctx.drawImage(image, x, y); 
 
-2、getImageData(x, y, dx, dy) // 同源策略
 
+在画布上定位图像,并规定图像的宽度和高度
+ctx.drawImage(image, x, y, width, height); 
+
+剪切图像，并在画布上定位被剪切的部分 sx sy 是图片上的位置，再计算图片要显示的宽度  swidth, sheight 就是要显示的部分。放在 canvas 中的 x, y, width, height 这样的位置
+ctx.drawImage(image, sx, sy, swidth, sheight, x, y, width, height); 
+
+2、getImageData(x, y, dx, dy) // 同源策略 获取像素信息 每个像素块用 rgba 表示
+ 
 <canvas id="myCanvas" width="400" height="400"></canvas>
 <script>
 var myCanvas = document.getElementById("myCanvas");
@@ -2056,8 +2066,9 @@ img.onload = function () {
 4、putImageData(imgData, x, y)  将图像数据放回画布上
 
 
-抽取canvas为图片
-canvas.toDataURL() ; 将canvas的内容抽取成⼀张图片, base64编码格式   注意这里不是ctx.啥啥啥
+**抽取canvas为图片
+**将canvas的内容抽取成⼀张图片, base64编码格式   注意这里不是ctx.啥啥啥
+canvas.toDataURL() ; 
 注：同源策略的限制，要开启服务器，在www目录下打开
 将canvas的内容放入img元素里
 
