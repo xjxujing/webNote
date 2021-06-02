@@ -180,7 +180,9 @@ react 复用组件的技巧
 
 1. MDN 使用
 
-JavaScript 状态容器 可预测化的状态管理 codepen 中的例子 ， babel cdnjs.com
+JavaScript 状态容器 可预测化的状态管理 codepen 中的例子 ， 
+
+配置 babel cdnjs.com
 
 ```javascript
 const { createStore } = Redux
@@ -348,3 +350,16 @@ v16.8
 - `useState()`
 - `useEffect()`  初始化组件和 render 的时候都会被调用
 - `useContext()`
+
+
+
+
+
+## 优化
+
+### 组件的优化
+
+`memo` ``PureComponent`` [`shouldComponentUpdate()`](https://zh-hans.reactjs.org/docs/react-component.html#shouldcomponentupdate) 
+
+
+
