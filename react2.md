@@ -180,8 +180,321 @@ JS
 
 执行了`ReactDOM.render(<MyComponent/>.......)`之后，发生了什么？
 
+函数式组件：
+
 1. React解析组件标签，找到了`MyComponent`组件
 2. 发现组件是使用函数定义的，随后调用该函数，将返回的虚拟DOM转为真实DOM，随后呈现在页面中
 
+```html
+<script type="text/babel">
+		//1.创建类式组件
+		class MyComponent extends React.Component {
+			render(){
+				//render是放在哪里的？—— MyComponent的原型对象上，供实例使用。
+				//render中的this是谁？—— MyComponent的实例对象 <=> MyComponent组件实例对象。
+				console.log('render中的this:',this);
+				return <h2>我是用类定义的组件(适用于【复杂组件】的定义)</h2>
+			}
+		}
+		//2.渲染组件到页面
+		ReactDOM.render(<MyComponent/>,document.getElementById('test'))
+</script>
+```
 
 
+
+类组件：
+
+1. React解析组件标签，找到了`MyComponent`组件。
+
+2. 发现组件是使用类定义的，随后new出来该类的实例，并通过该实例调用到原型上的render方法。
+
+3. 将render返回的虚拟DOM转为真实DOM，随后呈现在页面中。
+
+
+
+
+
+# 组件的三大属性
+
+1. state
+
+   - 状态必须通过`setState`进行更新,且更新是一种合并，不是替换
+   - 构造器调用 1 次
+   - render 调用 1 + n 次（初始化 + 渲染次数）
+   - 方法调用几次
+
+   理解：
+
+   - state是组件对象最重要的属性, 值是对象(可以包含多个key-value的组合)
+
+   - 组件被称为"状态机", 通过更新组件的state来更新对应的页面显示(重新渲染组件)
+
+     
+
+   注意
+
+   -  组件中render方法中的this为组件实例对象
+   - 组件自定义的方法中this为undefined，如何解决：
+     - 强制绑定this: 通过函数对象的`bind()`
+     - 箭头函数
+   - 状态数据，不能直接修改或更新
+   
+2. props
+
+类组件
+
+```jsx
+//创建组件
+class Person extends React.Component{
+
+    constructor(props){
+        //构造器是否接收props，是否传递给super，取决于：是否希望在构造器中通过this访问props
+        // console.log(props);
+        super(props)
+        console.log('constructor',this.props);
+    }
+
+    //对标签属性进行类型、必要性的限制
+    static propTypes = {  // 注意引入 PropTypes 库
+        name:PropTypes.string.isRequired, //限制name必传，且为字符串
+        sex:PropTypes.string,//限制sex为字符串
+        age:PropTypes.number,//限制age为数值
+    }
+
+//指定默认标签属性值
+static defaultProps = {
+    sex:'男',//sex默认值为男
+    age:18 //age默认值为18
+}
+
+render(){
+    // console.log(this);
+    const {name,age,sex} = this.props
+    //props是只读的
+    //this.props.name = 'jack' //此行代码会报错，因为props是只读的
+    return (
+        <ul>
+            <li>姓名：{name}</li>
+            <li>性别：{sex}</li>
+            <li>年龄：{age+1}</li>
+        </ul>
+    )
+}
+}
+
+//渲染组件到页面
+ReactDOM.render(<Person name="jerry"/>,document.getElementById('test1'))
+
+
+// 可以通过这种方式简写
+// ReactDOM.render(<Person {...props}/>,document.getElementById('test1'))
+```
+
+
+
+函数组件
+
+```jsx
+//创建组件
+function Person (props){
+    const {name,age,sex} = props
+    return (
+        <ul>
+            <li>姓名：{name}</li>
+            <li>性别：{sex}</li>
+            <li>年龄：{age}</li>
+        </ul>
+    )
+}
+Person.propTypes = {
+    name:PropTypes.string.isRequired, //限制name必传，且为字符串
+    sex:PropTypes.string,//限制sex为字符串
+    age:PropTypes.number,//限制age为数值
+}
+
+//指定默认标签属性值
+Person.defaultProps = {
+    sex:'男',//sex默认值为男
+    age:18 //age默认值为18
+}
+//渲染组件到页面
+ReactDOM.render(<Person name="jerry"/>,document.getElementById('test1'))
+```
+
+
+
+3. **ref**
+   - 字符串（不推荐 ，后面可能不支持，官网给了个链接说有一些问题 效率不高）
+   - 回调
+     - 内联函数（更新视图的时候，会调用两次。数据更新驱动页面 render）
+     - 类的绑定函数
+   - `createRef `调用后可以返回一个容器，该容器可以存储被ref所标识的节点, 用几个创建几个（推荐）
+
+
+
+```jsx
+// 回调形式
+
+//创建组件
+class Demo extends React.Component{
+    //展示左侧输入框的数据
+    showData = ()=>{
+        const {input1} = this
+        alert(input1.value)
+    }
+    //展示右侧输入框的数据
+    showData2 = ()=>{
+        const {input2} = this
+        alert(input2.value)
+    }
+    render(){
+        return(
+            <div>
+                <input ref={c => this.input1 = c } type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                <button onClick={this.showData}>点我提示左侧的数据</button>&nbsp;
+                <input onBlur={this.showData2} ref={c => this.input2 = c } type="text" placeholder="失去焦点提示数据"/>&nbsp;
+            </div>
+        )
+    }
+}
+//渲染组件到页面
+ReactDOM.render(<Demo a="1" b="2"/>,document.getElementById('test'))
+```
+
+
+
+
+
+# 事件处理
+
+自定义事件（合成事件）为了更好的兼容性
+
+1. 通过`onXxx`属性指定事件处理函数(注意大小写)
+   - `React`使用的是自定义(合成)事件, 而不是使用的原生 DOM 事件 —————— 为了更好的兼容性
+   - `React`中的事件是通过事件委托方式处理的(委托给组件最外层的元素) ————————为了的高效
+
+2. 通过`event.target`得到发生事件的 DOM 元素对象 ——————————不要过度使用 ref
+
+
+
+# 非受控组件
+
+输入类的 DOM **现用现取**
+
+```jsx
+//创建组件
+class Login extends React.Component{
+    handleSubmit = (event)=>{
+        event.preventDefault() //阻止表单提交
+        const {username,password} = this
+        alert(`你输入的用户名是：${username.value},你输入的密码是：${password.value}`)
+    }
+    render(){
+        return(
+            <form onSubmit={this.handleSubmit}>
+                用户名：<input ref={c => this.username = c} type="text" name="username"/>
+                密码：<input ref={c => this.password = c} type="password" name="password"/>
+                <button>登录</button>
+            </form>
+        )
+    }
+}
+//渲染组件
+ReactDOM.render(<Login/>,document.getElementById('test'))
+```
+
+
+
+# 受控组件
+
+**输入类的 DOM 随着数据的变化也维护状态**
+
+```jsx
+//创建组件
+class Login extends React.Component{
+
+    //初始化状态
+    state = {
+        username:'', //用户名
+        password:'' //密码
+    }
+
+//保存用户名到状态中
+saveUsername = (event)=>{
+    this.setState({username:event.target.value})
+}
+
+//保存密码到状态中
+savePassword = (event)=>{
+    this.setState({password:event.target.value})
+}
+
+//表单提交的回调
+handleSubmit = (event)=>{
+    event.preventDefault() //阻止表单提交
+    const {username,password} = this.state
+    alert(`你输入的用户名是：${username},你输入的密码是：${password}`)
+}
+
+render(){
+    return(
+        <form onSubmit={this.handleSubmit}>
+            用户名：<input onChange={this.saveUsername} type="text" name="username"/>
+            密码：<input onChange={this.savePassword} type="password" name="password"/>
+            <button>登录</button>
+        </form>
+    )
+}
+}
+//渲染组件
+ReactDOM.render(<Login/>,document.getElementById('test'))
+```
+
+
+
+# 高阶函数
+
+
+
+高阶函数：如果一个函数符合下面2个规范中的任何一个，那该函数就是高阶函数。
+
+1.若A函数，接收的参数是一个函数，那么A就可以称之为高阶函数。
+
+2.若A函数，调用的返回值依然是一个函数，那么A就可以称之为高阶函数。
+
+常见的高阶函数有：`Promise、setTimeout、arr.map()`等等。
+
+
+
+
+
+# 函数柯里化
+
+函数的柯里化：通过函数调用继续**返回函数**的方式，实现**多次接收参数**最后**统一处理**的函数编码形式。 
+
+
+
+```javascript
+function sum(a){
+    return(b)=>{
+        return (c)=>{
+        	return a+b+c
+        }
+    }
+}
+```
+
+# 生命周期
+
+1. 初始化阶段: 由`ReactDOM.render()`触发---**初次渲染**
+   - `constructor()`
+   - `componentWillMount()`
+   - ` render()` 
+   - `componentDidMount()` =====> 常用（例如：开启定时器、发送网络请求、订阅消息）
+2. 更新阶段: 由组件内部`this.setSate()`或父组件render触发
+   - `shouldComponentUpdate()`
+   - `componentWillUpdate()`
+   - `render()` =====> 必须使用的一个
+3. 卸载组件: 由`ReactDOM.unmountComponentAtNode()`触发
+   - `componentWillUnmount()`=====> 常用（例如：关闭定时器、取消订阅消息）

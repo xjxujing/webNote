@@ -914,6 +914,104 @@ let p = await import('./mod1');  // 如果引过来是个promise,需要await
 
 
 
+## Iterator
+
+Iterator 规范：迭代数据结构中的每一项
+
++ 具备next方法
+
++ 每一次执行next方法都可以获取到结构中的某一项 {value:迭代这一项的值,done:false/true}
+
+
+
+```javascript
+class Iterator {
+    constructor(assemble) {
+        this.assemble = assemble;
+        this.index = 0;
+    }
+    next() {
+        if (this.index > this.assemble.length - 1) {
+            return {
+                value: undefined,
+                done: true
+            };
+        }
+        return {
+            value: this.assemble[this.index++],
+            done: false
+        };
+    }
+}
+
+let itor = new Iterator([10, 20, 30, 40]);
+console.log(itor.next()); //{value:10,done:false}
+console.log(itor.next()); //{value:20,done:false}
+console.log(itor.next()); //{value:30,done:false}
+console.log(itor.next()); //{value:40,done:false}
+console.log(itor.next()); //{value:undefined,done:true}
+```
+
+
+
+除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。其中一个是 `Symbol.iterator`
+
+ES6 规定，默认的 Iterator 接口部署在数据结构的`Symbol.iterator`属性，或者说，一个数据结构只要具有`Symbol.iterator`属性，就可以认为是“可遍历的”
+
+对象的`Symbol.iterator`属性，指向该对象的默认遍历器方法。
+
+具备迭代器规范的结构`「Symbol.iterator」`:数组结构、部分类数组`「arguments/NodeList/HTMLCollection」`、字符串、`Set/Map`、`generator object`...
+
+
+
+
+
+`for of `底层处理机制，就是按照Iterator迭代器规范实现的
+
+- 验证当前迭代的对象是否具备 Symbol.iterator 这个属性，如果不具备，则直接报错（例如：普通对象就不具备迭代器规范，所以不能使用for of循环）
+- 具备这个属性，会把属性的值(函数)执行，返回一个具备迭代器规范的对象{有next方法}
+- 每一轮迭代都是执行依次next，把获取对象中的value拿到，直到done为true的时候，停止迭代
+
+
+
+如何让一个对象也具备迭代器规范，也能使用for of循环
+
+```javascript
+Object.prototype[Symbol.iterator] = function () {
+    // this -> obj
+    let self = this,
+        keys = Object.keys(self).concat(Object.getOwnPropertySymbols(self)),
+        index = 0;
+    return {
+        next() {
+            if (index > keys.length - 1) {
+                return {
+                    value: undefined,
+                    done: true
+                };
+            }
+            return {
+                value: self[keys[index++]],
+                done: false
+            };
+        }
+    };
+};
+let obj = {
+    name: 'zhufeng',
+    age: 12
+};
+for (let value of obj) {
+    console.log(value);
+}
+```
+
+
+
+
+
+
+
 ## ES7\8\9
 
 ~~~javascript
