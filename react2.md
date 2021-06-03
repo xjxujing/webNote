@@ -485,16 +485,72 @@ function sum(a){
 }
 ```
 
-# 生命周期
+# 生命周期（旧）
 
 1. 初始化阶段: 由`ReactDOM.render()`触发---**初次渲染**
    - `constructor()`
    - `componentWillMount()`
    - ` render()` 
    - `componentDidMount()` =====> 常用（例如：开启定时器、发送网络请求、订阅消息）
-2. 更新阶段: 由组件内部`this.setSate()`或父组件render触发
+2. 更新阶段: 由组件内部`this.setSate()`或父组件`render`触发
    - `shouldComponentUpdate()`
    - `componentWillUpdate()`
    - `render()` =====> 必须使用的一个
+   - `componentDidUpdate()`
+   - `componentWillReceiveProps()` (第一次的时候不走)
 3. 卸载组件: 由`ReactDOM.unmountComponentAtNode()`触发
    - `componentWillUnmount()`=====> 常用（例如：关闭定时器、取消订阅消息）
+
+
+
+**都是给实例用的**
+
+
+
+# 生命周期（新）
+
+1. 初始化阶段: 由`ReactDOM.render()`触发---初次渲染
+   - `constructor()`
+   - `getDerivedStateFromProps`
+   - `render()`
+   - `componentDidMount() `=====> 常用（例如：开启定时器、发送网络请求、订阅消息）
+2. 更新阶段: 由组件内部`this.setSate()`或父组件重新`render`触发
+   - `getDerivedStateFromProps`
+   - `shouldComponentUpdate()`
+   - `render()`
+   - `getSnapshotBeforeUpdate`
+   - `componentDidUpdate()`
+3. 卸载组件: 由`ReactDOM.unmountComponentAtNode()`触发
+   - `componentWillUnmount()`  例如：关闭定时器、取消订阅消息
+
+
+
+
+
+# key 的作用
+
+- 简单的说: key 是虚拟 DOM 对象的标识, 在更新显示时 key 起着极其重要的作用。
+
+- 详细的说: 当状态中的数据发生变化时，react 会根据【新数据】生成【新的虚拟DOM】。随后 React 进行【新虚拟DOM】与【旧虚拟DOM】的 diff 比较，比较**规则**如下：
+  - 旧虚拟 DOM 中找到了与新虚拟 DOM 相同的 key：
+    - 若虚拟DOM中内容没变, 直接使用之前的真实DOM
+    - 若虚拟DOM中内容变了, 则生成新的真实 DOM，随后替换掉页面中之前的真实DOM
+  - 旧虚拟 DOM 中未找到与新虚拟 DOM 相同的 key：根据数据创建新的真实 DOM，随后渲染到到页面
+
+
+
+**用 index 作为 key 可能会引发的问题**：
+
+- 若对数据进行：逆序添加、逆序删除等破坏顺序操作：会产生没有必要的真实 DOM 更新 ==> 界面效果没问题, 但效率低。
+- 如果结构中还包含输入类的 DOM：会产生错误 DOM 更新 ==> 界面有问题。
+- 注意！如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，使用index作为key是没有问题的。
+
+
+
+开发中如何选择key?
+
+- 最好使用每条数据的唯一标识作为 key , 比如 id、手机号、身份证号、学号等唯一值
+- 如果确定只是简单的展示数据，用 index 也是可以的
+
+
+
