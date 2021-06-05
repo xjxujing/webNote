@@ -18,6 +18,10 @@ react 特点
 
 
 
+
+
+react 是 用于动态构建用户界面的 JavaScript 库(只关注于视图)
+
 ## 初识
 
 ```html
@@ -262,25 +266,25 @@ class Person extends React.Component{
         age:PropTypes.number,//限制age为数值
     }
 
-//指定默认标签属性值
-static defaultProps = {
-    sex:'男',//sex默认值为男
-    age:18 //age默认值为18
-}
+    //指定默认标签属性值
+    static defaultProps = {
+        sex:'男',//sex默认值为男
+        age:18 //age默认值为18
+    }
 
-render(){
-    // console.log(this);
-    const {name,age,sex} = this.props
-    //props是只读的
-    //this.props.name = 'jack' //此行代码会报错，因为props是只读的
-    return (
-        <ul>
-            <li>姓名：{name}</li>
-            <li>性别：{sex}</li>
-            <li>年龄：{age+1}</li>
-        </ul>
-    )
-}
+    render(){
+        // console.log(this);
+        const {name,age,sex} = this.props
+        //props是只读的
+        //this.props.name = 'jack' //此行代码会报错，因为props是只读的
+        return (
+            <ul>
+                <li>姓名：{name}</li>
+                <li>性别：{sex}</li>
+                <li>年龄：{age+1}</li>
+            </ul>
+        )
+    }
 }
 
 //渲染组件到页面
@@ -551,6 +555,534 @@ function sum(a){
 
 - 最好使用每条数据的唯一标识作为 key , 比如 id、手机号、身份证号、学号等唯一值
 - 如果确定只是简单的展示数据，用 index 也是可以的
+
+
+
+# 脚手架
+
+1. xxx脚手架: 用来帮助程序员快速创建一个基于xxx库的模板项目
+   1. 包含了所有需要的配置（语法检查、`jsx`编译、`devServer`…）
+   2. 下载好了所有相关的依赖
+   3. 可以直接运行一个简单效果
+2. react 提供了一个用于创建 react 项目的脚手架库: create-react-app
+3. 项目的整体技术架构为:  `react + webpack + es6 + eslint`
+4. 使用脚手架开发的项目的特点: **模块化, 组件化, 工程化**
+
+
+
+```html
+<!-- %PUBLIC_URL%代表public文件夹的路径 -->
+<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+<!-- 开启理想视口，用于做移动端网页的适配 -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- 用于配置浏览器页签+地址栏的颜色(仅支持安卓手机浏览器) -->
+<meta name="theme-color" content="red" />
+<!-- SEO -->
+<meta name="description"content="Web site created using create-react-app"/>
+<!-- 用于指定网页添加到手机主屏幕后的图标 -->
+<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+<!-- 应用加壳时的配置文件 -->
+<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+<body>
+    <!-- 若浏览器不支持js则展示标签中的内容 -->
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+</body>
+```
+
+```
+public ---- 静态资源文件夹
+		favicon.icon ------ 网站页签图标
+		index.html -------- 主页面
+		logo192.png ------- logo 图
+		logo512.png ------- logo 图
+		manifest.json ----- 应用加壳的配置文件
+		robots.txt -------- 爬虫协议文件
+src ---- 源码文件夹
+		App.css -------- App 组件的样式
+		App.js --------- App 组件
+		App.test.js ---- 用于给 App 做测试
+		index.css ------ 样式
+		index.js ------- 入口文件
+		logo.svg ------- logo图
+		reportWebVitals.js --- 页面性能分析文件(需要web-vitals库的支持)
+		setupTests.js ---- 组件单元测试的文件(需要jest-dom库的支持)
+```
+
+
+
+/index.js
+
+```js
+//引入react核心库
+import React from 'react'
+//引入ReactDOM
+import ReactDOM from 'react-dom'
+//引入App组件
+import App from './App'
+
+//渲染App到页面
+ReactDOM.render(<App/>,document.getElementById('root'))
+
+```
+
+
+
+# 样式模块
+
+```jsx
+import React,{Component} from 'react'
+// css文件改名 然后取 hello.xxx
+import hello from './index.module.css' 
+
+export default class Hello extends Component{
+	render(){
+		return <h2 className={hello.title}>Hello,React!</h2>
+	}
+}
+```
+
+
+
+# 插件
+
+vsCode 插件： ES7 React/Redux/GraphQL/React-Native snippets
+
+`rcc` + Tab  类组件
+
+`rfc` + Tab  函数组件
+
+
+
+# Todo 例子
+
+`uuid `
+
+`nanoid`(推荐 很小)
+
+```jsx
+import {nanoid} from 'nanoid'
+
+
+// 使用 id: nanoid()
+```
+
+**状态在哪里，操作状态的方法就在那里**
+
+
+
+
+
+# 配置代理
+
+总的思路就是 前端发送请求的地址**端口和域名**要和**前端**服务器一样，然后配置真实要请求的地址
+
+
+
+比如：前端服务在 3000，后端服务在 500
+
+- 在`package.json`中追加如下配置
+
+```json
+"proxy":"http://localhost:5000"  // 和服务器一致
+```
+
+**发送请求的时候直接写 3000（和前端服务一致）。发给 3000 的会被转发给 5000.**
+
+注意：3000 有的资源，就不会再去服务器拿了（换句话说 3000 没有的找 5000）
+
+
+
+优点：配置简单，前端请求资源时可以不加任何前缀。
+
+缺点：不能配置多个代理。
+
+工作方式：上述方式配置代理，当请求了3000不存在的资源时，那么该请求会转发给5000 （优先匹配前端资源）
+
+
+
+- `src/setupProxy.js`   CJS 语法
+
+```javascript
+const proxy = require('http-proxy-middleware')
+
+module.exports = function(app) {
+    app.use(
+        proxy('/api1', {  // api1是需要转发的请求(所有带有/api1前缀的请求都会转发给5000)
+            target: 'http://localhost:5000', //配置转发目标地址(能返回数据的服务器地址)
+            changeOrigin: true, // 控制服务器接收到的请求头中 Host 字段的值 默认值是 false
+            /* （算是配置了正向代理？）
+         	changeOrigin设置为true时，服务器收到的请求头中的host为：localhost:5000
+         	changeOrigin设置为false时，服务器收到的请求头中的host为：localhost:3000
+         	changeOrigin默认值为false，但我们一般将changeOrigin值设为true
+         	*/
+            //去除请求前缀，保证交给后台服务器的是正常请求地址(必须配置)
+            pathRewrite: {'^/api1': ''} 
+        }),
+        proxy('/api2', { 
+            target: 'http://localhost:5001',
+            changeOrigin: true,
+            pathRewrite: {'^/api2': ''}
+        })
+    )
+}
+```
+
+优点：可以配置多个代理，可以灵活的控制请求是否走代理。
+
+缺点：配置繁琐，前端请求资源时必须加前缀。
+
+
+
+# `github` 搜索案例
+
+注意：
+
+1. [关于a标签target_blank使用rel=noopener](https://www.jianshu.com/p/c8319e095474)
+
+2. 解构赋值+重命名
+
+```js
+// 获取用户的输入(连续解构赋值+重命名)
+const { keyWordElement: { value: keyWord } } = this
+```
+
+3. 请求地址:  https://api.github.com/search/users?q=xxxxxx
+
+4. 发布订阅： 先订阅 再发布（触发）
+
+```jsx
+import PubSub from 'pubsub-js'
+```
+
+5. fetch 文档
+
+   https://github.github.io/fetch/
+
+   https://segmentfault.com/a/1190000003810652
+
+   
+
+6. 实现注释折叠
+
+```javascript
+//#region
+
+//#endregion
+```
+
+7. 如果返回的是非 promise 值，默认是成功状态（哪怕返回的是 undefined ）
+
+```javascript
+fetch(`/api1/search/users2?q=${keyWord}`).then(
+    response => {
+        console.log('联系服务器成功了');
+        return response.json()
+    },
+    error => {
+        console.log('联系服务器失败了',error);
+        return new Promise(()=>{})
+    }
+).then(
+    response => {console.log('获取数据成功了',response);},
+    error => {console.log('获取数据失败了',error);}
+) 
+```
+
+
+
+```javascript
+fetch(`/api1/search/users2?q=${keyWord}`).then(
+    response => {
+        console.log('联系服务器成功了');
+        return response.json() // response.json() 是 promise
+    }
+).then(
+    response => {console.log('获取数据成功了',response);},
+) .catch(error => console.log('请求出错', error))
+
+// promise 可以最后统一处理错误
+```
+
+
+
+```javascript
+//发送网络请求---使用fetch发送（优化）
+try {
+    const response= await fetch(`/api1/search/users2?q=${keyWord}`)
+    const data = await response.json()
+    console.log(data);
+    PubSub.publish('atguigu',{isLoading:false,users:data.items})
+} catch (error) {
+    console.log('请求出错',error);
+    PubSub.publish('atguigu',{isLoading:false,err:error.message})
+}
+```
+
+# 路由
+
+## SPA
+
+1. 单页Web应用（single page web application，SPA）。
+
+2. 整个应用只有**一个完整的页面**。
+
+3. 点击页面中的链接**不会刷新**页面，只会做页面的**局部更新。**
+
+4. 数据都需要通过 ajax 请求获取, 并在前端异步展现。
+
+
+
+## 路由的理解
+
+1. 什么是路由
+   - 一个路由就是一个映射关系 `key: value`
+   -  key 为路径，value 可能是 function 或 component
+
+2. 路由分类
+   - 后端路由：
+     -  理解： value 是 function, 用来处理客户端提交的请求。
+     - 注册路由： `router.get(path, function(req, res))`
+     - 工作过程：当 node 接收到一个请求时, 根据请求路径找到匹配的路由, 调用路由中的函数来处理请求, 返回响应数据
+   - 前端路由：
+     - 浏览器端路由，value是component，用于展示页面内容。
+     - 注册路由:  `<Route path="/test" component={Test}>`
+     - 工作过程：当浏览器的path变为/test时, 当前路由组件就会变为Test组件
+
+
+
+ 
+
+
+
+## `react-router-dom`
+
+路由 react  路由器 router
+
+印记中文
+
+分 `dom native`
+
+`HashRouter`
+
+``BrowserRouter`
+
+
+
+
+
+## 路由组件和一般组件
+
+路由匹配上后展示的组件，放 pages 里面
+
+
+
+1.写法不同：
+
+​            一般组件：<Demo/>
+
+​            路由组件：<Route path="/demo" component={Demo}/>
+
+​      2.存放位置不同：
+
+​            一般组件：components
+
+​            路由组件：pages
+
+​      3.接收到的props不同：
+
+​            一般组件：写组件标签时传递了什么，就能收到什么
+
+​            路由组件：接收到三个固定的属性
+
+​        
+
+```
+history:
+    go: ƒ go(n)
+    goBack: ƒ goBack()
+    goForward: ƒ goForward()
+    push: ƒ push(path, state)
+    replace: ƒ replace(path, state)
+location:
+    pathname: "/about"
+    search: ""
+    state: undefined
+match:
+    params: {}
+    path: "/about"
+    url: "/about"
+```
+
+
+
+## 基础用法
+
+
+
+要包在同一个  `BrowserRouter`里面
+
+```jsx
+import {BrowserRouter, Link, Route} from 'react-router-dom'
+
+
+{/* 在React中靠路由链接实现切换组件--编写路由链接 */}
+<Link className="list-group-item" to="/about">About</Link>
+<Link className="list-group-item" to="/home">Home</Link>
+
+
+{/* 注册路由 */}
+<Route path="/about" component={About}/>
+<Route path="/home" component={Home}/>
+```
+
+
+
+## `NavLink`
+
+`activeClassName` 指定类名
+
+```jsx
+{/* 默认追加类名 acitve */}
+<NavLink activeClassName="atguigu" className="list-group-item" to="/about">About</NavLink>
+<NavLink activeClassName="atguigu" className="list-group-item" to="/home">Home</NavLink>
+```
+
+
+
+
+
+标签体内容是特殊的标签属性
+
+```jsx
+<MyNavLink to="/about">About</MyNavLink>
+<MyNavLink to="/home">Home</MyNavLink>
+
+// MyNavLink 的封装
+import React, { Component } from 'react'
+import {NavLink} from 'react-router-dom'
+
+export default class MyNavLink extends Component {
+	render() {
+		// console.log(this.props); 写在 MyNavLink 里面的东西会放在 children
+		return (
+			<NavLink activeClassName="atguigu" className="list-group-item" {...this.props}/>
+		)
+	}
+}
+```
+
+
+
+## Switch
+
+1. 通常情况下，path和component是一一对应的关系。
+
+2. Switch可以提高路由匹配效率(单一匹配)。
+
+```jsx
+<Switch>
+    <Route path="/about" component={About}/>
+    <Route path="/home" component={Home}/>
+</Switch>
+```
+
+
+
+
+
+## 样式丢失问题
+
+1. public/index.html 中 引入样式时不写 `./ `写 `/ `（常用）
+
+2. public/index.html 中 引入样式时不写 `./` 写 `%PUBLIC_URL%` （常用）
+
+3. 使用 `HashRouter`
+
+
+
+## 精准匹配
+
+1.默认使用的是**模糊匹配**（简单记：【输入的路径】必须包含要【匹配的路径】，且顺序要一致）
+
+2.开启严格匹配：`<Route exact={true} path="/about" component={About}/>`
+
+3.严格匹配不要随便开启，需要再开，有些时候开启会导致无法继续匹配二级路由
+
+```jsx
+<Switch>
+    <Route exact path="/about" component={About}/>
+    <Route exact path="/home" component={Home}/>
+</Switch>
+```
+
+**出问题再用**
+
+
+
+## `redirect`
+
+一般写在所有路由注册的最下方，当所有路由都无法匹配时，跳转到Redirect指定的路由
+
+```jsx
+<Switch>
+    <Route path="/about" component={About}/>
+    <Route path="/home" component={Home}/>
+    <Redirect to="/about"/>
+</Switch>
+```
+
+
+
+## 嵌套路由
+
+1.注册子路由时要写上父路由的path值
+
+2.路由的匹配是按照注册路由的顺序进行的
+
+
+
+## 路由传参
+
+ajax 传的参数有` body params query` 
+
+- `params`参数
+  1. 路由链接(携带参数)：`<Link to='/demo/test/tom/18'}>详情</Link>`
+  2. 注册路由(声明接收)：`<Route path="/demo/test/:name/:age" component={Test}/>`
+  3. 接收参数：`this.props.match.params`
+
+
+
+- search参数
+
+  1. 路由链接(携带参数)：`<Link to='/demo/test?name=tom&age=18'}>详情</Link>`
+
+  2. 注册路由(无需声明，正常注册即可)：`<Route path="/demo/test" component={Test}/>`
+
+  3. 接收参数：`this.props.location.search`
+
+     备注：获取到的search是`urlencoded`编码字符串，需要借助 `querystring` 解析
+
+```jsx
+import qs from 'querystring'
+
+// 接收search参数
+const {search} = this.props.location
+const {id,title} = qs.parse(search.slice(1))
+```
+
+- state参数
+
+  1. 路由链接(携带参数)：
+
+     ​	`<Link to={{ pathname:'/demo/test',state: {name: 'tom',age: 18} }}>详情</Link>`
+
+  2. 注册路由(无需声明，正常注册即可)：`<Route path="/demo/test" component={Test}/>`
+
+  3. 接收参数：`this.props.location.state`
+
+     备注：刷新也可以保留住参数
 
 
 
