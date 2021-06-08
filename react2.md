@@ -1,3 +1,5 @@
+
+
 # 基础
 
 原生痛点
@@ -820,6 +822,8 @@ try {
 }
 ```
 
+
+
 # 路由
 
 ## SPA
@@ -880,9 +884,9 @@ try {
 
 1.写法不同：
 
-​            一般组件：<Demo/>
+​            一般组件：`<Demo/>`
 
-​            路由组件：<Route path="/demo" component={Demo}/>
+​            路由组件：`<Route path="/demo" component={Demo}/>`
 
 ​      2.存放位置不同：
 
@@ -900,8 +904,8 @@ try {
 
 ```
 history:
-    go: ƒ go(n)
-    goBack: ƒ goBack()
+    go: ƒ go(n) // 前进|后退 n 步
+    goBack: ƒ goBack() 
     goForward: ƒ goForward()
     push: ƒ push(path, state)
     replace: ƒ replace(path, state)
@@ -935,6 +939,8 @@ import {BrowserRouter, Link, Route} from 'react-router-dom'
 {/* 注册路由 */}
 <Route path="/about" component={About}/>
 <Route path="/home" component={Home}/>
+
+// App 包裹 BrowserRouter
 ```
 
 
@@ -975,7 +981,7 @@ export default class MyNavLink extends Component {
 
 
 
-## Switch
+## switch
 
 1. 通常情况下，path和component是一一对应的关系。
 
@@ -987,6 +993,12 @@ export default class MyNavLink extends Component {
     <Route path="/home" component={Home}/>
 </Switch>
 ```
+
+
+
+
+
+## replace
 
 
 
@@ -1083,6 +1095,548 @@ const {id,title} = qs.parse(search.slice(1))
   3. 接收参数：`this.props.location.state`
 
      备注：刷新也可以保留住参数
+
+
+
+## 编程式路由导航
+
+借助`this.prosp.history`对象上的 API 对操作路由跳转、前进、后退
+
+- `this.prosp.history.push()`
+
+- `this.prosp.history.replace()`
+
+- `this.prosp.history.goBack()`
+
+- `this.prosp.history.goForward()`
+
+- `this.prosp.history.go()`
+
+
+
+
+
+## `BrowserRouter`与`HashRouter`的区别
+
+1. 底层原理不一样：
+   - `BrowserRouter`使用的是H5的history API，不兼容IE9及以下版本
+   -  `HashRouter`使用的是URL的哈希值
+
+2. path 表现形式不一样
+
+​            `BrowserRouter`的路径中没有 #,例如：localhost:3000/demo/test
+
+​            `HashRouter`的路径包含#, 例如：localhost:3000/#/demo/test
+
+3. 刷新后对路由state参数的影响
+   - `BrowserRouter`没有任何影响，因为`state`保存在`history`对象中。
+   - `HashRouter`刷新后会导致路由`state`参数的丢失！！！
+
+​    4. 备注：`HashRouter`可以用于解决一些路径错误相关的问题。
+
+
+
+# redux
+
+## 精简版
+
+1. 去除Count组件自身的状态
+
+2. `src`下建立:
+
+​			-redux
+
+​            -store.js
+
+​			-count_reducer.js
+
+3. store.js：
+
+​          1).引入redux中的`createStore`函数，创建一个store
+
+​          2).`createStore`调用时要传入一个为其服务的reducer
+
+​          3).记得暴露`store`对象
+
+4. count_reducer.js：
+
+​          1).`reducer`的本质是一个函数，接收：`preState,action`，返回加工后的状态
+
+​          2).r`educer`有两个作用：初始化状态，加工状态
+
+​          3).`reducer`被第一次调用时，是store自动触发的，
+
+​                  传递的`preState`是`undefined,`
+
+​                  传递的action是:`{type:'@@REDUX/INIT_a.2.b.4}`
+
+5. 在 index.js 中监测 store 中状态的改变，一旦发生改变重新渲染 `<App/>`
+
+​        备注：redux 只负责管理状态，至于状态的改变驱动着页面的展示，要靠我们自己写。
+
+
+
+## 完整版
+
+新增文件：
+
+1. count_action.js 专门用于创建 action 对象
+2. constant.js 放置容易写错的 type 值
+
+
+
+## 异步 action
+
+1. 明确：延迟的动作不想交给组件自身，想交给action
+
+2. 何时需要异步action：想要对状态进行操作，但是具体的数据靠异步任务返回。
+
+3. 具体编码：
+
+   1. `yarn add redux-thunk`，并配置在 store.js 中
+
+      ```js
+      import {createStore, applyMiddleware} from 'redux'
+      
+      //引入redux-thunk，用于支持异步action
+      import thunk from 'redux-thunk'
+      
+      
+      createStore(reducer,applyMiddleware(thunk))
+      ```
+
+      
+
+   2. 创建`action`的函数不再返回一般对象，而是一个函数，该函数中写异步任务。
+
+      ```js
+      const INCREMENT = 'increment'
+      const DECREMENT = 'decrement'
+      
+      //同步action，就是指action的值为Object类型的一般对象
+      export const createIncrementAction = data => ({type:INCREMENT,data})
+      export const createDecrementAction = data => ({type:DECREMENT,data})
+      
+      //异步action，就是指action的值为函数,异步action中一般都会调用同步action，异步action不是必须要用的。
+      export const createIncrementAsyncAction = (data,time) => {
+      	return (dispatch)=>{
+      		setTimeout(()=>{
+                  // 异步任务有结果后，分发一个同步的action去真正操作数据。
+      			dispatch(createIncrementAction(data)) 
+      		},time)
+      	}
+      }
+      ```
+
+      
+
+   3. 异步任务有结果后，分发一个同步的action去真正操作数据。
+
+      
+
+4. 备注：异步 action 不是必须要写的，完全可以自己等待异步任务的结果了再去分发同步 action。
+
+
+
+## react-redux
+
+1. 明确两个概念：
+
+​            1).UI组件:不能使用任何 redux 的 API，只负责页面的呈现、交互等。
+
+​            2).容器组件：负责和 redux 通信，将结果交给 UI 组件。
+
+
+
+2. 如何创建一个容器组件————靠 react-redux 的 connect 函数
+
+​            `connect(mapStateToProps,mapDispatchToProps)(UI组件)`
+
+​			` mapStateToProps`映射状态，返回值是一个对象
+
+​            `mapDispatchToProps`映射操作状态的方法，返回值是一个对象
+
+3. 注意容器组件中的 store 是靠 props 传进去的，**而不是在容器组件中直接引入**
+
+   
+
+4. 注意`mapDispatchToProps`，也可以是一个对象
+
+
+
+**优化**
+
+1. 容器组件和UI组件整合一个文件
+
+2. 无需自己给容器组件传递store，给`<App/>`包裹一个`<Provider store={store}>`即可。
+
+3. 使用了react-redux后也不用再自己检测redux中状态的改变了，容器组件可以自动完成这个工作。
+
+4. `mapDispatchToProps`也可以简单的写成一个对象
+
+5. 一个组件要和 redux “打交道”要经过哪几步？
+   - 定义好UI组件---不暴露
+   - 引入connect生成一个容器组件，并暴露，写法如下：
+
+```jsx
+connect(
+    state => ({key:value}), //映射状态
+    {key: xxxxxAction} //映射操作状态的方法
+)(UI组件)
+```
+
+6. 在 UI 组件中通过`this.props.xxxxxxx`读取和操作状态
+
+
+
+
+
+## react-redux 数据共享版
+
+1. 定义一个 Person 组件，和 Count 组件通过 redux 共享数据。
+
+2. 为Person组件编写：reducer、action，配置 constant 常量。
+
+3. 重点：Person 的 reducer 和 Count 的Reducer要使用`combineReducers`进行合并，
+
+​          合并后的总状态是一个对象！！！
+
+4. 交给 store 的是总 reducer，最后注意在组件中取出状态的时候，记得 “取到位”。
+
+```js
+// store.js
+
+//引入 createStore，专门用于创建 redux 中最为核心的 store 对象
+import {createStore,applyMiddleware,combineReducers} from 'redux'
+//引入为 Count 组件服务的 reducer
+import countReducer from './reducers/count'
+//引入为 Count 组件服务的reducer
+import personReducer from './reducers/person'
+//引入 redux-thunk，用于支持异步 action
+import thunk from 'redux-thunk'
+
+//汇总所有的 reducer 变为一个总的 reducer
+const allReducer = combineReducers({
+	he:countReducer,
+	rens:personReducer
+})
+
+//暴露 store
+export default createStore(allReducer,applyMiddleware(thunk))
+```
+
+
+
+##  纯函数
+
+一类特别的函数: 只要是同样的输入(实参)，必定得到同样的输出(返回)。必须遵守以下一些约束：
+
+- 不得改写参数数据
+- 不会产生任何副作用，例如**网络请求**，**输入和输出设备**
+- 不能调用`Date.now()`或者`Math.random()`等不纯的方法  
+
+
+
+**redux 的 reducer 函数必须是一个纯函数**
+
+
+
+## 开发者工具
+
+1. `yarn add redux-devtools-extension`
+2. store 中进行配置
+
+```js
+// store.js
+import {composeWithDevTools} from 'redux-devtools-extension'
+
+// 如果没有异步 
+// const store = createStore(allReducer, composeWithDevTools())
+const store = createStore(allReducer, composeWithDevTools(applyMiddleware(thunk)))
+```
+
+
+
+
+
+## 小结
+
+1. 所有变量名字要规范，尽量触发对象的简写形式。
+
+2. reducers文件夹中，编写index.js专门用于汇总并暴露所有的reducer
+
+
+
+```jsx
+// /index.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import store from './redux/store'
+import {Provider} from 'react-redux'
+
+ReactDOM.render(
+	/* 此处需要用Provider包裹App，目的是让App所有的后代容器组件都能接收到store */
+	<Provider store={store}>
+		<App/>
+	</Provider>,
+	document.getElementById('root')
+)
+```
+
+
+
+```jsx
+// /App.js
+import React, { Component } from 'react'
+import Count from './containers/Count' //引入的 Count 的容器组件
+import Person from './containers/Person' //引入的 Person 的容器组件
+
+export default class App extends Component {
+	render() {
+		return (
+			<div>
+				<Count/>
+				<hr/>
+				<Person/>
+			</div>
+		)
+	}
+}
+```
+
+
+
+```js
+// /src/reduce/store.js
+/* 
+	该文件专门用于暴露一个store对象，整个应用只有一个store对象
+*/
+
+//引入createStore，专门用于创建redux中最为核心的store对象
+import {createStore,applyMiddleware} from 'redux'
+//引入汇总之后的reducer
+import reducer from './reducers'
+//引入redux-thunk，用于支持异步action
+import thunk from 'redux-thunk'
+//引入redux-devtools-extension
+import {composeWithDevTools} from 'redux-devtools-extension'
+
+//暴露store 
+export default createStore(reducer,composeWithDevTools(applyMiddleware(thunk)))
+```
+
+```js
+// 汇总 reducer
+// /src/redux/reducers/index.js
+
+//引入combineReducers，用于汇总多个reducer
+import {combineReducers} from 'redux'
+//引入为Count组件服务的reducer
+import count from './count'
+//引入为Person组件服务的reducer
+import persons from './person'
+
+//汇总所有的reducer变为一个总的reducer
+export default  combineReducers({
+	count,
+	persons
+})
+```
+
+```js
+// /src/redux/reducers/count.js
+
+/* 
+	1.该文件是用于创建一个为 Count 组件服务的 reducer，reducer 的本质就是一个函数
+	2.reducer函数会接到两个参数，分别为：之前的状态(preState)，动作对象(action)
+*/
+import {INCREMENT,DECREMENT} from '../constant'
+
+const initState = 0 //初始化状态
+export default function countReducer(preState=initState,action){
+	// console.log('countReducer@#@#@#');
+	//从action对象中获取：type、data
+	const {type,data} = action
+	//根据type决定如何加工数据
+	switch (type) {
+		case INCREMENT: //如果是加
+			return preState + data
+		case DECREMENT: //若果是减
+			return preState - data
+		default:
+			return preState
+	}
+}
+```
+
+
+
+```jsx
+// /container/Count/index.jsx
+
+import React, { Component } from 'react'
+//引入action
+import {
+	increment,
+	decrement,
+	incrementAsync
+} from '../../redux/actions/count'
+//引入connect用于连接UI组件与redux
+import {connect} from 'react-redux'
+
+//定义UI组件
+class Count extends Component {
+
+	state = {carName:'奔驰c63'}
+
+	//加法
+	increment = ()=>{
+		const {value} = this.selectNumber
+		this.props.increment(value*1)
+	}
+	//减法
+	decrement = ()=>{
+		const {value} = this.selectNumber
+		this.props.decrement(value*1)
+	}
+	//奇数再加
+	incrementIfOdd = ()=>{
+		const {value} = this.selectNumber
+		if(this.props.count % 2 !== 0){
+			this.props.increment(value*1)
+		}
+	}
+	//异步加
+	incrementAsync = ()=>{
+		const {value} = this.selectNumber
+		this.props.incrementAsync(value*1,500)
+	}
+
+	render() {
+		//console.log('UI组件接收到的props是',this.props);
+		return (
+			<div>
+				<h2>我是Count组件,下方组件总人数为:{this.props.renshu}</h2>
+				<h4>当前求和为：{this.props.count}</h4>
+				<select ref={c => this.selectNumber = c}>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+				</select>&nbsp;
+				<button onClick={this.increment}>+</button>&nbsp;
+				<button onClick={this.decrement}>-</button>&nbsp;
+				<button onClick={this.incrementIfOdd}>当前求和为奇数再加</button>&nbsp;
+				<button onClick={this.incrementAsync}>异步加</button>&nbsp;
+			</div>
+		)
+	}
+}
+
+//使用connect()()创建并暴露一个Count的容器组件
+export default connect(
+	state => ({
+		count: state.count,
+		personCount: state.persons.length
+	}),
+	{ increment, decrement, incrementAsync }
+)(Count)
+
+```
+
+
+
+```js
+// /src/redux/actions/count.js
+/* 
+	该文件专门为Count组件生成action对象
+*/
+import {INCREMENT,DECREMENT} from '../constant'
+
+//同步action，就是指action的值为Object类型的一般对象
+export const increment = data => ({type:INCREMENT,data})
+export const decrement = data => ({type:DECREMENT,data})
+
+//异步action，就是指action的值为函数,异步action中一般都会调用同步action，异步action不是必须要用的。
+export const incrementAsync = (data,time) => {
+	return (dispatch)=>{
+		setTimeout(()=>{
+			dispatch(increment(data))
+		},time)
+	}
+}
+```
+
+
+
+
+
+# 打包
+
+
+
+```powershell
+npm run build
+
+npm i serve -g
+
+
+# 以 build 为根目录启动服务
+serve build
+```
+
+
+
+ 
+
+# 扩展
+
+`webpack` 的 plugin 下载 引入 实例化 3 步后才能用。  loader 下载后直接用
+
+
+
+## `antd` 按需引入样式
+
+
+
+1. 安装依赖：`yarn add react-app-rewired customize-cra babel-plugin-import less less-loader`
+
+2. 修改 `package.json`
+
+```json
+"scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+}     
+```
+
+
+
+3. 根目录下创建config-overrides.js
+
+```js
+const { override, fixBabelImports,addLessLoader} = require('customize-cra');
+
+module.exports = override(
+    fixBabelImports('import', {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: true,
+    }),
+    addLessLoader({
+        lessOptions:{
+            javascriptEnabled: true,
+            modifyVars: { '@primary-color': 'green' },
+        }
+    }),
+);
+```
+
+备注：不用在组件里亲自引入样式了，即：`import 'antd/dist/antd.css'`应该删掉
+
+
 
 
 

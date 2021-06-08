@@ -156,6 +156,10 @@ E ~ F 匹配任何在E元素之后的同级F元素,兄弟选择器
 
 基于整个标签
 
+[css选择器中:first-child与:first-of-type的区别](https://www.cnblogs.com/2050/p/3569509.html)
+
+
+
 
 
 **伪元素选择器**
