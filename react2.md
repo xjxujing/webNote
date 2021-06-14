@@ -51,7 +51,7 @@ react 是 用于动态构建用户界面的 JavaScript 库(只关注于视图)
 
 JSX
 
-```html
+```jsx
 <script type="text/babel" > /* 此处一定要写babel */
 //1.创建虚拟DOM
 const VDOM = (  /* 此处一定不要写引号，因为不是字符串 */
@@ -479,8 +479,6 @@ ReactDOM.render(<Login/>,document.getElementById('test'))
 
 函数的柯里化：通过函数调用继续**返回函数**的方式，实现**多次接收参数**最后**统一处理**的函数编码形式。 
 
-
-
 ```javascript
 function sum(a){
     return(b)=>{
@@ -490,6 +488,8 @@ function sum(a){
     }
 }
 ```
+
+
 
 # 生命周期（旧）
 

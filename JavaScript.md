@@ -149,7 +149,7 @@ TB PB ZB YB BB NB DB
 
 **数字用64位存储**
 
-| 1位      | 10位         | 53位              |
+| 1位      | 11位         | 53位              |
 | -------- | ------------ | ----------------- |
 | 代表正负 | 代表指数部分 | 2^53 是最大安全值 |
 
@@ -699,6 +699,33 @@ obj2.e = add.bind(obj2, 20, 30);
 console.log( obj2.e() ); // 280
 console.log( obj2.e(10, 20) ); // 280 需要注意
 ~~~
+
+
+
+## 执行上下文
+
+在全局上下文下执行代码
+
+- VO(G)全局变量对象  `let const `
+- GO (全局对象，内置的属性和方法)  `var function`
+- 执行前，变量提升 `var`声明  `function` 声明加定义
+
+
+
+- 函数堆内存
+  - 作用域： `[[scope]]: EC(G)` 
+  - 函数体：代码当字符串存起来
+  - 当做普通对象：设置一些内置的属性
+    - name
+    - 形参个数 length
+    - 原型对象属性 prototype   `prototype.constructor` 指向 `Foo.prototype`
+    - `__proto__` 执行 Functoin.prototype
+
+- 对象的话开辟对内存
+
+- 准备工作做好，就执行代码
+
+
 
 
 
@@ -1804,7 +1831,7 @@ match、search 注意正则的使用
 slice(起始下标，结束下标)  不包括结束下标
 substring()
 
-xxx当下标位置写反了，substring()会默认按照正确方式执行
+xxx当下标位置写反了，()会默认按照正确方式执行
 
 // slice支持负数下标
 s.slice(3,-1) 

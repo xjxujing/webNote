@@ -906,7 +906,7 @@ prompt("输入啥啥啥"， "默认值啥啥啥")  什么都不输入返回null
 - url
 
 ```javascript
-location.herf 完整的网址
+location.href 完整的网址
 location.toString()
 
 Location.search
