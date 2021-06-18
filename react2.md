@@ -870,7 +870,7 @@ try {
 
 `HashRouter`
 
-``BrowserRouter`
+`BrowserRouter`
 
 
 
@@ -1000,7 +1000,10 @@ export default class MyNavLink extends Component {
 
 ## replace
 
-
+```jsx
+<MyNavLink replace to="/about">About</MyNavLink>
+<MyNavLink replace to="/home">Home</MyNavLink>
+```
 
 
 
@@ -1098,19 +1101,38 @@ const {id,title} = qs.parse(search.slice(1))
 
 
 
+## `withRouter `
+
+
+
+```jsx
+// withRouter实现原理: 
+// 将组件包裹进 Route, 然后返回
+// const withRouter = () => {
+//     return () => {
+//         return <Route component={Nav} />
+//     }
+// }
+
+// 这里是简化版
+const withRouter = ( Component ) => () => <Route component={ Component }/>
+```
+
+
+
 ## 编程式路由导航
 
-借助`this.prosp.history`对象上的 API 对操作路由跳转、前进、后退
+借助`this.props.history`对象上的 API 对操作路由跳转、前进、后退
 
-- `this.prosp.history.push()`
+- `this.props.history.push()`
 
-- `this.prosp.history.replace()`
+- `this.props.history.replace()`
 
-- `this.prosp.history.goBack()`
+- `this.props.history.goBack()`
 
-- `this.prosp.history.goForward()`
+- `this.props.history.goForward()`
 
-- `this.prosp.history.go()`
+- `this.props.history.go()`
 
 
 

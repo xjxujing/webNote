@@ -501,7 +501,7 @@ stretch // 为设置高度时 该元素高度为 flex 容器高度
 
 总权重 = flex 元素的 flex-shrink * flex 元素给的宽度   相加
 
-每个 flex 元素给的宽度 - 超出的宽度 *  （超出的宽度 * flex 元素的 flex-shrink / 总权重）
+每个 flex 元素给的宽度 - 超出的宽度 *  （ **flex 元素给的宽度** * flex 元素的 flex-shrink / 总权重）
 
 - 没占满的话，要拉伸
 

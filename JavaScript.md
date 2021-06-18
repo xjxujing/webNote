@@ -1140,6 +1140,17 @@ Object.getOwnPropertyNames
 
 获取属性值用`.`	多层级就用多个`.`
 
+
+
+> 目前，有四个操作会忽略`enumerable`为`false`的属性。
+>
+> - `for...in`循环：只遍历对象自身的和继承的可枚举的属性。
+> - `Object.keys()`：返回对象自身的所有可枚举的属性的键名。
+> - `JSON.stringify()`：只串行化对象自身的可枚举的属性。
+> - `Object.assign()`： 忽略`enumerable`为`false`的属性，只拷贝对象自身的可枚举的属性
+
+
+
 一、定义属性的特性
 
 1. 修改单个属性特性`Object.defineProperty(对象，属性名字符串，特性描述对象)`
@@ -1180,7 +1191,7 @@ delete obj.z;  // 删不掉，返回false
 
 ~~~
 
-2. 修改多个属性特性`Object.defineProperties(对象，多属性特性描述对象)`
+1. 修改多个属性特性`Object.defineProperties(对象，多属性特性描述对象)`
 
 ~~~javascript
 var obj = { x: 1, y: 2 };
