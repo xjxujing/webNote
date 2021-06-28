@@ -157,7 +157,7 @@ devServer: {
 设定`HtmlWebpackPlugin`
 
 ~~~shell
-npm add html-webpack-plugin -D
+yarn add html-webpack-plugin -D
 ~~~
 
 `webpack.config.js`

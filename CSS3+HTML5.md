@@ -231,7 +231,7 @@ box-shadow 盒子阴影/（性能杀手）
 box-shadow: x y [模糊半径] [阴影拓展半径] [阴影颜色] [投影方式]
 
 text-shadow 文字阴影 /（性能杀手）
-           text-shadow: x y [模糊半径] [阴影颜色]
+text-shadow: x y [模糊半径] [阴影颜色]
 
 /* 盒子阴影和文字阴影要少用 一个网页十个以内
 阴影是浏览器性能杀手 */
@@ -243,28 +243,28 @@ rgba子元素不继承，opacity子元素继承透明度 */
 
 
 
-```css
-/* 线性渐变 */ 
-background:linear-gradient(direction, color [percent], color [percent]);
-属性值参数详解如下：
-direction //渐变方向
-        写方向：to bottom/to bottom right……
-        写角度：0deg/45deg
-color //渐变颜色
-percent // 百分比
+CSS3 新增 background值：
 
-/* 径向渐变 */
-background:radial-gradient(shape r/(a,b) at position, color [percent], color [percent]);
-属性值参数详解如下：
-shape //形状
-        circle/ellipse
-r/(a,b) // 半径/(长短轴)
-position //中心点位置
-        像素值/百分比/方向(top left)/也可以是一个值，第二个值默认center
+- 指定绘制背景图像时的起点 background-origin
 
-*transparent透明
+- 背景区域中背景图片剪裁的位置 background-clip
 
-```
+- 指定背景中图像的尺寸 background-size
+- background-position 精灵图
+
+简写：
+
+`background: transparent url(image.jpg) repeat-y  scroll 50% 0`
+
+渐变
+
+`background: linear-gradient(direction, color [percent], color [percent]);`
+
+`background:radial-gradient(shape r/(a,b) at position, color [percent], color [percent]);`
+
+这里关于背景值主要参考：注意结合 MDN 比对
+
+[翻译 – CSS3 Backgrounds相关介绍](https://www.zhangxinxu.com/wordpress/2011/05/%e7%bf%bb%e8%af%91-css3-backgrounds%e7%9b%b8%e5%85%b3%e4%bb%8b%e7%bb%8d/)
 
 
 
@@ -284,40 +284,10 @@ position //中心点位置
 
 
 ```css
-CSS3 新增 background值：
-
-指定绘制背景图像时的起点
-background-origin:border-box | padding-box | content-box
-
-指定背景的显示范围
-background-clip: border-box | padding-box | content-box
-
-指定背景中图像的尺寸
-background-size:auto|length|percentage|cover|contain 属性值详解如下：
-      cover// 背景图片充满盒子
-      contain //让盒子保留一张完整背景图片
-
-background-position
-	精灵图
-	/* 浏览器同时请求资源的个数有限，为了减少图片资源的加载 */
-
-
-background: transparent url(image.jpg) repeat-y  scroll 50% 0 
-background: #00FF00 url(bgimage.gif) no-repeat fixed top;
-			color   image			repeat	attachment(滚动相关)	position
-
-综合写法
-background: [background-color] [background-image] [background-repeat] [background-attachment] [background-position] / [ background-size] [background-origin] [background-clip];
-
-```
-
-
-
-```css
 CSS3 新增 border值：
 
 可单独设置每边的border
-border: border-width  border-style b order-color;
+border: border-width  border-style border-color;
 
 给border添加背景图片
 border-image：url number style;属性值详解如下：
@@ -325,8 +295,6 @@ border-image：url number style;属性值详解如下：
     number // 图片裁剪的值
     style // 图片添加的方式
 例如：花边效果
-
-
 ```
 
 
@@ -350,14 +318,14 @@ display: -webkit-box;
 -webkit-box-orient: vertical;//子元素被垂直排列
 text-overflow: ellipsis;
 overflow:hidden;
-多行打点兼容性不好，可用js操作（拼接，可以看下视频）
+多行打点兼容性不好，可用js操作
 ```
 
 
 
 ```css
-文字属性：文本换行
-word-wrap: normal|break-word; 属性值详解如下：
+文字属性：单词换行
+word-wrap: normal|break-word;（只有这两个值）
     normal //连续文本换行
     break-word //内容将在边界内换行（强制换行）
 
@@ -634,11 +602,7 @@ F12控制台Network可以看到所有引入（请求）的资源
 
 媒体类型有下图这些
 
-
-
-媒体特性有下图这些
-
-
+print、screen、speech
 
 常用的有`max-width	min-width	orentation`
 
@@ -1053,7 +1017,6 @@ transition-property //规定设置过渡效果的 CSS 属性的名称。
 transition-duration //规定完成过渡效果需要多少秒或毫秒。
 transition-timing-function  //规定速度效果的速度曲线。
 transition-delay    //定义过渡效果何时开始。
-
 ```
 
 ```css
@@ -1199,6 +1162,26 @@ perspective-origin视点得位置
 backface-visibility 属性定义当元素背面是否可见。 
 backface-visibility: visible | hidden;
 ```
+
+
+
+## 小结CSS3
+
+更完善的选择器：属性选择器 、伪类选择器、伪元素选择器等
+
+更完善的视觉效果：圆角、阴影、半透明（**opacity**）、变形（旋转）
+
+更完善背景效果： background-origin、background-clip、background-size
+
+增强颜色和透明度功能
+
+增加动画和过渡
+
+flex 布局
+
+媒体查询
+
+[CSS3新特性](http://c.biancheng.net/view/1276.html#:~:text=CSS3%20%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7%E9%9D%9E%E5%B8%B8%E5%A4%9A%EF%BC%8C%E8%BF%99%E9%87%8C%E7%AE%80%E5%8D%95%E5%88%97%E4%B8%BE%E8%A2%AB%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B9%BF%E6%B3%9B%E6%94%AF%E6%8C%81%E7%9A%84%E5%AE%9E%E7%94%A8%E7%89%B9%E6%80%A7%E3%80%82%201.%20%E5%AE%8C%E5%96%84%E9%80%89%E6%8B%A9%E5%99%A8%20CSS3%20%E9%80%89%E6%8B%A9%E5%99%A8%E5%9C%A8,CSS2.1%20%E7%9A%84%E5%9F%BA%E7%A1%80%E4%B8%8A%E8%BF%9B%E8%A1%8C%E4%BA%86%E5%A2%9E%E5%BC%BA%EF%BC%8C%E5%AE%83%E5%85%81%E8%AE%B8%E8%AE%BE%E8%AE%A1%E5%B8%88%E5%9C%A8%E6%A0%87%E7%AD%BE%E4%B8%AD%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9A%E7%9A%84%20HTML%20%E5%85%83%E7%B4%A0%EF%BC%8C%E8%80%8C%E4%B8%8D%E5%BF%85%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%BD%99%E7%9A%84%E7%B1%BB%E3%80%81ID%20%E6%88%96%E8%80%85%20JavaScript%20%E8%84%9A%E6%9C%AC%E3%80%82)
 
 
 
