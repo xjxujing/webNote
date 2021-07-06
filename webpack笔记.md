@@ -481,7 +481,7 @@ plugin是一个扩展器，可以介入 webpack 的每个阶段，插入一些�
 
 ### 开发体验优化
 
-1. 使用 `test、include` 配置 **确保转译尽可能少的文件** 命中 Loader 要应用规则的文件 `cacheDirectory`开启缓存
+1. module.rules： 使用 `test、include` 配置 **确保转译尽可能少的文件** 命中 Loader 要应用规则的文件 `cacheDirectory`开启缓存
 
 2. **优化文件监听的性能**，watchOptions 忽略 /node_modules/
 3. resolve.moudles：直接去当前目录的 node_modules 目录找模块 配置 resolve.moudles 但是如果第三方依赖中有 node_modules  会出现找不到
